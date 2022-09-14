@@ -1,0 +1,10 @@
+setup.py
+mpcsimplified/__init__.py
+mpcsimplified.egg-info/PKG-INFO
+mpcsimplified.egg-info/SOURCES.txt
+mpcsimplified.egg-info/dependency_links.txt
+mpcsimplified.egg-info/top_level.txt
+mpcsimplified/controllers/__init__.py
+mpcsimplified/controllers/controller.py
+mpcsimplified/utils/__init__.py
+mpcsimplified/utils/data_manipulation.py

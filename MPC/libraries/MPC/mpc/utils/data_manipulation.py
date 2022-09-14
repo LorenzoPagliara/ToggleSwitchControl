@@ -85,7 +85,7 @@ def compute_performance_metrics(data, total_time, t_step, avg_period):
                       for i in range(len(e3_bar))])
 
     ISE = np.sum((e_bar)**2)
-    ITAE = np.sum([np.abs(e_bar[i])*(60*(i+1)) for i in range(len(e_bar))])
+    ITAE = np.sum([np.abs(e_bar[i])*(t_step*(i+1)) for i in range(len(e_bar))])
 
     data['ISE'] = ISE
     data['ITAE'] = ITAE
@@ -133,6 +133,8 @@ def plot_results(data, total_time, avg_period):
     axes[1].set_xticks(x_ticks)
     axes[1].set_xticklabels(x_ticks_label, rotation=30)
 
+    figure_proteins.set_facecolor("white")
+
     # -------------------- mRNAs -------------------- #
     # --- mRNA LacI --- #
     figure_mRNAs, axes1 = plt.subplots(2, sharex=True, figsize=(fig_x, fig_y))
@@ -151,6 +153,8 @@ def plot_results(data, total_time, avg_period):
     axes1[1].set_xlabel('time [min]')
     axes1[1].set_xticks(x_ticks)
     axes1[1].set_xticklabels(x_ticks_label, rotation=30)
+
+    figure_mRNAs.set_facecolor("white")
 
     # -------------------- Internal inducers concentrations -------------------- #
     # --- v1 --- #
@@ -172,6 +176,8 @@ def plot_results(data, total_time, avg_period):
     axes2[1].set_xticks(x_ticks)
     axes2[1].set_xticklabels(x_ticks_label, rotation=30)
 
+    figure_int_inducers.set_facecolor("white")
+
     # -------------------- External inducers concentrations -------------------- #
     # --- aTc --- #
     figure_inducers, axes2 = plt.subplots(
@@ -189,6 +195,8 @@ def plot_results(data, total_time, avg_period):
     axes2[1].set_xticks(x_ticks)
     axes2[1].set_xticklabels(x_ticks_label, rotation=30)
 
+    figure_inducers.set_facecolor("white")
+
     # -------------------- Cost -------------------- #
     figure_cost, axes4 = plt.subplots(1, figsize=(fig_x, fig_y/2))
     axes4.set_ylabel('')
@@ -198,6 +206,8 @@ def plot_results(data, total_time, avg_period):
     axes4.set_xlabel('time [min]')
     axes4.set_xticks(x_ticks)
     axes4.set_xticklabels(x_ticks_label, rotation=30)
+
+    figure_cost.set_facecolor("white")
 
     figures = np.array([figure_proteins, figure_mRNAs,
                        figure_int_inducers, figure_inducers, figure_cost])

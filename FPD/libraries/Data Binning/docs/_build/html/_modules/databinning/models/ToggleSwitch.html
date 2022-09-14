@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>databinning.models.ToggleSwitch &mdash; Data Binning 1.0.0 documentation</title>
+      <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../../index.html" class="icon icon-home"> Data Binning
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../databinning.html">databinning package</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">Data Binning</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+      <li>databinning.models.ToggleSwitch</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for databinning.models.ToggleSwitch</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+
+<div class="viewcode-block" id="ToggleSwitch"><a class="viewcode-back" href="../../../databinning.models.html#databinning.models.ToggleSwitch.ToggleSwitch">[docs]</a><span class="k">class</span> <span class="nc">ToggleSwitch</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;Class representing the six state variable model of a Genetic Toggle Switch.&quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">state</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">6</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">k_m0_L</span> <span class="o">=</span> <span class="mf">3.20e-2</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">k_m0_T</span> <span class="o">=</span> <span class="mf">1.19e-1</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">k_m_L</span> <span class="o">=</span> <span class="mf">8.30</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">k_m_T</span> <span class="o">=</span> <span class="mf">2.06</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">k_p_L</span> <span class="o">=</span> <span class="mf">9.726e-1</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">k_p_T</span> <span class="o">=</span> <span class="mf">9.726e-1</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">g_m_L</span> <span class="o">=</span> <span class="mf">1.386e-1</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">g_m_T</span> <span class="o">=</span> <span class="mf">1.386e-1</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">g_p_L</span> <span class="o">=</span> <span class="mf">1.65e-2</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">g_p_T</span> <span class="o">=</span> <span class="mf">1.65e-2</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">theta_LacI</span> <span class="o">=</span> <span class="mf">31.94</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">theta_TetR</span> <span class="o">=</span> <span class="mf">30.00</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">theta_IPTG</span> <span class="o">=</span> <span class="mf">9.06e-2</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">theta_aTc</span> <span class="o">=</span> <span class="mf">11.65</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">eta_LacI</span> <span class="o">=</span> <span class="mi">2</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">eta_TetR</span> <span class="o">=</span> <span class="mi">2</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">eta_IPTG</span> <span class="o">=</span> <span class="mi">2</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">eta_aTc</span> <span class="o">=</span> <span class="mi">2</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">k_in_aTc</span> <span class="o">=</span> <span class="mf">2.75e-2</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">k_out_aTc</span> <span class="o">=</span> <span class="mf">2.00e-2</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">k_in_IPTG</span> <span class="o">=</span> <span class="mf">1.62e-1</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">k_out_IPTG</span> <span class="o">=</span> <span class="mf">1.11e-1</span>
+
+<div class="viewcode-block" id="ToggleSwitch.initialState"><a class="viewcode-back" href="../../../databinning.models.html#databinning.models.ToggleSwitch.ToggleSwitch.initialState">[docs]</a>    <span class="k">def</span> <span class="nf">initialState</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">init</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Set the initial state of the toggle switch.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            init (numpy.ndarray[float64]): Initial state.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">state</span> <span class="o">=</span> <span class="n">init</span></div>
+
+<div class="viewcode-block" id="ToggleSwitch.getState"><a class="viewcode-back" href="../../../databinning.models.html#databinning.models.ToggleSwitch.ToggleSwitch.getState">[docs]</a>    <span class="k">def</span> <span class="nf">getState</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return the current state of the toggle switch.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            numpy.ndarray[float64]: Current state.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">state</span></div>
+
+<div class="viewcode-block" id="ToggleSwitch.make_step"><a class="viewcode-back" href="../../../databinning.models.html#databinning.models.ToggleSwitch.ToggleSwitch.make_step">[docs]</a>    <span class="k">def</span> <span class="nf">make_step</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">u</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;It calculates the new state from the previous one and the value of the control input, according to the deterministic model. In the case where the `noise` parameter is `True`, the update takes into account a random noise term additive to the model.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            u (numpy.ndarray[float64]): Current control input.</span>
+<span class="sd">            noise (bool): If it is True it adds noise to the model.</span>
+<span class="sd">            step (numpy.ndarray[float64]): Discretization step for each state.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            numpy.ndarray[float64]: Next state.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">mRNA_LacI</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">mRNA_TetR</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">lacI</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+        <span class="n">tetR</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span>
+        <span class="n">v1</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span>
+        <span class="n">v2</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span>
+
+        <span class="n">aTc</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">clip</span><span class="p">(</span><span class="n">u</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">35</span><span class="p">)</span>
+        <span class="n">iptg</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">clip</span><span class="p">(</span><span class="n">u</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="mi">0</span><span class="p">,</span> <span class="mf">0.35</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">state</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">k_m0_L</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">k_m_L</span> <span class="o">*</span>
+            <span class="p">(</span><span class="mi">1</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="p">((</span><span class="n">tetR</span><span class="o">/</span><span class="bp">self</span><span class="o">.</span><span class="n">theta_TetR</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="p">(</span><span class="n">v1</span><span class="o">/</span><span class="bp">self</span><span class="o">.</span><span class="n">theta_aTc</span><span class="p">)</span><span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">eta_aTc</span><span class="p">)))</span>
+             <span class="o">**</span> <span class="bp">self</span><span class="o">.</span><span class="n">eta_TetR</span><span class="p">))</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">g_m_L</span> <span class="o">*</span> <span class="n">mRNA_LacI</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">k_m0_T</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">k_m_T</span> <span class="o">*</span>
+            <span class="p">(</span><span class="mi">1</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="p">((</span><span class="n">lacI</span><span class="o">/</span><span class="bp">self</span><span class="o">.</span><span class="n">theta_LacI</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="p">(</span><span class="n">v2</span><span class="o">/</span><span class="bp">self</span><span class="o">.</span><span class="n">theta_IPTG</span><span class="p">)</span><span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">eta_IPTG</span><span class="p">)))</span>
+             <span class="o">**</span> <span class="bp">self</span><span class="o">.</span><span class="n">eta_LacI</span><span class="p">))</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">g_m_T</span> <span class="o">*</span> <span class="n">mRNA_TetR</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">k_p_L</span> <span class="o">*</span> <span class="n">mRNA_LacI</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">g_p_L</span> <span class="o">*</span> <span class="n">lacI</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">k_p_T</span> <span class="o">*</span> <span class="n">mRNA_TetR</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">g_p_T</span> <span class="o">*</span> <span class="n">tetR</span><span class="p">,</span>
+            <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">k_in_aTc</span> <span class="o">*</span> <span class="p">(</span><span class="n">aTc</span> <span class="o">-</span> <span class="n">v1</span><span class="p">))</span> <span class="o">*</span> <span class="p">(</span><span class="n">aTc</span> <span class="o">&gt;</span> <span class="n">v1</span><span class="p">)</span> <span class="o">+</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">k_out_aTc</span> <span class="o">*</span> <span class="p">(</span><span class="n">aTc</span> <span class="o">-</span> <span class="n">v1</span><span class="p">))</span> <span class="o">*</span> <span class="p">(</span><span class="n">aTc</span> <span class="o">&lt;=</span> <span class="n">v1</span><span class="p">),</span>
+            <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">k_in_IPTG</span> <span class="o">*</span> <span class="p">(</span><span class="n">iptg</span> <span class="o">-</span> <span class="n">v2</span><span class="p">))</span> <span class="o">*</span> <span class="p">(</span><span class="n">iptg</span> <span class="o">&gt;</span> <span class="n">v2</span><span class="p">)</span> <span class="o">+</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">k_out_IPTG</span> <span class="o">*</span> <span class="p">(</span><span class="n">iptg</span> <span class="o">-</span> <span class="n">v2</span><span class="p">))</span> <span class="o">*</span> <span class="p">(</span><span class="n">iptg</span> <span class="o">&lt;=</span> <span class="n">v2</span><span class="p">)</span>
+        <span class="p">])</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">state</span></div></div>
+
+
+<div class="viewcode-block" id="ToggleSwitchSimplified"><a class="viewcode-back" href="../../../databinning.models.html#databinning.models.ToggleSwitch.ToggleSwitchSimplified">[docs]</a><span class="k">class</span> <span class="nc">ToggleSwitchSimplified</span><span class="p">(</span><span class="n">ToggleSwitch</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Class representing the simplified model of a Genetic Toggle Switch.&quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">state</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">k_1_0</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">k_m0_L</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">k_p_L</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">g_m_L</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">theta_LacI</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">g_p_L</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">k_1</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">k_m_L</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">k_p_L</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">g_m_L</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">theta_LacI</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">g_p_L</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">k_2_0</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">k_m0_T</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">k_p_T</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">g_m_T</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">theta_TetR</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">g_p_T</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">k_2</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">k_m_T</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">k_p_T</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">g_m_T</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">theta_TetR</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">g_p_T</span><span class="p">)</span>
+
+<div class="viewcode-block" id="ToggleSwitchSimplified.make_step"><a class="viewcode-back" href="../../../databinning.models.html#databinning.models.ToggleSwitch.ToggleSwitchSimplified.make_step">[docs]</a>    <span class="k">def</span> <span class="nf">make_step</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">u</span><span class="p">,):</span>
+        <span class="sd">&quot;&quot;&quot;It calculates the new state from the previous one and the value of the control input, according to the deterministic model.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            u (numpy.ndarray[float64]): Current control input.</span>
+<span class="sd">            noise (bool): If it is True it adds noise to the model.</span>
+<span class="sd">            step (numpy.ndarray[float64]): Discretization step for each state.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            numpy.ndarray[float64]: Next state.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">x1_km1</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">x2_km1</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+
+        <span class="n">aTc</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">clip</span><span class="p">(</span><span class="n">u</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">35</span><span class="p">)</span>
+        <span class="n">iptg</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">clip</span><span class="p">(</span><span class="n">u</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="mi">0</span><span class="p">,</span> <span class="mf">0.35</span><span class="p">)</span>
+
+        <span class="n">x1_k</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">clip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">k_1_0</span> <span class="o">+</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">k_1</span><span class="o">/</span><span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="p">(</span><span class="n">x2_km1</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span> <span class="o">*</span>
+                       <span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="p">((</span><span class="mi">1</span> <span class="o">+</span> <span class="p">(</span><span class="n">aTc</span><span class="o">/</span><span class="bp">self</span><span class="o">.</span><span class="n">theta_aTc</span><span class="p">)</span><span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">eta_aTc</span><span class="p">)</span><span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">eta_TetR</span><span class="p">))))</span> <span class="o">-</span> <span class="n">x1_km1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">150</span><span class="p">)</span>
+        <span class="n">x2_k</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">clip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">k_2_0</span> <span class="o">+</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">k_2</span><span class="o">/</span><span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="p">(</span><span class="n">x1_km1</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span> <span class="o">*</span>
+                       <span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="p">((</span><span class="mi">1</span> <span class="o">+</span> <span class="p">(</span><span class="n">iptg</span><span class="o">/</span><span class="bp">self</span><span class="o">.</span><span class="n">theta_IPTG</span><span class="p">)</span><span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">eta_IPTG</span><span class="p">)</span><span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">eta_LacI</span><span class="p">))))</span> <span class="o">-</span> <span class="n">x2_km1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">state</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">x1_k</span><span class="p">,</span> <span class="n">x2_k</span><span class="p">])</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">state</span></div></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Lorenzo Pagliara.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

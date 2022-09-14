@@ -6,6 +6,5 @@ databinning.egg-info/dependency_links.txt
 databinning.egg-info/top_level.txt
 databinning/models/ToggleSwitch.py
 databinning/models/__init__.py
-databinning/plants/GaussianPlant.py
 databinning/plants/Plant.py
 databinning/plants/__init__.py
