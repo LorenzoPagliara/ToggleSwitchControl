@@ -29,16 +29,14 @@ def save_results(mpc, avg_period, t_step):
         'IPTG': u2
     }
 
-    # Get average trajectory every 240 minutes (14400 s)
-    # Get samples every 5 minutes (300 s)
-    # Samples in 240 minutes = 240/5 = 48 samples
+    # Get average trajectory every 240 minutes
+    # Get samples every 1 minutes
+    # Samples in 240 minutes = 240/1 = 240 samples
     avg_samples_range = int(avg_period/t_step)
 
-    avg_LacI = [np.mean(states['LacI'][x:x + avg_samples_range])
-                for x in range(0, len(states['LacI']), avg_samples_range)]
+    avg_LacI = [np.mean(states['LacI'][x:x + avg_samples_range]) for x in range(0, len(states['LacI']), avg_samples_range)]
 
-    avg_TetR = [np.mean(states['TetR'][x:x + avg_samples_range])
-                for x in range(0, len(states['TetR']), avg_samples_range)]
+    avg_TetR = [np.mean(states['TetR'][x:x + avg_samples_range]) for x in range(0, len(states['TetR']), avg_samples_range)]
 
     avg_trajectory = {
         'LacI': avg_LacI,
@@ -69,20 +67,19 @@ def export_results(data, type, name, mode):
     f.close()
 
 
-def compute_performance_metrics(data, total_time, t_step, avg_period):
+def compute_performance_metrics(data, total_time, t_step, avg_period, LacI_ref, TetR_ref):
 
     avg_x = np.arange(0, total_time, avg_period)
 
-    e3_bar = np.array([(x - 750) / 750 for x in data['avg_traj']['LacI']])
-    e4_bar = np.array([(x - 300) / 300 for x in data['avg_traj']['TetR']])
+    e3_bar = np.array([(x - LacI_ref) / LacI_ref for x in data['avg_traj']['LacI']])
+    e4_bar = np.array([(x - TetR_ref) / TetR_ref for x in data['avg_traj']['TetR']])
 
     fe3_bar = interpolate.interp1d(avg_x, e3_bar, fill_value="extrapolate")
     e3_bar = fe3_bar(np.arange(0, total_time, t_step))
     fe4_bar = interpolate.interp1d(avg_x, e4_bar, fill_value="extrapolate")
     e4_bar = fe4_bar(np.arange(0, total_time, t_step))
 
-    e_bar = np.array([np.linalg.norm([e3_bar[i], e4_bar[i]])
-                      for i in range(len(e3_bar))])
+    e_bar = np.array([np.linalg.norm([e3_bar[i], e4_bar[i]]) for i in range(len(e3_bar))])
 
     ISE = np.sum((e_bar)**2)
     ITAE = np.sum([np.abs(e_bar[i])*(t_step*(i+1)) for i in range(len(e_bar))])
@@ -93,13 +90,11 @@ def compute_performance_metrics(data, total_time, t_step, avg_period):
     return ISE, ITAE
 
 
-def plot_results(data, total_time, avg_period):
+def plot_results(data, total_time, avg_period, LacI_ref, TetR_ref):
 
     fig_x = 20
     fig_y = 10
 
-    x_ticks = [x for x in range(0, total_time + 1, int(total_time/6))]
-    x_ticks_label = [int(x/60) for x in x_ticks]
     avg_x = np.arange(0, total_time, avg_period)
 
     plt.rcParams['axes.grid'] = True
@@ -107,31 +102,24 @@ def plot_results(data, total_time, avg_period):
 
     # -------------------- Proteins -------------------- #
     # --- LacI --- #
-    figure_proteins, axes = plt.subplots(
-        2, sharex=True, figsize=(fig_x, fig_y))
+    figure_proteins, axes = plt.subplots(2, sharex=True, figsize=(fig_x, fig_y))
 
-    axes[0].set_ylabel('')
+    axes[0].set_ylabel('a.u.')
     axes[0].set_title('LacI')
 
     line_LacI, = axes[0].plot(data['time'], data['states']['LacI'], color='b')
-    line_avg_LacI, = axes[0].plot(
-        avg_x, data['avg_traj']['LacI'], color='b', linestyle='--')
-    line_ref_LacI, = axes[0].plot(
-        data['time'], 750*np.ones(len(data['time'])), color='k', linestyle='--')
+    line_avg_LacI, = axes[0].plot(avg_x, data['avg_traj']['LacI'], color='b', linestyle='--')
+    line_ref_LacI, = axes[0].plot(data['time'], LacI_ref*np.ones(len(data['time'])), color='k', linestyle='--')
     axes[0].legend(['LacI', 'Avg LacI traj', 'LacI target'], loc='upper right')
 
     # --- TetR --- #
-    axes[1].set_ylabel('')
+    axes[1].set_ylabel('a.u.')
     axes[1].set_title('TetR')
     line_TetR, = axes[1].plot(data['time'], data['states']['TetR'], color='m')
-    line_avg_TetR, = axes[1].plot(avg_x, data['avg_traj']
-                                  ['TetR'], color='m', linestyle='--')
-    line_ref_TetR, = axes[1].plot(
-        data['time'], 300*np.ones(len(data['time'])), color='k', linestyle='--')
+    line_avg_TetR, = axes[1].plot(avg_x, data['avg_traj']['TetR'], color='m', linestyle='--')
+    line_ref_TetR, = axes[1].plot(data['time'], TetR_ref*np.ones(len(data['time'])), color='k', linestyle='--')
     axes[1].legend(['TetR', 'Avg TetR traj', 'TetR target'], loc='upper right')
     axes[1].set_xlabel('time [min]')
-    axes[1].set_xticks(x_ticks)
-    axes[1].set_xticklabels(x_ticks_label, rotation=30)
 
     figure_proteins.set_facecolor("white")
 
@@ -140,48 +128,38 @@ def plot_results(data, total_time, avg_period):
     figure_mRNAs, axes1 = plt.subplots(2, sharex=True, figsize=(fig_x, fig_y))
     axes1[0].set_ylabel('')
     axes1[0].set_title('mRNA_LacI')
-    line_mRNA_LacI, = axes1[0].plot(data['time'], data['states']
-                                    ['mRNA_LacI'], color='b')
+    line_mRNA_LacI, = axes1[0].plot(data['time'], data['states']['mRNA_LacI'], color='b')
     axes1[0].legend(['mRNA LacI'], loc='upper right')
 
     # --- mRNA TetR --- #
     axes1[1].set_ylabel('')
     axes1[1].set_title('mRNA_TetR')
-    line_mRNA_TetR, = axes1[1].plot(data['time'], data['states']
-                                    ['mRNA_TetR'], color='m')
+    line_mRNA_TetR, = axes1[1].plot(data['time'], data['states']['mRNA_TetR'], color='m')
     axes1[1].legend(['mRNA TetR'], loc='upper right')
     axes1[1].set_xlabel('time [min]')
-    axes1[1].set_xticks(x_ticks)
-    axes1[1].set_xticklabels(x_ticks_label, rotation=30)
 
     figure_mRNAs.set_facecolor("white")
 
     # -------------------- Internal inducers concentrations -------------------- #
     # --- v1 --- #
-    figure_int_inducers, axes2 = plt.subplots(
-        2, sharex=True, figsize=(fig_x, fig_y))
-    axes2[0].set_ylabel('')
+    figure_int_inducers, axes2 = plt.subplots(2, sharex=True, figsize=(fig_x, fig_y))
+    axes2[0].set_ylabel('a.u.')
     axes2[0].set_title('$v1$')
-    line_int_aTc, = axes2[0].plot(
-        data['time'], data['states']['v1'], color='y')
+    line_int_aTc, = axes2[0].plot(data['time'], data['states']['v1'], color='y')
     axes2[0].legend(['$v1$'], loc='upper right')
 
     # --- v2 --- #
     axes2[1].set_ylabel('')
     axes2[1].set_title('$v2$')
-    line_int_IPTG, = axes2[1].plot(
-        data['time'], data['states']['v2'], color='r')
+    line_int_IPTG, = axes2[1].plot(data['time'], data['states']['v2'], color='r')
     axes2[1].legend(['$v2$'], loc='upper right')
     axes2[1].set_xlabel('time [min]')
-    axes2[1].set_xticks(x_ticks)
-    axes2[1].set_xticklabels(x_ticks_label, rotation=30)
 
     figure_int_inducers.set_facecolor("white")
 
     # -------------------- External inducers concentrations -------------------- #
     # --- aTc --- #
-    figure_inducers, axes2 = plt.subplots(
-        2, sharex=True, figsize=(fig_x, fig_y))
+    figure_inducers, axes2 = plt.subplots(2, sharex=True, figsize=(fig_x, fig_y))
     axes2[0].set_ylabel('')
     axes2[0].set_title('aTc')
     line_aTc, = axes2[0].plot(data['time'], data['inputs']['aTc'], color='y')
@@ -192,8 +170,7 @@ def plot_results(data, total_time, avg_period):
     axes2[1].set_title('IPTG')
     line_IPTG, = axes2[1].plot(data['time'], data['inputs']['IPTG'], color='r')
     axes2[1].legend(['IPTG'], loc='upper right')
-    axes2[1].set_xticks(x_ticks)
-    axes2[1].set_xticklabels(x_ticks_label, rotation=30)
+    axes2[1].set_xlabel('time [min]')
 
     figure_inducers.set_facecolor("white")
 
@@ -204,13 +181,10 @@ def plot_results(data, total_time, avg_period):
     line_cost, = axes4.plot(data['time'], data['cost'], color='g')
     axes4.legend(['Cost'], loc='upper right')
     axes4.set_xlabel('time [min]')
-    axes4.set_xticks(x_ticks)
-    axes4.set_xticklabels(x_ticks_label, rotation=30)
 
     figure_cost.set_facecolor("white")
 
-    figures = np.array([figure_proteins, figure_mRNAs,
-                       figure_int_inducers, figure_inducers, figure_cost])
+    figures = np.array([figure_proteins, figure_mRNAs, figure_int_inducers, figure_inducers, figure_cost])
     lines = np.array([line_LacI, line_avg_LacI, line_ref_LacI, line_TetR, line_avg_TetR, line_ref_TetR,
                      line_mRNA_LacI, line_mRNA_TetR, line_int_aTc, line_int_IPTG, line_aTc, line_IPTG, line_cost])
 

@@ -2,7 +2,7 @@ import do_mpc
 from casadi import *
 
 
-def template_model(stochasticity=False):
+def template_model(stochasticity=False, LacI_ref=750, TetR_ref=300):
 
     model = do_mpc.model.Model(model_type='continuous')
 
@@ -42,23 +42,15 @@ def template_model(stochasticity=False):
     k_in_IPTG = 1.62e-1
     k_out_IPTG = 1.11e-1
 
-    # Model references
-    LacI_ref = 750
-    TetR_ref = 300
-
     # Defining model's equations
-    model.set_rhs('mRNA_LacI', k_m0_L + k_m_L*(1 / (1 + ((tetR/theta_TetR) * (1 /
-                  (1 + (v1/theta_aTc)**eta_aTc)))**eta_TetR)) - g_m_L * mRNA_LacI, process_noise=stochasticity)
-    model.set_rhs('mRNA_TetR', k_m0_T + k_m_T*(1 / (1 + ((lacI/theta_LacI) * (1 /
-                  (1 + (v2/theta_IPTG)**eta_IPTG)))**eta_LacI)) - g_m_T * mRNA_TetR, process_noise=stochasticity)
-    model.set_rhs('LacI', k_p_L * mRNA_LacI - g_p_L *
-                  lacI, process_noise=stochasticity)
-    model.set_rhs('TetR', k_p_T * mRNA_TetR - g_p_T *
-                  tetR, process_noise=stochasticity)
-    model.set_rhs('v1', (k_in_aTc * (aTc - v1)) * (aTc > v1) +
-                  (k_out_aTc * (aTc - v1)) * (aTc <= v1), process_noise=stochasticity)
-    model.set_rhs('v2', (k_in_IPTG * (iptg - v2)) * (iptg > v2) +
-                  (k_out_IPTG * (iptg - v2)) * (iptg <= v2), process_noise=stochasticity)
+    model.set_rhs('mRNA_LacI', k_m0_L + k_m_L*(1 / (1 + ((tetR/theta_TetR) * (1 / (1 + (v1/theta_aTc)**eta_aTc)))**eta_TetR)) -
+                  g_m_L * mRNA_LacI, process_noise=stochasticity)
+    model.set_rhs('mRNA_TetR', k_m0_T + k_m_T*(1 / (1 + ((lacI/theta_LacI) * (1 / (1 + (v2/theta_IPTG)**eta_IPTG)))**eta_LacI)) -
+                  g_m_T * mRNA_TetR, process_noise=stochasticity)
+    model.set_rhs('LacI', k_p_L * mRNA_LacI - g_p_L * lacI, process_noise=stochasticity)
+    model.set_rhs('TetR', k_p_T * mRNA_TetR - g_p_T * tetR, process_noise=stochasticity)
+    model.set_rhs('v1', (k_in_aTc * (aTc - v1)) * (aTc > v1) + (k_out_aTc * (aTc - v1)) * (aTc <= v1), process_noise=stochasticity)
+    model.set_rhs('v2', (k_in_IPTG * (iptg - v2)) * (iptg > v2) + (k_out_IPTG * (iptg - v2)) * (iptg <= v2), process_noise=stochasticity)
 
     # The process noise w is used to simulate a disturbed system in the Simulator
 
@@ -67,8 +59,7 @@ def template_model(stochasticity=False):
         model.n_v = np.random.randn(6, 1)
 
     # Cost function
-    model.set_expression(expr_name='cost', expr=(
-        lacI - LacI_ref)**2 + (tetR - TetR_ref)**2)
+    model.set_expression(expr_name='cost', expr=((lacI - LacI_ref)**2 + (tetR - TetR_ref)**2))
 
     model.setup()
 
