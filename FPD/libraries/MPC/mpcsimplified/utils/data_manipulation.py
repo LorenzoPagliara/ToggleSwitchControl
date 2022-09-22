@@ -38,7 +38,7 @@ def save_results(mpc):
     return data
 
 
-def plot_results(data):
+def plot_results(data, LacI_ref, TetR_ref):
     """Plot all the simulation results.
 
     Args:
@@ -57,15 +57,15 @@ def plot_results(data):
     axes[0].set_title(r'$x_1$')
 
     axes[0].plot(data['time'], data['states']['x1'], color='b')
-    axes[0].plot(data['time'], 23.48*np.ones(len(data['time'])), color='k', linestyle='--')
+    axes[0].plot(data['time'], LacI_ref*np.ones(len(data['time'])), color='k', linestyle='--')
     axes[0].legend([r'$x_1$', r'$x_1$ Target'], loc='upper right')
 
     axes[1].set_ylabel(r'$a.u.$')
     axes[1].set_title(r'$x_1$')
     axes[1].plot(data['time'], data['states']['x2'], color='m')
-    axes[1].plot(data['time'], 10.00*np.ones(len(data['time'])), color='k', linestyle='--')
+    axes[1].plot(data['time'], TetR_ref*np.ones(len(data['time'])), color='k', linestyle='--')
     axes[1].legend([r'$x_2$', r'$x_2$ Target'], loc='upper right')
-    axes[1].set_xlabel('time [s]')
+    axes[1].set_xlabel('time [min]')
     figure.set_facecolor("white")
 
     # -------------------- External inducers concentrations -------------------- #
@@ -81,7 +81,7 @@ def plot_results(data):
     axes[1].set_title('IPTG')
     axes[1].plot(data['time'], data['inputs']['IPTG'], color='r')
     axes[1].legend(['IPTG'], loc='upper right')
-    axes[1].set_xlabel('time [s]')
+    axes[1].set_xlabel('time [min]')
     figure.set_facecolor("white")
 
     # -------------------- Cost -------------------- #
@@ -92,7 +92,7 @@ def plot_results(data):
     axes.set_xlabel('time [s]')
 
 
-def compute_performance_metrics(x1_avg, x2_avg, avg_x, total_time, t_step):
+def compute_performance_metrics(x1_avg, x2_avg, avg_x, total_time, t_step, LacI_ref, TetR_ref):
     """Compute the performance metrics such as: ITAE and ISE.
 
     Args:
@@ -106,8 +106,8 @@ def compute_performance_metrics(x1_avg, x2_avg, avg_x, total_time, t_step):
         float64, float64: ISE and ITAE.
     """
 
-    e1_bar = np.array([(x - 23.48) / 23.48 for x in x1_avg])
-    e2_bar = np.array([(x - 10.00) / 10.00 for x in x2_avg])
+    e1_bar = np.array([(x - LacI_ref) / LacI_ref for x in x1_avg])
+    e2_bar = np.array([(x - TetR_ref) / TetR_ref for x in x2_avg])
 
     fe1_bar = interpolate.interp1d(avg_x, e1_bar, fill_value="extrapolate")
     e1_bar = fe1_bar(np.arange(0, total_time, t_step))

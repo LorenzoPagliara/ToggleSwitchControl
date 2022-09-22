@@ -2,7 +2,7 @@ import do_mpc
 from casadi import *
 
 
-def template_model(stochasticity):
+def template_model(stochasticity, LacI_ref=23.48, TetR_ref=10.00):
     """Defines the mathematical model for the toggle switch in the form of differential equations (ODE).
 
     Args:
@@ -51,12 +51,8 @@ def template_model(stochasticity):
     model.set_rhs('x1', k_1_0 + (k_1/(1 + (x2**2) * (1/((1 + (atc/theta_aTc)**eta_aTc)**eta_TetR)))) - x1, process_noise=stochasticity)
     model.set_rhs('x2', k_2_0 + (k_2/(1 + (x1**2) * (1/((1 + (iptg/theta_IPTG)**eta_IPTG)**eta_LacI)))) - x2, process_noise=stochasticity)
 
-    # Model references
-    LacI_ref = 23.48
-    TetR_ref = 10.00
-
     # Cost function
-    model.set_expression(expr_name='cost', expr=((x1 - LacI_ref)**2 + (x2 - TetR_ref)**2))
+    model.set_expression(expr_name='cost', expr=(((x1 - LacI_ref)/LacI_ref)**2 + ((x2 - TetR_ref)/TetR_ref)**2))
 
     if stochasticity:
         model.n_v = np.random.randn(2, 1)
