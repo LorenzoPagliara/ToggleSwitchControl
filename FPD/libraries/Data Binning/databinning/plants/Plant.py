@@ -39,7 +39,7 @@ class Plant:
         """Compute the full joint and the reduced joint PDFs of the system using states and inputs trajectories.
 
         Args:
-            data (numpy.ndarray[float64]): Array containing the continuous trajecories of the states/inputs.
+            data (numpy.ndarray[float64]): Array containing the continuous trajectories of the states/inputs.
             x_dim (numpy.ndarray[float64]): Number of states.
             u_dim (numpy.ndarray[float64]): Number of inputs.
             x_step (numpy.ndarray[float64]): Array containing the discretization step of the states.
@@ -166,7 +166,7 @@ class GaussianPlant:
         """Compute the full joint and the reduced joint PDFs of the system using states and inputs trajectories.
 
         Args:
-            data (numpy.ndarray[float64]): Array containing the continuous trajecories of the states/inputs.
+            data (numpy.ndarray[float64]): Array containing the continuous trajectories of the states/inputs.
             x_dim (numpy.ndarray[float64]): Number of states.
             u_dim (numpy.ndarray[float64]): Number of inputs
             x_step (numpy.ndarray[float64]): Array containing the discretization step of the states.

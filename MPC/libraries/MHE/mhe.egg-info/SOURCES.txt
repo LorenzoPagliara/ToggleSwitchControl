@@ -1,6 +1,6 @@
 setup.py
+mhe/EstimatorMHE.py
 mhe/__init__.py
-mhe/mhe_estimator.py
 mhe.egg-info/PKG-INFO
 mhe.egg-info/SOURCES.txt
 mhe.egg-info/dependency_links.txt
