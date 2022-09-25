@@ -1,0 +1,18 @@
+Metadata-Version: 2.1
+Name: phaseportrait
+Version: 1.1.0
+Summary:  A python package for visualizing non-linear dynamics and chaos. (2D phase portraits, 3D chaotic trajectories, Maps, Cobweb plots...)
+Home-page: https://phaseportrait.github.io/
+Author: Víctor Loras & Unai Lería
+Maintainer: Víctor Loras & Unai Lería
+Maintainer-email: vhloras@gmail.com
+License: MIT License
+Download-URL: https://pypi.org/project/phaseportrait/
+Project-URL: Documentation, https://phaseportrait.github.io/
+Project-URL: Source Code, https://github.com/phaseportrait/phaseportrait
+Project-URL: GUI, https://github.com/phaseportrait/phaseportrait-gui
+Platform: UNKNOWN
+Requires-Python: >=3.8
+
+UNKNOWN
+

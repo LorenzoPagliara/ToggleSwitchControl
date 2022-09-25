@@ -1,9 +1,4 @@
-function [ISE,ITAE] = compute_performance_metrics(LacI_avg,TetR_avg, LacI_ref, TetR_ref)
-
-    x = (0:288:1440);
-    x_intrp= [1:1:1440];
-    avg_LacI = interp1(x,LacI_avg,x_intrp);
-    avg_TetR = interp1(x,TetR_avg,x_intrp);
+function [ISE,ITAE] = compute_performance_metrics(avg_LacI,avg_TetR, LacI_ref, TetR_ref)
     
     e1_bar = zeros(1, 1440);
     e2_bar = zeros(1, 1440);
