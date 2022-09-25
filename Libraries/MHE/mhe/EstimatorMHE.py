@@ -5,14 +5,31 @@ from casadi import *
 
 
 class EstimatorMHE:
+    """
+    Class representing the MHE estimator. 
+    It contains the model instance whose parameters are to be estimated.
+
+    This class defines the parameters of the estimator and is capable of executing the estimation loop.
+    """
 
     def __init__(self, t_step, setup_mhe) -> None:
+        """Constructor of the class, sets the parameters of the estimator and simulator.
+
+        Args:
+            t_step (float64): Estimator sampling time.
+            setup_mhe (dict): Dictionary containing estimator parameters.
+        """
         self.t_step = t_step
         self.model = self.set_model()
         self.estimator = self.estimator_mhe(setup_mhe)
         self.simulator = self.simulator_mhe()
 
     def set_model(self):
+        """Defines the model equations and the parameters to be estimated.
+
+        Returns:
+            do_mpc.model.Model: Instance of the model used by the estimator.
+        """
 
         model = do_mpc.model.Model(model_type='continuous')
 
@@ -65,6 +82,14 @@ class EstimatorMHE:
         return model
 
     def estimator_mhe(self, setup_mhe):
+        """Defines the parameters of the estimator and the bounds of the parameters to be estimated.
+
+        Args:
+            setup_mhe (dict): Dictionary containing estimator parameters.
+
+        Returns:
+            do_mpc.estimator.MHE: Instance of the estimator.
+        """
 
         mhe = do_mpc.estimator.MHE(self.model, ['k_m0_L', 'k_m0_T', 'k_m_L', 'k_m_T', 'k_p_L', 'k_p_T', 'g_m_L', 'g_m_T', 'g_p_L', 'g_p_T', 'theta_LacI',
                                                 'theta_TetR', 'theta_IPTG', 'theta_aTc'])
@@ -96,6 +121,11 @@ class EstimatorMHE:
         return mhe
 
     def simulator_mhe(self):
+        """Defines the parameters of the simulator.
+
+        Returns:
+            do_mpc.simulator.Simulator: Instance of the simulator.
+        """
 
         simulator = do_mpc.simulator.Simulator(self.model)
         simulator.set_param(t_step=self.t_step)
@@ -127,6 +157,16 @@ class EstimatorMHE:
         return simulator
 
     def estimation_loop(self, x_0, p_est0, steps):
+        """Defines the estimation loop.
+
+        Args:
+            x_0 (numpy.ndarray[float64]): Initial conditions.
+            p_est0 (numpy.ndarray[float64]): Initial estimation of parameters
+            steps (int): Number of estimation loop steps.
+
+        Returns:
+            dict: The parameter estimates.
+        """
 
         self.estimator.reset_history()
         self.simulator.reset_history()
@@ -149,6 +189,12 @@ class EstimatorMHE:
         return self.estimator.data
 
     def plot_estimates(self, estimator_data, simulator_data):
+        """Plot the parameter estimate against the actual value.
+
+        Args:
+            estimator_data (dict): Parameter estimation.
+            simulator_data (dict): Actual parameters.
+        """
         mhe_graphics = do_mpc.graphics.Graphics(estimator_data)
         sim_graphics = do_mpc.graphics.Graphics(simulator_data)
 

@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>mpc.models.ToggleSwitchLinearModel &mdash; Genetic Toggle Switch Libraries 1.0.0 documentation</title>
+      <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../../index.html" class="icon icon-home"> Genetic Toggle Switch Libraries
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../fpd.html">fpd package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../mpc.html">mpc package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../mhe.html">mhe package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../databinning.html">databinning package</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">Genetic Toggle Switch Libraries</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+      <li>mpc.models.ToggleSwitchLinearModel</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for mpc.models.ToggleSwitchLinearModel</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">.ToggleSwitchModel</span> <span class="kn">import</span> <span class="o">*</span>
+
+
+<div class="viewcode-block" id="ToggleSwitchLinearModel"><a class="viewcode-back" href="../../../mpc.models.html#mpc.models.ToggleSwitchLinearModel.ToggleSwitchLinearModel">[docs]</a><span class="k">class</span> <span class="nc">ToggleSwitchLinearModel</span><span class="p">(</span><span class="n">ToggleSwitchModel</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Class extending the model used by the MPC and representing a linear model.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">stochasticity</span><span class="p">,</span> <span class="n">LacI_ref</span><span class="p">,</span> <span class="n">TetR_ref</span><span class="p">,</span> <span class="n">t_step</span><span class="p">,</span> <span class="n">total_time</span><span class="p">,</span> <span class="n">avg_period</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Constructor of the class, set the model used by the controller and initialises the results dictionary.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            stochasticity (bool): Boolean parameter determining whether the model is deterministic or stochastic.</span>
+<span class="sd">            LacI_ref (float64): Reference for the LacI protein.</span>
+<span class="sd">            TetR_ref (float64): Reference for the TetR protein.</span>
+<span class="sd">            t_step (float64): Sampling time used by the controller.</span>
+<span class="sd">            total_time (float64): Total simulation time used by the controller.</span>
+<span class="sd">            avg_period (float64): Time interval for reading the average of state trajectories.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">stochasticity</span><span class="p">,</span> <span class="n">LacI_ref</span><span class="p">,</span> <span class="n">TetR_ref</span><span class="p">,</span> <span class="n">t_step</span><span class="p">,</span> <span class="n">total_time</span><span class="p">,</span> <span class="n">avg_period</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">)</span>
+
+<div class="viewcode-block" id="ToggleSwitchLinearModel.set_model"><a class="viewcode-back" href="../../../mpc.models.html#mpc.models.ToggleSwitchLinearModel.ToggleSwitchLinearModel.set_model">[docs]</a>    <span class="k">def</span> <span class="nf">set_model</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">stochasticity</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Defines the model equations and the cost function. It receives the dynamic matrix A and the control matrix B of the linearised model as additional arguments.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            stochasticity (bool, optional): Boolean parameter that adds or subtracts stochasticity to the model. Defaults to False.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            do_mpc.model.Model: Instance of the model used by the controller.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">A</span> <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">B</span> <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+
+        <span class="n">model</span> <span class="o">=</span> <span class="n">do_mpc</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">Model</span><span class="p">(</span><span class="n">model_type</span><span class="o">=</span><span class="s1">&#39;continuous&#39;</span><span class="p">)</span>
+
+        <span class="n">_x</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">set_variable</span><span class="p">(</span><span class="n">var_type</span><span class="o">=</span><span class="s1">&#39;states&#39;</span><span class="p">,</span> <span class="n">var_name</span><span class="o">=</span><span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+        <span class="n">_u</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">set_variable</span><span class="p">(</span><span class="n">var_type</span><span class="o">=</span><span class="s1">&#39;inputs&#39;</span><span class="p">,</span> <span class="n">var_name</span><span class="o">=</span><span class="s1">&#39;u&#39;</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+
+        <span class="n">x_next</span> <span class="o">=</span> <span class="n">A</span><span class="nd">@_x</span><span class="o">+</span><span class="n">B</span><span class="nd">@_u</span>
+
+        <span class="n">model</span><span class="o">.</span><span class="n">set_rhs</span><span class="p">(</span><span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="n">x_next</span><span class="p">)</span>
+        <span class="n">model</span><span class="o">.</span><span class="n">set_expression</span><span class="p">(</span><span class="n">expr_name</span><span class="o">=</span><span class="s1">&#39;cost&#39;</span><span class="p">,</span> <span class="n">expr</span><span class="o">=</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">x</span><span class="p">[</span><span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">LacI_ref</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">x</span><span class="p">[</span><span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">TetR_ref</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+
+        <span class="n">model</span><span class="o">.</span><span class="n">setup</span><span class="p">()</span>
+
+        <span class="k">return</span> <span class="n">model</span></div>
+
+<div class="viewcode-block" id="ToggleSwitchLinearModel.set_cost"><a class="viewcode-back" href="../../../mpc.models.html#mpc.models.ToggleSwitchLinearModel.ToggleSwitchLinearModel.set_cost">[docs]</a>    <span class="k">def</span> <span class="nf">set_cost</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">controller</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Defines the cost function that the controller uses as an objective function.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            controller (do_mpc.controller.MPC): Controller instance for which to set the cost.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            do_mpc.controller.MPC: Instance of the controller.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">mterm</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">aux</span><span class="p">[</span><span class="s1">&#39;cost&#39;</span><span class="p">]</span>
+        <span class="n">lterm</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">aux</span><span class="p">[</span><span class="s1">&#39;cost&#39;</span><span class="p">]</span>
+
+        <span class="n">controller</span><span class="o">.</span><span class="n">set_objective</span><span class="p">(</span><span class="n">mterm</span><span class="o">=</span><span class="n">mterm</span><span class="p">,</span> <span class="n">lterm</span><span class="o">=</span><span class="n">lterm</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">controller</span></div>
+
+<div class="viewcode-block" id="ToggleSwitchLinearModel.set_constraints"><a class="viewcode-back" href="../../../mpc.models.html#mpc.models.ToggleSwitchLinearModel.ToggleSwitchLinearModel.set_constraints">[docs]</a>    <span class="k">def</span> <span class="nf">set_constraints</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mpc</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Defines the constraints for the MPC controller.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            controller (do_mpc.controller.MPC): Controller instance for which to set constraints.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            do_mpc.controller.MPC: Instance of the controller.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">mpc</span><span class="o">.</span><span class="n">bounds</span><span class="p">[</span><span class="s1">&#39;lower&#39;</span><span class="p">,</span> <span class="s1">&#39;_x&#39;</span><span class="p">,</span> <span class="s1">&#39;x&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mf">3.20e-2</span><span class="p">],</span> <span class="p">[</span><span class="mf">1.19e-1</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">]])</span>
+
+        <span class="n">mpc</span><span class="o">.</span><span class="n">bounds</span><span class="p">[</span><span class="s1">&#39;lower&#39;</span><span class="p">,</span> <span class="s1">&#39;_u&#39;</span><span class="p">,</span> <span class="s1">&#39;u&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">]])</span>
+        <span class="n">mpc</span><span class="o">.</span><span class="n">bounds</span><span class="p">[</span><span class="s1">&#39;upper&#39;</span><span class="p">,</span> <span class="s1">&#39;_u&#39;</span><span class="p">,</span> <span class="s1">&#39;u&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">35</span><span class="p">],</span> <span class="p">[</span><span class="mf">0.35</span><span class="p">]])</span>
+
+        <span class="k">return</span> <span class="n">mpc</span></div>
+
+<div class="viewcode-block" id="ToggleSwitchLinearModel.set_trajectories"><a class="viewcode-back" href="../../../mpc.models.html#mpc.models.ToggleSwitchLinearModel.ToggleSwitchLinearModel.set_trajectories">[docs]</a>    <span class="k">def</span> <span class="nf">set_trajectories</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;It updates the dictionary of state trajectories based on closed-loop results obtained by the controller.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            data (dict): Closed-loop simulation results.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">states</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;mRNA_LacI&#39;</span><span class="p">:</span> <span class="p">[</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;_x&#39;</span><span class="p">,</span> <span class="s1">&#39;x&#39;</span><span class="p">]],</span>
+            <span class="s1">&#39;mRNA_TetR&#39;</span><span class="p">:</span> <span class="p">[</span><span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;_x&#39;</span><span class="p">,</span> <span class="s1">&#39;x&#39;</span><span class="p">]],</span>
+            <span class="s1">&#39;LacI&#39;</span><span class="p">:</span> <span class="p">[</span><span class="n">x</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;_x&#39;</span><span class="p">,</span> <span class="s1">&#39;x&#39;</span><span class="p">]],</span>
+            <span class="s1">&#39;TetR&#39;</span><span class="p">:</span> <span class="p">[</span><span class="n">x</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;_x&#39;</span><span class="p">,</span> <span class="s1">&#39;x&#39;</span><span class="p">]]</span>
+        <span class="p">}</span>
+
+        <span class="n">u1</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;_u&#39;</span><span class="p">,</span> <span class="s1">&#39;u&#39;</span><span class="p">]]</span>
+        <span class="n">u2</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;_u&#39;</span><span class="p">,</span> <span class="s1">&#39;u&#39;</span><span class="p">]]</span>
+
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">u1</span><span class="p">)):</span>
+            <span class="k">if</span> <span class="n">i</span> <span class="o">%</span> <span class="mi">15</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">u1</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">u1</span><span class="p">[</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+                <span class="n">u2</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">u2</span><span class="p">[</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+
+        <span class="n">inputs</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;aTc&#39;</span><span class="p">:</span> <span class="n">u1</span><span class="p">,</span>
+            <span class="s1">&#39;IPTG&#39;</span><span class="p">:</span> <span class="n">u2</span>
+        <span class="p">}</span>
+
+        <span class="n">avg_samples_range</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">avg_period</span><span class="o">/</span><span class="bp">self</span><span class="o">.</span><span class="n">t_step</span><span class="p">)</span>
+        <span class="n">avg_stop_time</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">total_time</span> <span class="o">-</span> <span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">total_time</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">avg_period</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span>
+
+        <span class="n">avg_LacI</span> <span class="o">=</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">states</span><span class="p">[</span><span class="s1">&#39;LacI&#39;</span><span class="p">][</span><span class="n">x</span><span class="p">:</span><span class="n">x</span> <span class="o">+</span> <span class="n">avg_samples_range</span><span class="p">])</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">states</span><span class="p">[</span><span class="s1">&#39;LacI&#39;</span><span class="p">]),</span> <span class="n">avg_samples_range</span><span class="p">)]</span>
+        <span class="n">avg_TetR</span> <span class="o">=</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">states</span><span class="p">[</span><span class="s1">&#39;TetR&#39;</span><span class="p">][</span><span class="n">x</span><span class="p">:</span><span class="n">x</span> <span class="o">+</span> <span class="n">avg_samples_range</span><span class="p">])</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">states</span><span class="p">[</span><span class="s1">&#39;TetR&#39;</span><span class="p">]),</span> <span class="n">avg_samples_range</span><span class="p">)]</span>
+
+        <span class="n">avg_x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">total_time</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">avg_period</span><span class="p">)</span>
+        <span class="n">favg_LacI</span> <span class="o">=</span> <span class="n">CubicSpline</span><span class="p">(</span><span class="n">avg_x</span><span class="p">,</span> <span class="n">avg_LacI</span><span class="p">)</span>
+        <span class="n">avg_LacI</span> <span class="o">=</span> <span class="n">favg_LacI</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">avg_stop_time</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">t_step</span><span class="p">))</span>
+        <span class="n">favg_TetR</span> <span class="o">=</span> <span class="n">CubicSpline</span><span class="p">(</span><span class="n">avg_x</span><span class="p">,</span> <span class="n">avg_TetR</span><span class="p">)</span>
+        <span class="n">avg_TetR</span> <span class="o">=</span> <span class="n">favg_TetR</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">avg_stop_time</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">t_step</span><span class="p">))</span>
+
+        <span class="n">avg_trajectories</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;LacI&#39;</span><span class="p">:</span> <span class="p">[</span><span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">avg_LacI</span><span class="o">.</span><span class="n">tolist</span><span class="p">()],</span>
+            <span class="s1">&#39;TetR&#39;</span><span class="p">:</span> <span class="p">[</span><span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">avg_TetR</span><span class="o">.</span><span class="n">tolist</span><span class="p">()]</span>
+        <span class="p">}</span>
+
+        <span class="n">ISE</span><span class="p">,</span> <span class="n">ITAE</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">compute_performance_metrics</span><span class="p">(</span><span class="n">avg_trajectories</span><span class="p">)</span>
+
+        <span class="n">cost</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;_aux&#39;</span><span class="p">,</span> <span class="s1">&#39;cost&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">tolist</span><span class="p">()]</span>
+        <span class="n">time</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;_time&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">tolist</span><span class="p">()]</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">trajectories</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;states&#39;</span><span class="p">:</span> <span class="n">states</span><span class="p">,</span>
+            <span class="s1">&#39;inputs&#39;</span><span class="p">:</span> <span class="n">inputs</span><span class="p">,</span>
+            <span class="s1">&#39;avg_traj&#39;</span><span class="p">:</span> <span class="n">avg_trajectories</span><span class="p">,</span>
+            <span class="s1">&#39;cost&#39;</span><span class="p">:</span> <span class="n">cost</span><span class="p">,</span>
+            <span class="s1">&#39;time&#39;</span><span class="p">:</span> <span class="n">time</span><span class="p">,</span>
+            <span class="s1">&#39;ISE&#39;</span><span class="p">:</span> <span class="n">ISE</span><span class="p">,</span>
+            <span class="s1">&#39;ITAE&#39;</span><span class="p">:</span> <span class="n">ITAE</span>
+        <span class="p">}</span></div>
+
+<div class="viewcode-block" id="ToggleSwitchLinearModel.plot_results"><a class="viewcode-back" href="../../../mpc.models.html#mpc.models.ToggleSwitchLinearModel.ToggleSwitchLinearModel.plot_results">[docs]</a>    <span class="k">def</span> <span class="nf">plot_results</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Plot the results of the closed-loop simulation.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            numpy.ndarray, numpy.ndarray: Arrays of lines and figures.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">fig_x</span> <span class="o">=</span> <span class="mi">20</span>
+        <span class="n">fig_y</span> <span class="o">=</span> <span class="mi">10</span>
+
+        <span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s1">&#39;axes.grid&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s1">&#39;font.size&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">16</span>
+
+        <span class="n">time</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">trajectories</span><span class="p">[</span><span class="s1">&#39;time&#39;</span><span class="p">]</span>
+        <span class="n">avg_stop_time</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">total_time</span> <span class="o">-</span> <span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">total_time</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">avg_period</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span>
+        <span class="n">avg_time</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">avg_stop_time</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">t_step</span><span class="p">)</span>
+
+        <span class="c1"># -------------------- Proteins -------------------- #</span>
+        <span class="c1"># --- LacI --- #</span>
+        <span class="n">figure_proteins</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">sharex</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="n">fig_x</span><span class="p">,</span> <span class="n">fig_y</span><span class="p">))</span>
+
+        <span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+        <span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;LacI&#39;</span><span class="p">)</span>
+        <span class="n">line_LacI</span><span class="p">,</span> <span class="o">=</span> <span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">time</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">trajectories</span><span class="p">[</span><span class="s1">&#39;states&#39;</span><span class="p">][</span><span class="s1">&#39;LacI&#39;</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;b&#39;</span><span class="p">)</span>
+        <span class="n">line_avg_LacI</span><span class="p">,</span> <span class="o">=</span> <span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">avg_time</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">trajectories</span><span class="p">[</span><span class="s1">&#39;avg_traj&#39;</span><span class="p">][</span><span class="s1">&#39;LacI&#39;</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">)</span>
+        <span class="n">line_ref_LacI</span><span class="p">,</span> <span class="o">=</span> <span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">time</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">LacI_ref</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">time</span><span class="p">)),</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;k&#39;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">)</span>
+        <span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">legend</span><span class="p">([</span><span class="s1">&#39;LacI&#39;</span><span class="p">,</span> <span class="s1">&#39;Avg LacI traj&#39;</span><span class="p">,</span> <span class="s1">&#39;LacI target&#39;</span><span class="p">],</span> <span class="n">loc</span><span class="o">=</span><span class="s1">&#39;upper right&#39;</span><span class="p">)</span>
+
+        <span class="c1"># --- TetR --- #</span>
+        <span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+        <span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;TetR&#39;</span><span class="p">)</span>
+        <span class="n">line_TetR</span><span class="p">,</span> <span class="o">=</span> <span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">time</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">trajectories</span><span class="p">[</span><span class="s1">&#39;states&#39;</span><span class="p">][</span><span class="s1">&#39;TetR&#39;</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;m&#39;</span><span class="p">)</span>
+        <span class="n">line_avg_TetR</span><span class="p">,</span> <span class="o">=</span> <span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">avg_time</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">trajectories</span><span class="p">[</span><span class="s1">&#39;avg_traj&#39;</span><span class="p">][</span><span class="s1">&#39;TetR&#39;</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;m&#39;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">)</span>
+        <span class="n">line_ref_TetR</span><span class="p">,</span> <span class="o">=</span> <span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">time</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">TetR_ref</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">time</span><span class="p">)),</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;k&#39;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">)</span>
+        <span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">legend</span><span class="p">([</span><span class="s1">&#39;TetR&#39;</span><span class="p">,</span> <span class="s1">&#39;Avg TetR traj&#39;</span><span class="p">,</span> <span class="s1">&#39;TetR target&#39;</span><span class="p">],</span> <span class="n">loc</span><span class="o">=</span><span class="s1">&#39;upper right&#39;</span><span class="p">)</span>
+        <span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;time [min]&#39;</span><span class="p">)</span>
+
+        <span class="n">figure_proteins</span><span class="o">.</span><span class="n">set_facecolor</span><span class="p">(</span><span class="s2">&quot;white&quot;</span><span class="p">)</span>
+
+        <span class="c1"># -------------------- mRNAs -------------------- #</span>
+        <span class="c1"># --- mRNA LacI --- #</span>
+        <span class="n">figure_mRNAs</span><span class="p">,</span> <span class="n">axes1</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">sharex</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="n">fig_x</span><span class="p">,</span> <span class="n">fig_y</span><span class="p">))</span>
+        <span class="n">axes1</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+        <span class="n">axes1</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;mRNA_LacI&#39;</span><span class="p">)</span>
+        <span class="n">line_mRNA_LacI</span><span class="p">,</span> <span class="o">=</span> <span class="n">axes1</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">time</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">trajectories</span><span class="p">[</span><span class="s1">&#39;states&#39;</span><span class="p">][</span><span class="s1">&#39;mRNA_LacI&#39;</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;b&#39;</span><span class="p">)</span>
+        <span class="n">axes1</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">legend</span><span class="p">([</span><span class="s1">&#39;mRNA LacI&#39;</span><span class="p">],</span> <span class="n">loc</span><span class="o">=</span><span class="s1">&#39;upper right&#39;</span><span class="p">)</span>
+
+        <span class="c1"># --- mRNA TetR --- #</span>
+        <span class="n">axes1</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+        <span class="n">axes1</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;mRNA_TetR&#39;</span><span class="p">)</span>
+        <span class="n">line_mRNA_TetR</span><span class="p">,</span> <span class="o">=</span> <span class="n">axes1</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">time</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">trajectories</span><span class="p">[</span><span class="s1">&#39;states&#39;</span><span class="p">][</span><span class="s1">&#39;mRNA_TetR&#39;</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;m&#39;</span><span class="p">)</span>
+        <span class="n">axes1</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">legend</span><span class="p">([</span><span class="s1">&#39;mRNA TetR&#39;</span><span class="p">],</span> <span class="n">loc</span><span class="o">=</span><span class="s1">&#39;upper right&#39;</span><span class="p">)</span>
+        <span class="n">axes1</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;time [min]&#39;</span><span class="p">)</span>
+
+        <span class="n">figure_mRNAs</span><span class="o">.</span><span class="n">set_facecolor</span><span class="p">(</span><span class="s2">&quot;white&quot;</span><span class="p">)</span>
+
+        <span class="c1"># -------------------- External inductors concentrations -------------------- #</span>
+        <span class="c1"># --- aTc --- #</span>
+        <span class="n">figure_inductors</span><span class="p">,</span> <span class="n">axes2</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">sharex</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="n">fig_x</span><span class="p">,</span> <span class="n">fig_y</span><span class="p">))</span>
+        <span class="n">axes2</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+        <span class="n">axes2</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;aTc&#39;</span><span class="p">)</span>
+        <span class="n">line_aTc</span><span class="p">,</span> <span class="o">=</span> <span class="n">axes2</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">time</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">trajectories</span><span class="p">[</span><span class="s1">&#39;inputs&#39;</span><span class="p">][</span><span class="s1">&#39;aTc&#39;</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;y&#39;</span><span class="p">)</span>
+        <span class="n">axes2</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">legend</span><span class="p">([</span><span class="s1">&#39;aTc&#39;</span><span class="p">],</span> <span class="n">loc</span><span class="o">=</span><span class="s1">&#39;upper right&#39;</span><span class="p">)</span>
+
+        <span class="c1"># --- IPTG --- #</span>
+        <span class="n">axes2</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+        <span class="n">axes2</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;IPTG&#39;</span><span class="p">)</span>
+        <span class="n">line_IPTG</span><span class="p">,</span> <span class="o">=</span> <span class="n">axes2</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">time</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">trajectories</span><span class="p">[</span><span class="s1">&#39;inputs&#39;</span><span class="p">][</span><span class="s1">&#39;IPTG&#39;</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;r&#39;</span><span class="p">)</span>
+        <span class="n">axes2</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">legend</span><span class="p">([</span><span class="s1">&#39;IPTG&#39;</span><span class="p">],</span> <span class="n">loc</span><span class="o">=</span><span class="s1">&#39;upper right&#39;</span><span class="p">)</span>
+
+        <span class="n">figure_inductors</span><span class="o">.</span><span class="n">set_facecolor</span><span class="p">(</span><span class="s2">&quot;white&quot;</span><span class="p">)</span>
+        <span class="c1"># -------------------- Cost -------------------- #</span>
+        <span class="n">figure_cost</span><span class="p">,</span> <span class="n">axes4</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="n">fig_x</span><span class="p">,</span> <span class="n">fig_y</span><span class="o">/</span><span class="mi">2</span><span class="p">))</span>
+        <span class="n">axes4</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+        <span class="n">axes4</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Cost&#39;</span><span class="p">)</span>
+        <span class="n">line_cost</span><span class="p">,</span> <span class="o">=</span> <span class="n">axes4</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">time</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">trajectories</span><span class="p">[</span><span class="s1">&#39;cost&#39;</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;g&#39;</span><span class="p">)</span>
+        <span class="n">axes4</span><span class="o">.</span><span class="n">legend</span><span class="p">([</span><span class="s1">&#39;Cost&#39;</span><span class="p">],</span> <span class="n">loc</span><span class="o">=</span><span class="s1">&#39;upper right&#39;</span><span class="p">)</span>
+        <span class="n">axes4</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;time [min]&#39;</span><span class="p">)</span>
+
+        <span class="n">figure_cost</span><span class="o">.</span><span class="n">set_facecolor</span><span class="p">(</span><span class="s2">&quot;white&quot;</span><span class="p">)</span>
+
+        <span class="n">figures</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">figure_proteins</span><span class="p">,</span> <span class="n">figure_mRNAs</span><span class="p">,</span> <span class="n">figure_inductors</span><span class="p">,</span> <span class="n">figure_cost</span><span class="p">])</span>
+        <span class="n">lines</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">line_LacI</span><span class="p">,</span> <span class="n">line_avg_LacI</span><span class="p">,</span> <span class="n">line_ref_LacI</span><span class="p">,</span> <span class="n">line_TetR</span><span class="p">,</span> <span class="n">line_avg_TetR</span><span class="p">,</span> <span class="n">line_ref_TetR</span><span class="p">,</span>
+                          <span class="n">line_mRNA_LacI</span><span class="p">,</span> <span class="n">line_mRNA_TetR</span><span class="p">,</span> <span class="n">line_aTc</span><span class="p">,</span> <span class="n">line_IPTG</span><span class="p">,</span> <span class="n">line_cost</span><span class="p">])</span>
+
+        <span class="k">return</span> <span class="n">figures</span><span class="p">,</span> <span class="n">lines</span></div></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Lorenzo Pagliara.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

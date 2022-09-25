@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>mpc.models package &mdash; Genetic Toggle Switch Libraries 1.0.0 documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="mhe package" href="mhe.html" />
+    <link rel="prev" title="mpc.controllers package" href="mpc.controllers.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="index.html" class="icon icon-home"> Genetic Toggle Switch Libraries
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="fpd.html">fpd package</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="mpc.html">mpc package</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="mpc.html#subpackages">Subpackages</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="mpc.controllers.html">mpc.controllers package</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">mpc.models package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-mpc.models.ToggleSwitchIdentifiedModel">mpc.models.ToggleSwitchIdentifiedModel module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-mpc.models.ToggleSwitchLinearModel">mpc.models.ToggleSwitchLinearModel module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-mpc.models.ToggleSwitchModel">mpc.models.ToggleSwitchModel module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-mpc.models.ToggleSwitchRandomicModel">mpc.models.ToggleSwitchRandomicModel module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-mpc.models.ToggleSwitchSimplifiedModel">mpc.models.ToggleSwitchSimplifiedModel module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-mpc.models.ToggleSwitchUncertainModel">mpc.models.ToggleSwitchUncertainModel module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-mpc.models">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="mpc.html#module-mpc">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="mhe.html">mhe package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="databinning.html">databinning package</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Genetic Toggle Switch Libraries</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="mpc.html">mpc package</a> &raquo;</li>
+      <li>mpc.models package</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/mpc.models.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="mpc-models-package">
+<h1>mpc.models package<a class="headerlink" href="#mpc-models-package" title="Permalink to this headline"></a></h1>
+<section id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline"></a></h2>
+</section>
+<section id="module-mpc.models.ToggleSwitchIdentifiedModel">
+<span id="mpc-models-toggleswitchidentifiedmodel-module"></span><h2>mpc.models.ToggleSwitchIdentifiedModel module<a class="headerlink" href="#module-mpc.models.ToggleSwitchIdentifiedModel" title="Permalink to this headline"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="mpc.models.ToggleSwitchIdentifiedModel.ToggleSwitchIdentifiedModel">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">mpc.models.ToggleSwitchIdentifiedModel.</span></span><span class="sig-name descname"><span class="pre">ToggleSwitchIdentifiedModel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">stochasticity</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">LacI_ref</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">TetR_ref</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">t_step</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">total_time</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">avg_period</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mpc/models/ToggleSwitchIdentifiedModel.html#ToggleSwitchIdentifiedModel"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mpc.models.ToggleSwitchIdentifiedModel.ToggleSwitchIdentifiedModel" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#mpc.models.ToggleSwitchModel.ToggleSwitchModel" title="mpc.models.ToggleSwitchModel.ToggleSwitchModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">mpc.models.ToggleSwitchModel.ToggleSwitchModel</span></code></a></p>
+<p>Class extending the model used by the MPC and representing a model with randomic parameters.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="mpc.models.ToggleSwitchIdentifiedModel.ToggleSwitchIdentifiedModel.set_model">
+<span class="sig-name descname"><span class="pre">set_model</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">stochasticity</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mpc/models/ToggleSwitchIdentifiedModel.html#ToggleSwitchIdentifiedModel.set_model"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mpc.models.ToggleSwitchIdentifiedModel.ToggleSwitchIdentifiedModel.set_model" title="Permalink to this definition"></a></dt>
+<dd><p>Defines the model equations and the cost function. Set parameters to random values.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>stochasticity</strong> (<em>bool</em><em>, </em><em>optional</em>) – Boolean parameter that adds or subtracts stochasticity to the model. Defaults to False.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Instance of the model used by the controller.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>do_mpc.model.Model</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-mpc.models.ToggleSwitchLinearModel">
+<span id="mpc-models-toggleswitchlinearmodel-module"></span><h2>mpc.models.ToggleSwitchLinearModel module<a class="headerlink" href="#module-mpc.models.ToggleSwitchLinearModel" title="Permalink to this headline"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="mpc.models.ToggleSwitchLinearModel.ToggleSwitchLinearModel">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">mpc.models.ToggleSwitchLinearModel.</span></span><span class="sig-name descname"><span class="pre">ToggleSwitchLinearModel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">stochasticity</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">LacI_ref</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">TetR_ref</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">t_step</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">total_time</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">avg_period</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mpc/models/ToggleSwitchLinearModel.html#ToggleSwitchLinearModel"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mpc.models.ToggleSwitchLinearModel.ToggleSwitchLinearModel" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#mpc.models.ToggleSwitchModel.ToggleSwitchModel" title="mpc.models.ToggleSwitchModel.ToggleSwitchModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">mpc.models.ToggleSwitchModel.ToggleSwitchModel</span></code></a></p>
+<p>Class extending the model used by the MPC and representing a linear model.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="mpc.models.ToggleSwitchLinearModel.ToggleSwitchLinearModel.plot_results">
+<span class="sig-name descname"><span class="pre">plot_results</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/mpc/models/ToggleSwitchLinearModel.html#ToggleSwitchLinearModel.plot_results"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mpc.models.ToggleSwitchLinearModel.ToggleSwitchLinearModel.plot_results" title="Permalink to this definition"></a></dt>
+<dd><p>Plot the results of the closed-loop simulation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Arrays of lines and figures.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>numpy.ndarray, numpy.ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="mpc.models.ToggleSwitchLinearModel.ToggleSwitchLinearModel.set_constraints">
+<span class="sig-name descname"><span class="pre">set_constraints</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mpc</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mpc/models/ToggleSwitchLinearModel.html#ToggleSwitchLinearModel.set_constraints"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mpc.models.ToggleSwitchLinearModel.ToggleSwitchLinearModel.set_constraints" title="Permalink to this definition"></a></dt>
+<dd><p>Defines the constraints for the MPC controller.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>controller</strong> (<em>do_mpc.controller.MPC</em>) – Controller instance for which to set constraints.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Instance of the controller.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>do_mpc.controller.MPC</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="mpc.models.ToggleSwitchLinearModel.ToggleSwitchLinearModel.set_cost">
+<span class="sig-name descname"><span class="pre">set_cost</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">controller</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mpc/models/ToggleSwitchLinearModel.html#ToggleSwitchLinearModel.set_cost"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mpc.models.ToggleSwitchLinearModel.ToggleSwitchLinearModel.set_cost" title="Permalink to this definition"></a></dt>
+<dd><p>Defines the cost function that the controller uses as an objective function.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>controller</strong> (<em>do_mpc.controller.MPC</em>) – Controller instance for which to set the cost.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Instance of the controller.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>do_mpc.controller.MPC</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="mpc.models.ToggleSwitchLinearModel.ToggleSwitchLinearModel.set_model">
+<span class="sig-name descname"><span class="pre">set_model</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">stochasticity</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mpc/models/ToggleSwitchLinearModel.html#ToggleSwitchLinearModel.set_model"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mpc.models.ToggleSwitchLinearModel.ToggleSwitchLinearModel.set_model" title="Permalink to this definition"></a></dt>
+<dd><p>Defines the model equations and the cost function. It receives the dynamic matrix A and the control matrix B of the linearised model as additional arguments.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>stochasticity</strong> (<em>bool</em><em>, </em><em>optional</em>) – Boolean parameter that adds or subtracts stochasticity to the model. Defaults to False.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Instance of the model used by the controller.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>do_mpc.model.Model</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="mpc.models.ToggleSwitchLinearModel.ToggleSwitchLinearModel.set_trajectories">
+<span class="sig-name descname"><span class="pre">set_trajectories</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mpc/models/ToggleSwitchLinearModel.html#ToggleSwitchLinearModel.set_trajectories"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mpc.models.ToggleSwitchLinearModel.ToggleSwitchLinearModel.set_trajectories" title="Permalink to this definition"></a></dt>
+<dd><p>It updates the dictionary of state trajectories based on closed-loop results obtained by the controller.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>data</strong> (<em>dict</em>) – Closed-loop simulation results.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-mpc.models.ToggleSwitchModel">
+<span id="mpc-models-toggleswitchmodel-module"></span><h2>mpc.models.ToggleSwitchModel module<a class="headerlink" href="#module-mpc.models.ToggleSwitchModel" title="Permalink to this headline"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="mpc.models.ToggleSwitchModel.ToggleSwitchModel">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">mpc.models.ToggleSwitchModel.</span></span><span class="sig-name descname"><span class="pre">ToggleSwitchModel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">stochasticity</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">LacI_ref</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">TetR_ref</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">t_step</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">total_time</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">avg_period</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mpc/models/ToggleSwitchModel.html#ToggleSwitchModel"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mpc.models.ToggleSwitchModel.ToggleSwitchModel" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Class representing the Toggle Switch model used by the MPC controller.
+This defines the model equations, the cost function and constraints to be taken into account when applying the control strategy,
+and a set of methods for formatting, storing, exporting and plotting closed-loop simulation results and performance evaluation.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="mpc.models.ToggleSwitchModel.ToggleSwitchModel.animate_results">
+<span class="sig-name descname"><span class="pre">animate_results</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">type</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">funct</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">figures</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fargs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">steps</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mpc/models/ToggleSwitchModel.html#ToggleSwitchModel.animate_results"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mpc.models.ToggleSwitchModel.ToggleSwitchModel.animate_results" title="Permalink to this definition"></a></dt>
+<dd><p>Animate result plots.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>type</strong> (<em>str</em>) – Defines the type of simulation performed: deterministic, stochastic, randomic, uncertain.</p></li>
+<li><p><strong>name</strong> (<em>str</em>) – Defines the name of the file on which the plots will be stored.</p></li>
+<li><p><strong>funct</strong> (<em>funct</em>) – Defines the function for updating plots.</p></li>
+<li><p><strong>figures</strong> (<em>numpy.ndarray</em>) – Array of figures to be animated.</p></li>
+<li><p><strong>(</strong><strong>)</strong> (<em>fargs</em>) – Arguments of the plots update functions.</p></li>
+<li><p><strong>steps</strong> (<em>int</em>) – Number of control loop steps.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="mpc.models.ToggleSwitchModel.ToggleSwitchModel.compute_performance_metrics">
+<span class="sig-name descname"><span class="pre">compute_performance_metrics</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">avg_trajectories</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mpc/models/ToggleSwitchModel.html#ToggleSwitchModel.compute_performance_metrics"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mpc.models.ToggleSwitchModel.ToggleSwitchModel.compute_performance_metrics" title="Permalink to this definition"></a></dt>
+<dd><p>Calculates the Integral Square Error (ISE) and the Integral Time-weighted Absolute Error (ITAE).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>avg_trajectories</strong> (<em>numpy.ndarray</em><em>[</em><em>float64</em><em>]</em>) – Array of the average protein trajectory.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Integral Square Error (ISE), Integral Time-weighted Absolute Error (ITAE).</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>float64, float64</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="mpc.models.ToggleSwitchModel.ToggleSwitchModel.export_results">
+<span class="sig-name descname"><span class="pre">export_results</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">type</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mode</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mpc/models/ToggleSwitchModel.html#ToggleSwitchModel.export_results"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mpc.models.ToggleSwitchModel.ToggleSwitchModel.export_results" title="Permalink to this definition"></a></dt>
+<dd><p>Exports closed-loop simulation results.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>type</strong> (<em>str</em>) – Defines the type of simulation performed: deterministic, stochastic, randomic, uncertain.</p></li>
+<li><p><strong>name</strong> (<em>str</em>) – Defines the name of the file on which the results will be stored.</p></li>
+<li><p><strong>mode</strong> (<em>str</em>) – Defines the mode of opening the file.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="mpc.models.ToggleSwitchModel.ToggleSwitchModel.get_model">
+<span class="sig-name descname"><span class="pre">get_model</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/mpc/models/ToggleSwitchModel.html#ToggleSwitchModel.get_model"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mpc.models.ToggleSwitchModel.ToggleSwitchModel.get_model" title="Permalink to this definition"></a></dt>
+<dd><p>Returns the model instance used by the controller.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Instance of the model used by the controller.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>do_mpc.model.Model</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="mpc.models.ToggleSwitchModel.ToggleSwitchModel.plot_results">
+<span class="sig-name descname"><span class="pre">plot_results</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/mpc/models/ToggleSwitchModel.html#ToggleSwitchModel.plot_results"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mpc.models.ToggleSwitchModel.ToggleSwitchModel.plot_results" title="Permalink to this definition"></a></dt>
+<dd><p>Plot the results of the closed-loop simulation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Arrays of lines and figures.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>numpy.ndarray, numpy.ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="mpc.models.ToggleSwitchModel.ToggleSwitchModel.set_constraints">
+<span class="sig-name descname"><span class="pre">set_constraints</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">controller</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mpc/models/ToggleSwitchModel.html#ToggleSwitchModel.set_constraints"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mpc.models.ToggleSwitchModel.ToggleSwitchModel.set_constraints" title="Permalink to this definition"></a></dt>
+<dd><p>Defines the constraints for the MPC controller.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>controller</strong> (<em>do_mpc.controller.MPC</em>) – Controller instance for which to set constraints.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Instance of the controller.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>do_mpc.controller.MPC</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="mpc.models.ToggleSwitchModel.ToggleSwitchModel.set_cost">
+<span class="sig-name descname"><span class="pre">set_cost</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">controller</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mpc/models/ToggleSwitchModel.html#ToggleSwitchModel.set_cost"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mpc.models.ToggleSwitchModel.ToggleSwitchModel.set_cost" title="Permalink to this definition"></a></dt>
+<dd><p>Defines the cost function that the controller uses as an objective function.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>controller</strong> (<em>do_mpc.controller.MPC</em>) – Controller instance for which to set the cost.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Instance of the controller.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>do_mpc.controller.MPC</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="mpc.models.ToggleSwitchModel.ToggleSwitchModel.set_model">
+<span class="sig-name descname"><span class="pre">set_model</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">stochasticity</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mpc/models/ToggleSwitchModel.html#ToggleSwitchModel.set_model"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mpc.models.ToggleSwitchModel.ToggleSwitchModel.set_model" title="Permalink to this definition"></a></dt>
+<dd><p>Defines the model equations and the cost function.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>stochasticity</strong> (<em>bool</em><em>, </em><em>optional</em>) – Boolean parameter that adds or subtracts stochasticity to the model. Defaults to False.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Instance of the model used by the controller.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>do_mpc.model.Model</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="mpc.models.ToggleSwitchModel.ToggleSwitchModel.set_trajectories">
+<span class="sig-name descname"><span class="pre">set_trajectories</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mpc/models/ToggleSwitchModel.html#ToggleSwitchModel.set_trajectories"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mpc.models.ToggleSwitchModel.ToggleSwitchModel.set_trajectories" title="Permalink to this definition"></a></dt>
+<dd><p>It updates the dictionary of state trajectories based on closed-loop results obtained by the controller.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>data</strong> (<em>dict</em>) – Closed-loop simulation results.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="mpc.models.ToggleSwitchModel.ToggleSwitchModel.update_cost">
+<span class="sig-name descname"><span class="pre">update_cost</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">i</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lines</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mpc/models/ToggleSwitchModel.html#ToggleSwitchModel.update_cost"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mpc.models.ToggleSwitchModel.ToggleSwitchModel.update_cost" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="mpc.models.ToggleSwitchModel.ToggleSwitchModel.update_external_inducers">
+<span class="sig-name descname"><span class="pre">update_external_inducers</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">i</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lines</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mpc/models/ToggleSwitchModel.html#ToggleSwitchModel.update_external_inducers"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mpc.models.ToggleSwitchModel.ToggleSwitchModel.update_external_inducers" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="mpc.models.ToggleSwitchModel.ToggleSwitchModel.update_internal_inducers">
+<span class="sig-name descname"><span class="pre">update_internal_inducers</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">i</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lines</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mpc/models/ToggleSwitchModel.html#ToggleSwitchModel.update_internal_inducers"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mpc.models.ToggleSwitchModel.ToggleSwitchModel.update_internal_inducers" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="mpc.models.ToggleSwitchModel.ToggleSwitchModel.update_mRNA">
+<span class="sig-name descname"><span class="pre">update_mRNA</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">i</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lines</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mpc/models/ToggleSwitchModel.html#ToggleSwitchModel.update_mRNA"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mpc.models.ToggleSwitchModel.ToggleSwitchModel.update_mRNA" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="mpc.models.ToggleSwitchModel.ToggleSwitchModel.update_protein">
+<span class="sig-name descname"><span class="pre">update_protein</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">i</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lines</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">avg_time</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mpc/models/ToggleSwitchModel.html#ToggleSwitchModel.update_protein"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mpc.models.ToggleSwitchModel.ToggleSwitchModel.update_protein" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-mpc.models.ToggleSwitchRandomicModel">
+<span id="mpc-models-toggleswitchrandomicmodel-module"></span><h2>mpc.models.ToggleSwitchRandomicModel module<a class="headerlink" href="#module-mpc.models.ToggleSwitchRandomicModel" title="Permalink to this headline"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="mpc.models.ToggleSwitchRandomicModel.ToggleSwitchRandomicModel">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">mpc.models.ToggleSwitchRandomicModel.</span></span><span class="sig-name descname"><span class="pre">ToggleSwitchRandomicModel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">stochasticity</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">LacI_ref</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">TetR_ref</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">t_step</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">total_time</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">avg_period</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mpc/models/ToggleSwitchRandomicModel.html#ToggleSwitchRandomicModel"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mpc.models.ToggleSwitchRandomicModel.ToggleSwitchRandomicModel" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#mpc.models.ToggleSwitchModel.ToggleSwitchModel" title="mpc.models.ToggleSwitchModel.ToggleSwitchModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">mpc.models.ToggleSwitchModel.ToggleSwitchModel</span></code></a></p>
+<p>Class extending the model used by the MPC and representing a model with randomic parameters.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="mpc.models.ToggleSwitchRandomicModel.ToggleSwitchRandomicModel.set_model">
+<span class="sig-name descname"><span class="pre">set_model</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">stochasticity</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mpc/models/ToggleSwitchRandomicModel.html#ToggleSwitchRandomicModel.set_model"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mpc.models.ToggleSwitchRandomicModel.ToggleSwitchRandomicModel.set_model" title="Permalink to this definition"></a></dt>
+<dd><p>Defines the model equations and the cost function. Set parameters to random values.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>stochasticity</strong> (<em>bool</em><em>, </em><em>optional</em>) – Boolean parameter that adds or subtracts stochasticity to the model. Defaults to False.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Instance of the model used by the controller.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>do_mpc.model.Model</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-mpc.models.ToggleSwitchSimplifiedModel">
+<span id="mpc-models-toggleswitchsimplifiedmodel-module"></span><h2>mpc.models.ToggleSwitchSimplifiedModel module<a class="headerlink" href="#module-mpc.models.ToggleSwitchSimplifiedModel" title="Permalink to this headline"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="mpc.models.ToggleSwitchSimplifiedModel.ToggleSwitchSimplifiedModel">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">mpc.models.ToggleSwitchSimplifiedModel.</span></span><span class="sig-name descname"><span class="pre">ToggleSwitchSimplifiedModel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">stochasticity</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">LacI_ref</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">TetR_ref</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">t_step</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">total_time</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">avg_period</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mpc/models/ToggleSwitchSimplifiedModel.html#ToggleSwitchSimplifiedModel"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mpc.models.ToggleSwitchSimplifiedModel.ToggleSwitchSimplifiedModel" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#mpc.models.ToggleSwitchModel.ToggleSwitchModel" title="mpc.models.ToggleSwitchModel.ToggleSwitchModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">mpc.models.ToggleSwitchModel.ToggleSwitchModel</span></code></a></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="mpc.models.ToggleSwitchSimplifiedModel.ToggleSwitchSimplifiedModel.set_constraints">
+<span class="sig-name descname"><span class="pre">set_constraints</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mpc</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mpc/models/ToggleSwitchSimplifiedModel.html#ToggleSwitchSimplifiedModel.set_constraints"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mpc.models.ToggleSwitchSimplifiedModel.ToggleSwitchSimplifiedModel.set_constraints" title="Permalink to this definition"></a></dt>
+<dd><p>Defines the constraints for the MPC controller.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>controller</strong> (<em>do_mpc.controller.MPC</em>) – Controller instance for which to set constraints.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Instance of the controller.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>do_mpc.controller.MPC</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="mpc.models.ToggleSwitchSimplifiedModel.ToggleSwitchSimplifiedModel.set_model">
+<span class="sig-name descname"><span class="pre">set_model</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">stochasticity</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mpc/models/ToggleSwitchSimplifiedModel.html#ToggleSwitchSimplifiedModel.set_model"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mpc.models.ToggleSwitchSimplifiedModel.ToggleSwitchSimplifiedModel.set_model" title="Permalink to this definition"></a></dt>
+<dd><p>Defines the mathematical model for the toggle switch in the form of differential equations (ODE).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>stochasticity</strong> (<em>bool</em>) – Determines the presence or absence of stochasticity in the model.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The do-mpc model instance.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>do_mpc.model.Model</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-mpc.models.ToggleSwitchUncertainModel">
+<span id="mpc-models-toggleswitchuncertainmodel-module"></span><h2>mpc.models.ToggleSwitchUncertainModel module<a class="headerlink" href="#module-mpc.models.ToggleSwitchUncertainModel" title="Permalink to this headline"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="mpc.models.ToggleSwitchUncertainModel.ToggleSwitchUncertainModel">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">mpc.models.ToggleSwitchUncertainModel.</span></span><span class="sig-name descname"><span class="pre">ToggleSwitchUncertainModel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">stochasticity</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">LacI_ref</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">TetR_ref</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">t_step</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">total_time</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">avg_period</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mpc/models/ToggleSwitchUncertainModel.html#ToggleSwitchUncertainModel"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mpc.models.ToggleSwitchUncertainModel.ToggleSwitchUncertainModel" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#mpc.models.ToggleSwitchModel.ToggleSwitchModel" title="mpc.models.ToggleSwitchModel.ToggleSwitchModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">mpc.models.ToggleSwitchModel.ToggleSwitchModel</span></code></a></p>
+<p>Class extending the model used by the MPC and representing a model with randomic parameters.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="mpc.models.ToggleSwitchUncertainModel.ToggleSwitchUncertainModel.set_model">
+<span class="sig-name descname"><span class="pre">set_model</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">LacI_ref</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">750</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">TetR_ref</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">300</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mpc/models/ToggleSwitchUncertainModel.html#ToggleSwitchUncertainModel.set_model"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mpc.models.ToggleSwitchUncertainModel.ToggleSwitchUncertainModel.set_model" title="Permalink to this definition"></a></dt>
+<dd><p>Defines the model equations and the cost function. It sets some parameters as uncertain.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>stochasticity</strong> (<em>bool</em><em>, </em><em>optional</em>) – Boolean parameter that adds or subtracts stochasticity to the model. Defaults to False.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Instance of the model used by the controller.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>do_mpc.model.Model</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="mpc.models.ToggleSwitchUncertainModel.ToggleSwitchUncertainModel.set_uncertain_parameters">
+<span class="sig-name descname"><span class="pre">set_uncertain_parameters</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">controller</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mpc/models/ToggleSwitchUncertainModel.html#ToggleSwitchUncertainModel.set_uncertain_parameters"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mpc.models.ToggleSwitchUncertainModel.ToggleSwitchUncertainModel.set_uncertain_parameters" title="Permalink to this definition"></a></dt>
+<dd><p>Sets the range of variability of uncertain parameters.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>controller</strong> (<em>do_mpc.controller.MPC</em>) – Controller instance.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Instance of the controller.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>do_mpc.controller.MPC</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="mpc.models.ToggleSwitchUncertainModel.ToggleSwitchUncertainModel.uncertain_parameters_function">
+<span class="sig-name descname"><span class="pre">uncertain_parameters_function</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">simulator</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mpc/models/ToggleSwitchUncertainModel.html#ToggleSwitchUncertainModel.uncertain_parameters_function"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mpc.models.ToggleSwitchUncertainModel.ToggleSwitchUncertainModel.uncertain_parameters_function" title="Permalink to this definition"></a></dt>
+<dd><p>Set the runtime update function for uncertain parameters.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>simulator</strong> (<em>do_mpc.simulator.Simulator</em>) – Instance of the simulator.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Instance of the simulator.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>do_mpc.simulator.Simulator</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-mpc.models">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-mpc.models" title="Permalink to this headline"></a></h2>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="mpc.controllers.html" class="btn btn-neutral float-left" title="mpc.controllers package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="mhe.html" class="btn btn-neutral float-right" title="mhe package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Lorenzo Pagliara.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>mpc.models.ToggleSwitchRandomicModel &mdash; Genetic Toggle Switch Libraries 1.0.0 documentation</title>
+      <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../../index.html" class="icon icon-home"> Genetic Toggle Switch Libraries
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../fpd.html">fpd package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../mpc.html">mpc package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../mhe.html">mhe package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../databinning.html">databinning package</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">Genetic Toggle Switch Libraries</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+      <li>mpc.models.ToggleSwitchRandomicModel</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for mpc.models.ToggleSwitchRandomicModel</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">.ToggleSwitchModel</span> <span class="kn">import</span> <span class="o">*</span>
+
+
+<div class="viewcode-block" id="ToggleSwitchRandomicModel"><a class="viewcode-back" href="../../../mpc.models.html#mpc.models.ToggleSwitchRandomicModel.ToggleSwitchRandomicModel">[docs]</a><span class="k">class</span> <span class="nc">ToggleSwitchRandomicModel</span><span class="p">(</span><span class="n">ToggleSwitchModel</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Class extending the model used by the MPC and representing a model with randomic parameters.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">stochasticity</span><span class="p">,</span> <span class="n">LacI_ref</span><span class="p">,</span> <span class="n">TetR_ref</span><span class="p">,</span> <span class="n">t_step</span><span class="p">,</span> <span class="n">total_time</span><span class="p">,</span> <span class="n">avg_period</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Constructor of the class, set the model used by the controller and initialises the results dictionary.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            stochasticity (bool): Boolean parameter determining whether the model is deterministic or stochastic.</span>
+<span class="sd">            LacI_ref (float64): Reference for the LacI protein.</span>
+<span class="sd">            TetR_ref (float64): Reference for the TetR protein.</span>
+<span class="sd">            t_step (float64): Sampling time used by the controller.</span>
+<span class="sd">            total_time (float64): Total simulation time used by the controller.</span>
+<span class="sd">            avg_period (float64): Time interval for reading the average of state trajectories.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">stochasticity</span><span class="p">,</span> <span class="n">LacI_ref</span><span class="p">,</span> <span class="n">TetR_ref</span><span class="p">,</span> <span class="n">t_step</span><span class="p">,</span> <span class="n">total_time</span><span class="p">,</span> <span class="n">avg_period</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">)</span>
+
+<div class="viewcode-block" id="ToggleSwitchRandomicModel.set_model"><a class="viewcode-back" href="../../../mpc.models.html#mpc.models.ToggleSwitchRandomicModel.ToggleSwitchRandomicModel.set_model">[docs]</a>    <span class="k">def</span> <span class="nf">set_model</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">stochasticity</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Defines the model equations and the cost function. Set parameters to random values.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            stochasticity (bool, optional): Boolean parameter that adds or subtracts stochasticity to the model. Defaults to False.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            do_mpc.model.Model: Instance of the model used by the controller.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">model</span> <span class="o">=</span> <span class="n">do_mpc</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">Model</span><span class="p">(</span><span class="n">model_type</span><span class="o">=</span><span class="s1">&#39;continuous&#39;</span><span class="p">)</span>
+
+        <span class="c1"># Model states</span>
+        <span class="n">mRNA_LacI</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">set_variable</span><span class="p">(</span><span class="n">var_type</span><span class="o">=</span><span class="s1">&#39;states&#39;</span><span class="p">,</span> <span class="n">var_name</span><span class="o">=</span><span class="s1">&#39;mRNA_LacI&#39;</span><span class="p">)</span>
+        <span class="n">mRNA_TetR</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">set_variable</span><span class="p">(</span><span class="n">var_type</span><span class="o">=</span><span class="s1">&#39;states&#39;</span><span class="p">,</span> <span class="n">var_name</span><span class="o">=</span><span class="s1">&#39;mRNA_TetR&#39;</span><span class="p">)</span>
+        <span class="n">lacI</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">set_variable</span><span class="p">(</span><span class="n">var_type</span><span class="o">=</span><span class="s1">&#39;states&#39;</span><span class="p">,</span> <span class="n">var_name</span><span class="o">=</span><span class="s1">&#39;LacI&#39;</span><span class="p">)</span>
+        <span class="n">tetR</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">set_variable</span><span class="p">(</span><span class="n">var_type</span><span class="o">=</span><span class="s1">&#39;states&#39;</span><span class="p">,</span> <span class="n">var_name</span><span class="o">=</span><span class="s1">&#39;TetR&#39;</span><span class="p">)</span>
+        <span class="n">v1</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">set_variable</span><span class="p">(</span><span class="n">var_type</span><span class="o">=</span><span class="s1">&#39;states&#39;</span><span class="p">,</span> <span class="n">var_name</span><span class="o">=</span><span class="s1">&#39;v1&#39;</span><span class="p">)</span>
+        <span class="n">v2</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">set_variable</span><span class="p">(</span><span class="n">var_type</span><span class="o">=</span><span class="s1">&#39;states&#39;</span><span class="p">,</span> <span class="n">var_name</span><span class="o">=</span><span class="s1">&#39;v2&#39;</span><span class="p">)</span>
+
+        <span class="c1"># Model inputs</span>
+        <span class="n">aTc</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">set_variable</span><span class="p">(</span><span class="n">var_type</span><span class="o">=</span><span class="s1">&#39;inputs&#39;</span><span class="p">,</span> <span class="n">var_name</span><span class="o">=</span><span class="s1">&#39;aTc&#39;</span><span class="p">)</span>
+        <span class="n">iptg</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">set_variable</span><span class="p">(</span><span class="n">var_type</span><span class="o">=</span><span class="s1">&#39;inputs&#39;</span><span class="p">,</span> <span class="n">var_name</span><span class="o">=</span><span class="s1">&#39;IPTG&#39;</span><span class="p">)</span>
+
+        <span class="c1"># Model parameters</span>
+        <span class="n">k_m0_L</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="n">low</span><span class="o">=</span><span class="mf">3.00e-2</span><span class="p">,</span> <span class="n">high</span><span class="o">=</span><span class="mf">3.50e-2</span><span class="p">)</span>
+        <span class="n">k_m0_T</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="n">low</span><span class="o">=</span><span class="mf">1.00e-1</span><span class="p">,</span> <span class="n">high</span><span class="o">=</span><span class="mf">1.50e-1</span><span class="p">)</span>
+        <span class="n">k_m_L</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="n">low</span><span class="o">=</span><span class="mi">7</span><span class="p">,</span> <span class="n">high</span><span class="o">=</span><span class="mi">9</span><span class="p">)</span>
+        <span class="n">k_m_T</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="n">low</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">high</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+        <span class="n">k_p_L</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="n">low</span><span class="o">=</span><span class="mf">9.00e-1</span><span class="p">,</span> <span class="n">high</span><span class="o">=</span><span class="mf">10.00e-1</span><span class="p">)</span>
+        <span class="n">k_p_T</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="n">low</span><span class="o">=</span><span class="mf">9.00e-1</span><span class="p">,</span> <span class="n">high</span><span class="o">=</span><span class="mf">10.00e-1</span><span class="p">)</span>
+        <span class="n">g_m_L</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="n">low</span><span class="o">=</span><span class="mf">1.00e-1</span><span class="p">,</span> <span class="n">high</span><span class="o">=</span><span class="mf">1.50e-1</span><span class="p">)</span>
+        <span class="n">g_m_T</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="n">low</span><span class="o">=</span><span class="mf">1.00e-1</span><span class="p">,</span> <span class="n">high</span><span class="o">=</span><span class="mf">1.50e-1</span><span class="p">)</span>
+        <span class="n">g_p_L</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="n">low</span><span class="o">=</span><span class="mf">1.50e-2</span><span class="p">,</span> <span class="n">high</span><span class="o">=</span><span class="mf">1.70e-2</span><span class="p">)</span>
+        <span class="n">g_p_T</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="n">low</span><span class="o">=</span><span class="mf">1.50e-2</span><span class="p">,</span> <span class="n">high</span><span class="o">=</span><span class="mf">1.70e-2</span><span class="p">)</span>
+        <span class="n">theta_IPTG</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="n">low</span><span class="o">=</span><span class="mf">9.00e-2</span><span class="p">,</span> <span class="n">high</span><span class="o">=</span><span class="mf">9.10e-2</span><span class="p">)</span>
+        <span class="n">theta_aTc</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="n">low</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">high</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+        <span class="n">eta_LacI</span> <span class="o">=</span> <span class="mf">2.00</span>
+        <span class="n">eta_TetR</span> <span class="o">=</span> <span class="mf">2.00</span>
+        <span class="n">eta_IPTG</span> <span class="o">=</span> <span class="mf">2.00</span>
+        <span class="n">eta_aTc</span> <span class="o">=</span> <span class="mf">2.00</span>
+        <span class="n">k_in_aTc</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="n">low</span><span class="o">=</span><span class="mf">2.50e-2</span><span class="p">,</span> <span class="n">high</span><span class="o">=</span><span class="mf">3.00e-2</span><span class="p">)</span>
+        <span class="n">k_out_aTc</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="n">low</span><span class="o">=</span><span class="mf">2.00e-2</span><span class="p">,</span> <span class="n">high</span><span class="o">=</span><span class="mf">2.30e-2</span><span class="p">)</span>
+        <span class="n">k_in_IPTG</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="n">low</span><span class="o">=</span><span class="mf">1.00e-1</span><span class="p">,</span> <span class="n">high</span><span class="o">=</span><span class="mf">2.00e-1</span><span class="p">)</span>
+        <span class="n">k_out_IPTG</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="n">low</span><span class="o">=</span><span class="mf">1.00e-1</span><span class="p">,</span> <span class="n">high</span><span class="o">=</span><span class="mf">2.00e-1</span><span class="p">)</span>
+        <span class="n">theta_LacI</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="n">low</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">high</span><span class="o">=</span><span class="mi">35</span><span class="p">)</span>
+        <span class="n">theta_TetR</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="n">low</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">high</span><span class="o">=</span><span class="mi">35</span><span class="p">)</span>
+
+        <span class="c1"># Defining model&#39;s equations</span>
+        <span class="n">dmRNA_LacI</span> <span class="o">=</span> <span class="n">k_m0_L</span> <span class="o">+</span> <span class="n">k_m_L</span><span class="o">*</span><span class="p">(</span><span class="mi">1</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="p">((</span><span class="n">tetR</span><span class="o">/</span><span class="n">theta_TetR</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="p">(</span><span class="n">v1</span><span class="o">/</span><span class="n">theta_aTc</span><span class="p">)</span><span class="o">**</span><span class="n">eta_aTc</span><span class="p">)))</span><span class="o">**</span><span class="n">eta_TetR</span><span class="p">))</span> <span class="o">-</span> <span class="n">g_m_L</span> <span class="o">*</span> <span class="n">mRNA_LacI</span>
+        <span class="n">dmRNA_TetR</span> <span class="o">=</span> <span class="n">k_m0_T</span> <span class="o">+</span> <span class="n">k_m_T</span><span class="o">*</span><span class="p">(</span><span class="mi">1</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="p">((</span><span class="n">lacI</span><span class="o">/</span><span class="n">theta_LacI</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="p">(</span><span class="n">v2</span><span class="o">/</span><span class="n">theta_IPTG</span><span class="p">)</span><span class="o">**</span><span class="n">eta_IPTG</span><span class="p">)))</span><span class="o">**</span><span class="n">eta_LacI</span><span class="p">))</span> <span class="o">-</span> <span class="n">g_m_T</span> <span class="o">*</span> <span class="n">mRNA_TetR</span>
+        <span class="n">dLacI</span> <span class="o">=</span> <span class="n">k_p_L</span> <span class="o">*</span> <span class="n">mRNA_LacI</span> <span class="o">-</span> <span class="n">g_p_L</span> <span class="o">*</span> <span class="n">lacI</span>
+        <span class="n">dTetR</span> <span class="o">=</span> <span class="n">k_p_T</span> <span class="o">*</span> <span class="n">mRNA_TetR</span> <span class="o">-</span> <span class="n">g_p_T</span> <span class="o">*</span> <span class="n">tetR</span>
+        <span class="n">dv1</span> <span class="o">=</span> <span class="p">(</span><span class="n">k_in_aTc</span> <span class="o">*</span> <span class="p">(</span><span class="n">aTc</span> <span class="o">-</span> <span class="n">v1</span><span class="p">))</span> <span class="o">*</span> <span class="p">(</span><span class="n">aTc</span> <span class="o">&gt;</span> <span class="n">v1</span><span class="p">)</span> <span class="o">+</span> <span class="p">(</span><span class="n">k_out_aTc</span> <span class="o">*</span> <span class="p">(</span><span class="n">aTc</span> <span class="o">-</span> <span class="n">v1</span><span class="p">))</span> <span class="o">*</span> <span class="p">(</span><span class="n">aTc</span> <span class="o">&lt;=</span> <span class="n">v1</span><span class="p">)</span>
+        <span class="n">dv2</span> <span class="o">=</span> <span class="p">(</span><span class="n">k_in_IPTG</span> <span class="o">*</span> <span class="p">(</span><span class="n">iptg</span> <span class="o">-</span> <span class="n">v2</span><span class="p">))</span> <span class="o">*</span> <span class="p">(</span><span class="n">iptg</span> <span class="o">&gt;</span> <span class="n">v2</span><span class="p">)</span> <span class="o">+</span> <span class="p">(</span><span class="n">k_out_IPTG</span> <span class="o">*</span> <span class="p">(</span><span class="n">iptg</span> <span class="o">-</span> <span class="n">v2</span><span class="p">))</span> <span class="o">*</span> <span class="p">(</span><span class="n">iptg</span> <span class="o">&lt;=</span> <span class="n">v2</span><span class="p">)</span>
+
+        <span class="n">model</span><span class="o">.</span><span class="n">set_rhs</span><span class="p">(</span><span class="s1">&#39;mRNA_LacI&#39;</span><span class="p">,</span> <span class="n">dmRNA_LacI</span><span class="p">,</span> <span class="n">process_noise</span><span class="o">=</span><span class="n">stochasticity</span><span class="p">)</span>
+        <span class="n">model</span><span class="o">.</span><span class="n">set_rhs</span><span class="p">(</span><span class="s1">&#39;mRNA_TetR&#39;</span><span class="p">,</span> <span class="n">dmRNA_TetR</span><span class="p">,</span> <span class="n">process_noise</span><span class="o">=</span><span class="n">stochasticity</span><span class="p">)</span>
+        <span class="n">model</span><span class="o">.</span><span class="n">set_rhs</span><span class="p">(</span><span class="s1">&#39;LacI&#39;</span><span class="p">,</span> <span class="n">dLacI</span><span class="p">,</span> <span class="n">process_noise</span><span class="o">=</span><span class="n">stochasticity</span><span class="p">)</span>
+        <span class="n">model</span><span class="o">.</span><span class="n">set_rhs</span><span class="p">(</span><span class="s1">&#39;TetR&#39;</span><span class="p">,</span> <span class="n">dTetR</span><span class="p">,</span> <span class="n">process_noise</span><span class="o">=</span><span class="n">stochasticity</span><span class="p">)</span>
+        <span class="n">model</span><span class="o">.</span><span class="n">set_rhs</span><span class="p">(</span><span class="s1">&#39;v1&#39;</span><span class="p">,</span> <span class="n">dv1</span><span class="p">,</span> <span class="n">process_noise</span><span class="o">=</span><span class="n">stochasticity</span><span class="p">)</span>
+        <span class="n">model</span><span class="o">.</span><span class="n">set_rhs</span><span class="p">(</span><span class="s1">&#39;v2&#39;</span><span class="p">,</span> <span class="n">dv2</span><span class="p">,</span> <span class="n">process_noise</span><span class="o">=</span><span class="n">stochasticity</span><span class="p">)</span>
+
+        <span class="c1"># The process noise w is used to simulate a disturbed system in the Simulator</span>
+
+        <span class="c1"># Measurement noise</span>
+        <span class="k">if</span> <span class="n">stochasticity</span><span class="p">:</span>
+            <span class="n">model</span><span class="o">.</span><span class="n">n_v</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+
+        <span class="c1"># Cost function</span>
+        <span class="n">model</span><span class="o">.</span><span class="n">set_expression</span><span class="p">(</span><span class="n">expr_name</span><span class="o">=</span><span class="s1">&#39;cost&#39;</span><span class="p">,</span> <span class="n">expr</span><span class="o">=</span><span class="p">((</span><span class="n">lacI</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">LacI_ref</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="p">(</span><span class="n">tetR</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">TetR_ref</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">))</span>
+
+        <span class="n">model</span><span class="o">.</span><span class="n">setup</span><span class="p">()</span>
+
+        <span class="k">return</span> <span class="n">model</span></div></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Lorenzo Pagliara.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

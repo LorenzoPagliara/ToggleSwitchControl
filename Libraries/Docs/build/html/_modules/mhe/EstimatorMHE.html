@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>mhe.EstimatorMHE &mdash; Genetic Toggle Switch Libraries 1.0.0 documentation</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../index.html" class="icon icon-home"> Genetic Toggle Switch Libraries
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../fpd.html">fpd package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../mpc.html">mpc package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../mhe.html">mhe package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../databinning.html">databinning package</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Genetic Toggle Switch Libraries</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../index.html">Module code</a> &raquo;</li>
+      <li>mhe.EstimatorMHE</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for mhe.EstimatorMHE</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">do_mpc</span>
+<span class="kn">from</span> <span class="nn">casadi</span> <span class="kn">import</span> <span class="o">*</span>
+
+
+<div class="viewcode-block" id="EstimatorMHE"><a class="viewcode-back" href="../../mhe.html#mhe.EstimatorMHE.EstimatorMHE">[docs]</a><span class="k">class</span> <span class="nc">EstimatorMHE</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Class representing the MHE estimator. </span>
+<span class="sd">    It contains the model instance whose parameters are to be estimated.</span>
+
+<span class="sd">    This class defines the parameters of the estimator and is capable of executing the estimation loop.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">t_step</span><span class="p">,</span> <span class="n">setup_mhe</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Constructor of the class, sets the parameters of the estimator and simulator.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            t_step (float64): Estimator sampling time.</span>
+<span class="sd">            setup_mhe (dict): Dictionary containing estimator parameters.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">t_step</span> <span class="o">=</span> <span class="n">t_step</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">model</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">set_model</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">estimator</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">estimator_mhe</span><span class="p">(</span><span class="n">setup_mhe</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">simulator</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">simulator_mhe</span><span class="p">()</span>
+
+<div class="viewcode-block" id="EstimatorMHE.set_model"><a class="viewcode-back" href="../../mhe.html#mhe.EstimatorMHE.EstimatorMHE.set_model">[docs]</a>    <span class="k">def</span> <span class="nf">set_model</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Defines the model equations and the parameters to be estimated.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            do_mpc.model.Model: Instance of the model used by the estimator.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">model</span> <span class="o">=</span> <span class="n">do_mpc</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">Model</span><span class="p">(</span><span class="n">model_type</span><span class="o">=</span><span class="s1">&#39;continuous&#39;</span><span class="p">)</span>
+
+        <span class="c1"># Model states</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">set_variable</span><span class="p">(</span><span class="n">var_type</span><span class="o">=</span><span class="s1">&#39;states&#39;</span><span class="p">,</span> <span class="n">var_name</span><span class="o">=</span><span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+        <span class="n">dx</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">set_variable</span><span class="p">(</span><span class="n">var_type</span><span class="o">=</span><span class="s1">&#39;states&#39;</span><span class="p">,</span> <span class="n">var_name</span><span class="o">=</span><span class="s1">&#39;dx&#39;</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+
+        <span class="c1"># Model inputs</span>
+        <span class="n">u</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">set_variable</span><span class="p">(</span><span class="n">var_type</span><span class="o">=</span><span class="s1">&#39;inputs&#39;</span><span class="p">,</span> <span class="n">var_name</span><span class="o">=</span><span class="s1">&#39;u&#39;</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+
+        <span class="c1"># State measurements</span>
+        <span class="n">x_meas</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">set_meas</span><span class="p">(</span><span class="s1">&#39;x_meas&#39;</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">meas_noise</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+        <span class="c1"># Input measurements</span>
+        <span class="n">u_meas</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">set_meas</span><span class="p">(</span><span class="s1">&#39;u_meas&#39;</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">meas_noise</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+        <span class="c1"># Model parameters</span>
+        <span class="n">k_m0_L</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">set_variable</span><span class="p">(</span><span class="s1">&#39;parameter&#39;</span><span class="p">,</span> <span class="s1">&#39;k_m0_L&#39;</span><span class="p">)</span>
+        <span class="n">k_m0_T</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">set_variable</span><span class="p">(</span><span class="s1">&#39;parameter&#39;</span><span class="p">,</span> <span class="s1">&#39;k_m0_T&#39;</span><span class="p">)</span>
+        <span class="n">k_m_L</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">set_variable</span><span class="p">(</span><span class="s1">&#39;parameter&#39;</span><span class="p">,</span> <span class="s1">&#39;k_m_L&#39;</span><span class="p">)</span>
+        <span class="n">k_m_T</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">set_variable</span><span class="p">(</span><span class="s1">&#39;parameter&#39;</span><span class="p">,</span> <span class="s1">&#39;k_m_T&#39;</span><span class="p">)</span>
+        <span class="n">k_p_L</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">set_variable</span><span class="p">(</span><span class="s1">&#39;parameter&#39;</span><span class="p">,</span> <span class="s1">&#39;k_p_L&#39;</span><span class="p">)</span>
+        <span class="n">k_p_T</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">set_variable</span><span class="p">(</span><span class="s1">&#39;parameter&#39;</span><span class="p">,</span> <span class="s1">&#39;k_p_T&#39;</span><span class="p">)</span>
+        <span class="n">g_m_L</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">set_variable</span><span class="p">(</span><span class="s1">&#39;parameter&#39;</span><span class="p">,</span> <span class="s1">&#39;g_m_L&#39;</span><span class="p">)</span>
+        <span class="n">g_m_T</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">set_variable</span><span class="p">(</span><span class="s1">&#39;parameter&#39;</span><span class="p">,</span> <span class="s1">&#39;g_m_T&#39;</span><span class="p">)</span>
+        <span class="n">g_p_L</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">set_variable</span><span class="p">(</span><span class="s1">&#39;parameter&#39;</span><span class="p">,</span> <span class="s1">&#39;g_p_L&#39;</span><span class="p">)</span>
+        <span class="n">g_p_T</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">set_variable</span><span class="p">(</span><span class="s1">&#39;parameter&#39;</span><span class="p">,</span> <span class="s1">&#39;g_p_T&#39;</span><span class="p">)</span>
+        <span class="n">theta_LacI</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">set_variable</span><span class="p">(</span><span class="s1">&#39;parameter&#39;</span><span class="p">,</span> <span class="s1">&#39;theta_LacI&#39;</span><span class="p">)</span>
+        <span class="n">theta_TetR</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">set_variable</span><span class="p">(</span><span class="s1">&#39;parameter&#39;</span><span class="p">,</span> <span class="s1">&#39;theta_TetR&#39;</span><span class="p">)</span>
+        <span class="n">theta_IPTG</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">set_variable</span><span class="p">(</span><span class="s1">&#39;parameter&#39;</span><span class="p">,</span> <span class="s1">&#39;theta_IPTG&#39;</span><span class="p">)</span>
+        <span class="n">theta_aTc</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">set_variable</span><span class="p">(</span><span class="s1">&#39;parameter&#39;</span><span class="p">,</span> <span class="s1">&#39;theta_aTc&#39;</span><span class="p">)</span>
+        <span class="n">eta_LacI</span> <span class="o">=</span> <span class="mf">2.00</span>
+        <span class="n">eta_TetR</span> <span class="o">=</span> <span class="mf">2.00</span>
+        <span class="n">eta_IPTG</span> <span class="o">=</span> <span class="mf">2.00</span>
+        <span class="n">eta_aTc</span> <span class="o">=</span> <span class="mf">2.00</span>
+
+        <span class="n">model</span><span class="o">.</span><span class="n">set_rhs</span><span class="p">(</span><span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="n">dx</span><span class="p">)</span>
+
+        <span class="n">dx_next</span> <span class="o">=</span> <span class="n">vertcat</span><span class="p">(</span>
+            <span class="n">k_m0_L</span> <span class="o">+</span> <span class="n">k_m_L</span><span class="o">*</span><span class="p">(</span><span class="mi">1</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="p">((</span><span class="n">x</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="o">/</span><span class="n">theta_TetR</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="p">(</span><span class="n">u</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">/</span><span class="n">theta_aTc</span><span class="p">)</span><span class="o">**</span><span class="n">eta_aTc</span><span class="p">)))</span><span class="o">**</span><span class="n">eta_TetR</span><span class="p">))</span> <span class="o">-</span> <span class="n">g_m_L</span> <span class="o">*</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+            <span class="n">k_m0_T</span> <span class="o">+</span> <span class="n">k_m_T</span><span class="o">*</span><span class="p">(</span><span class="mi">1</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="p">((</span><span class="n">x</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">/</span><span class="n">theta_LacI</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="p">(</span><span class="n">u</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">/</span><span class="n">theta_IPTG</span><span class="p">)</span><span class="o">**</span><span class="n">eta_IPTG</span><span class="p">)))</span><span class="o">**</span><span class="n">eta_LacI</span><span class="p">))</span> <span class="o">-</span> <span class="n">g_m_T</span> <span class="o">*</span> <span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
+            <span class="n">k_p_L</span> <span class="o">*</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">g_p_L</span> <span class="o">*</span> <span class="n">x</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span>
+            <span class="n">k_p_T</span> <span class="o">*</span> <span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">g_p_T</span> <span class="o">*</span> <span class="n">x</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span>
+        <span class="p">)</span>
+
+        <span class="n">model</span><span class="o">.</span><span class="n">set_rhs</span><span class="p">(</span><span class="s1">&#39;dx&#39;</span><span class="p">,</span> <span class="n">dx_next</span><span class="p">,</span> <span class="n">process_noise</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+        <span class="n">model</span><span class="o">.</span><span class="n">setup</span><span class="p">()</span>
+
+        <span class="k">return</span> <span class="n">model</span></div>
+
+<div class="viewcode-block" id="EstimatorMHE.estimator_mhe"><a class="viewcode-back" href="../../mhe.html#mhe.EstimatorMHE.EstimatorMHE.estimator_mhe">[docs]</a>    <span class="k">def</span> <span class="nf">estimator_mhe</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">setup_mhe</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Defines the parameters of the estimator and the bounds of the parameters to be estimated.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            setup_mhe (dict): Dictionary containing estimator parameters.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            do_mpc.estimator.MHE: Instance of the estimator.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">mhe</span> <span class="o">=</span> <span class="n">do_mpc</span><span class="o">.</span><span class="n">estimator</span><span class="o">.</span><span class="n">MHE</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;k_m0_L&#39;</span><span class="p">,</span> <span class="s1">&#39;k_m0_T&#39;</span><span class="p">,</span> <span class="s1">&#39;k_m_L&#39;</span><span class="p">,</span> <span class="s1">&#39;k_m_T&#39;</span><span class="p">,</span> <span class="s1">&#39;k_p_L&#39;</span><span class="p">,</span> <span class="s1">&#39;k_p_T&#39;</span><span class="p">,</span> <span class="s1">&#39;g_m_L&#39;</span><span class="p">,</span> <span class="s1">&#39;g_m_T&#39;</span><span class="p">,</span> <span class="s1">&#39;g_p_L&#39;</span><span class="p">,</span> <span class="s1">&#39;g_p_T&#39;</span><span class="p">,</span> <span class="s1">&#39;theta_LacI&#39;</span><span class="p">,</span>
+                                                <span class="s1">&#39;theta_TetR&#39;</span><span class="p">,</span> <span class="s1">&#39;theta_IPTG&#39;</span><span class="p">,</span> <span class="s1">&#39;theta_aTc&#39;</span><span class="p">])</span>
+
+        <span class="n">mhe</span><span class="o">.</span><span class="n">set_param</span><span class="p">(</span><span class="o">**</span><span class="n">setup_mhe</span><span class="p">)</span>
+
+        <span class="n">Px</span> <span class="o">=</span> <span class="mi">50</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="mi">8</span><span class="p">)</span>
+        <span class="n">Pv</span> <span class="o">=</span> <span class="mi">10</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">diag</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]))</span>
+        <span class="n">Pp</span> <span class="o">=</span> <span class="mi">1000</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="mi">14</span><span class="p">)</span>
+        <span class="n">mhe</span><span class="o">.</span><span class="n">set_default_objective</span><span class="p">(</span><span class="n">Px</span><span class="p">,</span> <span class="n">Pv</span><span class="p">,</span> <span class="n">Pp</span><span class="p">)</span>
+
+        <span class="n">mhe</span><span class="o">.</span><span class="n">bounds</span><span class="p">[</span><span class="s1">&#39;lower&#39;</span><span class="p">,</span> <span class="s1">&#39;_p_est&#39;</span><span class="p">,</span> <span class="s1">&#39;k_m0_L&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">mhe</span><span class="o">.</span><span class="n">bounds</span><span class="p">[</span><span class="s1">&#39;lower&#39;</span><span class="p">,</span> <span class="s1">&#39;_p_est&#39;</span><span class="p">,</span> <span class="s1">&#39;k_m0_T&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">mhe</span><span class="o">.</span><span class="n">bounds</span><span class="p">[</span><span class="s1">&#39;lower&#39;</span><span class="p">,</span> <span class="s1">&#39;_p_est&#39;</span><span class="p">,</span> <span class="s1">&#39;k_m_L&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">mhe</span><span class="o">.</span><span class="n">bounds</span><span class="p">[</span><span class="s1">&#39;lower&#39;</span><span class="p">,</span> <span class="s1">&#39;_p_est&#39;</span><span class="p">,</span> <span class="s1">&#39;k_m_T&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">mhe</span><span class="o">.</span><span class="n">bounds</span><span class="p">[</span><span class="s1">&#39;lower&#39;</span><span class="p">,</span> <span class="s1">&#39;_p_est&#39;</span><span class="p">,</span> <span class="s1">&#39;k_p_L&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">mhe</span><span class="o">.</span><span class="n">bounds</span><span class="p">[</span><span class="s1">&#39;lower&#39;</span><span class="p">,</span> <span class="s1">&#39;_p_est&#39;</span><span class="p">,</span> <span class="s1">&#39;k_p_T&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">mhe</span><span class="o">.</span><span class="n">bounds</span><span class="p">[</span><span class="s1">&#39;lower&#39;</span><span class="p">,</span> <span class="s1">&#39;_p_est&#39;</span><span class="p">,</span> <span class="s1">&#39;g_m_L&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">mhe</span><span class="o">.</span><span class="n">bounds</span><span class="p">[</span><span class="s1">&#39;lower&#39;</span><span class="p">,</span> <span class="s1">&#39;_p_est&#39;</span><span class="p">,</span> <span class="s1">&#39;g_m_T&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">mhe</span><span class="o">.</span><span class="n">bounds</span><span class="p">[</span><span class="s1">&#39;lower&#39;</span><span class="p">,</span> <span class="s1">&#39;_p_est&#39;</span><span class="p">,</span> <span class="s1">&#39;g_p_L&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">mhe</span><span class="o">.</span><span class="n">bounds</span><span class="p">[</span><span class="s1">&#39;lower&#39;</span><span class="p">,</span> <span class="s1">&#39;_p_est&#39;</span><span class="p">,</span> <span class="s1">&#39;g_p_T&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">mhe</span><span class="o">.</span><span class="n">bounds</span><span class="p">[</span><span class="s1">&#39;lower&#39;</span><span class="p">,</span> <span class="s1">&#39;_p_est&#39;</span><span class="p">,</span> <span class="s1">&#39;theta_LacI&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">mhe</span><span class="o">.</span><span class="n">bounds</span><span class="p">[</span><span class="s1">&#39;lower&#39;</span><span class="p">,</span> <span class="s1">&#39;_p_est&#39;</span><span class="p">,</span> <span class="s1">&#39;theta_TetR&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">mhe</span><span class="o">.</span><span class="n">bounds</span><span class="p">[</span><span class="s1">&#39;lower&#39;</span><span class="p">,</span> <span class="s1">&#39;_p_est&#39;</span><span class="p">,</span> <span class="s1">&#39;theta_IPTG&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">mhe</span><span class="o">.</span><span class="n">bounds</span><span class="p">[</span><span class="s1">&#39;lower&#39;</span><span class="p">,</span> <span class="s1">&#39;_p_est&#39;</span><span class="p">,</span> <span class="s1">&#39;theta_aTc&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+
+        <span class="n">mhe</span><span class="o">.</span><span class="n">setup</span><span class="p">()</span>
+
+        <span class="k">return</span> <span class="n">mhe</span></div>
+
+<div class="viewcode-block" id="EstimatorMHE.simulator_mhe"><a class="viewcode-back" href="../../mhe.html#mhe.EstimatorMHE.EstimatorMHE.simulator_mhe">[docs]</a>    <span class="k">def</span> <span class="nf">simulator_mhe</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Defines the parameters of the simulator.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            do_mpc.simulator.Simulator: Instance of the simulator.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">simulator</span> <span class="o">=</span> <span class="n">do_mpc</span><span class="o">.</span><span class="n">simulator</span><span class="o">.</span><span class="n">Simulator</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="p">)</span>
+        <span class="n">simulator</span><span class="o">.</span><span class="n">set_param</span><span class="p">(</span><span class="n">t_step</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">t_step</span><span class="p">)</span>
+
+        <span class="n">p_template_sim</span> <span class="o">=</span> <span class="n">simulator</span><span class="o">.</span><span class="n">get_p_template</span><span class="p">()</span>
+
+        <span class="k">def</span> <span class="nf">p_fun_sim</span><span class="p">(</span><span class="n">t_now</span><span class="p">):</span>
+
+            <span class="n">p_template_sim</span><span class="p">[</span><span class="s1">&#39;k_m0_L&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mf">3.20e-2</span>
+            <span class="n">p_template_sim</span><span class="p">[</span><span class="s1">&#39;k_m0_T&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1.19e-1</span>
+            <span class="n">p_template_sim</span><span class="p">[</span><span class="s1">&#39;k_m_L&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mf">8.30</span>
+            <span class="n">p_template_sim</span><span class="p">[</span><span class="s1">&#39;k_m_T&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mf">2.06</span>
+            <span class="n">p_template_sim</span><span class="p">[</span><span class="s1">&#39;k_p_L&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mf">9.726e-1</span>
+            <span class="n">p_template_sim</span><span class="p">[</span><span class="s1">&#39;k_p_T&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mf">9.726e-1</span>
+            <span class="n">p_template_sim</span><span class="p">[</span><span class="s1">&#39;g_m_L&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1.386e-1</span>
+            <span class="n">p_template_sim</span><span class="p">[</span><span class="s1">&#39;g_m_T&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1.386e-1</span>
+            <span class="n">p_template_sim</span><span class="p">[</span><span class="s1">&#39;g_p_L&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1.65e-2</span>
+            <span class="n">p_template_sim</span><span class="p">[</span><span class="s1">&#39;g_p_T&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1.65e-2</span>
+            <span class="n">p_template_sim</span><span class="p">[</span><span class="s1">&#39;theta_LacI&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mf">31.94</span>
+            <span class="n">p_template_sim</span><span class="p">[</span><span class="s1">&#39;theta_TetR&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mf">30.00</span>
+            <span class="n">p_template_sim</span><span class="p">[</span><span class="s1">&#39;theta_IPTG&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mf">9.06e-2</span>
+            <span class="n">p_template_sim</span><span class="p">[</span><span class="s1">&#39;theta_aTc&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mf">11.65</span>
+            <span class="k">return</span> <span class="n">p_template_sim</span>
+
+        <span class="n">simulator</span><span class="o">.</span><span class="n">set_p_fun</span><span class="p">(</span><span class="n">p_fun_sim</span><span class="p">)</span>
+
+        <span class="n">simulator</span><span class="o">.</span><span class="n">setup</span><span class="p">()</span>
+
+        <span class="k">return</span> <span class="n">simulator</span></div>
+
+<div class="viewcode-block" id="EstimatorMHE.estimation_loop"><a class="viewcode-back" href="../../mhe.html#mhe.EstimatorMHE.EstimatorMHE.estimation_loop">[docs]</a>    <span class="k">def</span> <span class="nf">estimation_loop</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x_0</span><span class="p">,</span> <span class="n">p_est0</span><span class="p">,</span> <span class="n">steps</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Defines the estimation loop.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            x_0 (numpy.ndarray[float64]): Initial conditions.</span>
+<span class="sd">            p_est0 (numpy.ndarray[float64]): Initial estimation of parameters</span>
+<span class="sd">            steps (int): Number of estimation loop steps.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            dict: The parameter estimates.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">estimator</span><span class="o">.</span><span class="n">reset_history</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">simulator</span><span class="o">.</span><span class="n">reset_history</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">simulator</span><span class="o">.</span><span class="n">x0</span> <span class="o">=</span> <span class="n">x_0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">estimator</span><span class="o">.</span><span class="n">x0</span> <span class="o">=</span> <span class="n">x_0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">estimator</span><span class="o">.</span><span class="n">p_est0</span> <span class="o">=</span> <span class="n">p_est0</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">estimator</span><span class="o">.</span><span class="n">set_initial_guess</span><span class="p">()</span>
+
+        <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">steps</span><span class="p">):</span>
+
+            <span class="n">u</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+            <span class="n">v0</span> <span class="o">=</span> <span class="mf">0.001</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">n_v</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+            <span class="n">y_next</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">simulator</span><span class="o">.</span><span class="n">make_step</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v0</span><span class="o">=</span><span class="n">v0</span><span class="p">)</span>
+            <span class="n">x_0</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">estimator</span><span class="o">.</span><span class="n">make_step</span><span class="p">(</span><span class="n">y_next</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">plot_estimates</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">estimator</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">simulator</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">estimator</span><span class="o">.</span><span class="n">data</span></div>
+
+<div class="viewcode-block" id="EstimatorMHE.plot_estimates"><a class="viewcode-back" href="../../mhe.html#mhe.EstimatorMHE.EstimatorMHE.plot_estimates">[docs]</a>    <span class="k">def</span> <span class="nf">plot_estimates</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">estimator_data</span><span class="p">,</span> <span class="n">simulator_data</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Plot the parameter estimate against the actual value.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            estimator_data (dict): Parameter estimation.</span>
+<span class="sd">            simulator_data (dict): Actual parameters.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">mhe_graphics</span> <span class="o">=</span> <span class="n">do_mpc</span><span class="o">.</span><span class="n">graphics</span><span class="o">.</span><span class="n">Graphics</span><span class="p">(</span><span class="n">estimator_data</span><span class="p">)</span>
+        <span class="n">sim_graphics</span> <span class="o">=</span> <span class="n">do_mpc</span><span class="o">.</span><span class="n">graphics</span><span class="o">.</span><span class="n">Graphics</span><span class="p">(</span><span class="n">simulator_data</span><span class="p">)</span>
+
+        <span class="n">fig_x</span> <span class="o">=</span> <span class="mi">20</span>
+        <span class="n">fig_y</span> <span class="o">=</span> <span class="mi">10</span>
+
+        <span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s1">&#39;axes.grid&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s1">&#39;font.size&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">14</span>
+
+        <span class="n">figure</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">sharex</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="n">fig_x</span><span class="p">,</span> <span class="n">fig_y</span><span class="p">))</span>
+
+        <span class="n">mhe_graphics</span><span class="o">.</span><span class="n">add_line</span><span class="p">(</span><span class="n">var_type</span><span class="o">=</span><span class="s1">&#39;_p&#39;</span><span class="p">,</span> <span class="n">var_name</span><span class="o">=</span><span class="s1">&#39;k_m0_L&#39;</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="n">mhe_graphics</span><span class="o">.</span><span class="n">add_line</span><span class="p">(</span><span class="n">var_type</span><span class="o">=</span><span class="s1">&#39;_p&#39;</span><span class="p">,</span> <span class="n">var_name</span><span class="o">=</span><span class="s1">&#39;k_m0_T&#39;</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+        <span class="n">sim_graphics</span><span class="o">.</span><span class="n">add_line</span><span class="p">(</span><span class="n">var_type</span><span class="o">=</span><span class="s1">&#39;_p&#39;</span><span class="p">,</span> <span class="n">var_name</span><span class="o">=</span><span class="s1">&#39;k_m0_L&#39;</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="n">sim_graphics</span><span class="o">.</span><span class="n">add_line</span><span class="p">(</span><span class="n">var_type</span><span class="o">=</span><span class="s1">&#39;_p&#39;</span><span class="p">,</span> <span class="n">var_name</span><span class="o">=</span><span class="s1">&#39;k_m0_T&#39;</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+        <span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;k_m0_L&#39;</span><span class="p">)</span>
+        <span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;k_m0_T&#39;</span><span class="p">)</span>
+        <span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">sim_graphics</span><span class="o">.</span><span class="n">result_lines</span><span class="p">[</span><span class="s1">&#39;_p&#39;</span><span class="p">,</span> <span class="s1">&#39;k_m0_L&#39;</span><span class="p">]</span> <span class="o">+</span>
+                       <span class="n">mhe_graphics</span><span class="o">.</span><span class="n">result_lines</span><span class="p">[</span><span class="s1">&#39;_p&#39;</span><span class="p">,</span> <span class="s1">&#39;k_m0_L&#39;</span><span class="p">],</span> <span class="p">[</span><span class="s1">&#39;True&#39;</span><span class="p">,</span> <span class="s1">&#39;Estimation&#39;</span><span class="p">],</span> <span class="n">loc</span><span class="o">=</span><span class="s1">&#39;upper right&#39;</span><span class="p">)</span>
+        <span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">sim_graphics</span><span class="o">.</span><span class="n">result_lines</span><span class="p">[</span><span class="s1">&#39;_p&#39;</span><span class="p">,</span> <span class="s1">&#39;k_m0_T&#39;</span><span class="p">]</span> <span class="o">+</span>
+                       <span class="n">mhe_graphics</span><span class="o">.</span><span class="n">result_lines</span><span class="p">[</span><span class="s1">&#39;_p&#39;</span><span class="p">,</span> <span class="s1">&#39;k_m0_T&#39;</span><span class="p">],</span> <span class="p">[</span><span class="s1">&#39;True&#39;</span><span class="p">,</span> <span class="s1">&#39;Estimation&#39;</span><span class="p">],</span> <span class="n">loc</span><span class="o">=</span><span class="s1">&#39;upper right&#39;</span><span class="p">)</span>
+
+        <span class="n">figure</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">sharex</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="n">fig_x</span><span class="p">,</span> <span class="n">fig_y</span><span class="p">))</span>
+        <span class="n">mhe_graphics</span><span class="o">.</span><span class="n">add_line</span><span class="p">(</span><span class="n">var_type</span><span class="o">=</span><span class="s1">&#39;_p&#39;</span><span class="p">,</span> <span class="n">var_name</span><span class="o">=</span><span class="s1">&#39;k_m_L&#39;</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="n">mhe_graphics</span><span class="o">.</span><span class="n">add_line</span><span class="p">(</span><span class="n">var_type</span><span class="o">=</span><span class="s1">&#39;_p&#39;</span><span class="p">,</span> <span class="n">var_name</span><span class="o">=</span><span class="s1">&#39;k_m_T&#39;</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+        <span class="n">sim_graphics</span><span class="o">.</span><span class="n">add_line</span><span class="p">(</span><span class="n">var_type</span><span class="o">=</span><span class="s1">&#39;_p&#39;</span><span class="p">,</span> <span class="n">var_name</span><span class="o">=</span><span class="s1">&#39;k_m_L&#39;</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="n">sim_graphics</span><span class="o">.</span><span class="n">add_line</span><span class="p">(</span><span class="n">var_type</span><span class="o">=</span><span class="s1">&#39;_p&#39;</span><span class="p">,</span> <span class="n">var_name</span><span class="o">=</span><span class="s1">&#39;k_m_T&#39;</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+        <span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;k_m_L&#39;</span><span class="p">)</span>
+        <span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;k_m_T&#39;</span><span class="p">)</span>
+        <span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">sim_graphics</span><span class="o">.</span><span class="n">result_lines</span><span class="p">[</span><span class="s1">&#39;_p&#39;</span><span class="p">,</span> <span class="s1">&#39;k_m_L&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="n">mhe_graphics</span><span class="o">.</span><span class="n">result_lines</span><span class="p">[</span><span class="s1">&#39;_p&#39;</span><span class="p">,</span> <span class="s1">&#39;k_m_L&#39;</span><span class="p">],</span> <span class="p">[</span><span class="s1">&#39;True&#39;</span><span class="p">,</span> <span class="s1">&#39;Estimation&#39;</span><span class="p">],</span> <span class="n">loc</span><span class="o">=</span><span class="s1">&#39;upper right&#39;</span><span class="p">)</span>
+        <span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">sim_graphics</span><span class="o">.</span><span class="n">result_lines</span><span class="p">[</span><span class="s1">&#39;_p&#39;</span><span class="p">,</span> <span class="s1">&#39;k_m_T&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="n">mhe_graphics</span><span class="o">.</span><span class="n">result_lines</span><span class="p">[</span><span class="s1">&#39;_p&#39;</span><span class="p">,</span> <span class="s1">&#39;k_m_T&#39;</span><span class="p">],</span> <span class="p">[</span><span class="s1">&#39;True&#39;</span><span class="p">,</span> <span class="s1">&#39;Estimation&#39;</span><span class="p">],</span> <span class="n">loc</span><span class="o">=</span><span class="s1">&#39;upper right&#39;</span><span class="p">)</span>
+
+        <span class="n">figure</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">sharex</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="n">fig_x</span><span class="p">,</span> <span class="n">fig_y</span><span class="p">))</span>
+        <span class="n">mhe_graphics</span><span class="o">.</span><span class="n">add_line</span><span class="p">(</span><span class="n">var_type</span><span class="o">=</span><span class="s1">&#39;_p&#39;</span><span class="p">,</span> <span class="n">var_name</span><span class="o">=</span><span class="s1">&#39;k_p_L&#39;</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="n">mhe_graphics</span><span class="o">.</span><span class="n">add_line</span><span class="p">(</span><span class="n">var_type</span><span class="o">=</span><span class="s1">&#39;_p&#39;</span><span class="p">,</span> <span class="n">var_name</span><span class="o">=</span><span class="s1">&#39;k_p_T&#39;</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+        <span class="n">sim_graphics</span><span class="o">.</span><span class="n">add_line</span><span class="p">(</span><span class="n">var_type</span><span class="o">=</span><span class="s1">&#39;_p&#39;</span><span class="p">,</span> <span class="n">var_name</span><span class="o">=</span><span class="s1">&#39;k_p_L&#39;</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="n">sim_graphics</span><span class="o">.</span><span class="n">add_line</span><span class="p">(</span><span class="n">var_type</span><span class="o">=</span><span class="s1">&#39;_p&#39;</span><span class="p">,</span> <span class="n">var_name</span><span class="o">=</span><span class="s1">&#39;k_p_T&#39;</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+        <span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;k_p_L&#39;</span><span class="p">)</span>
+        <span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;k_p_T&#39;</span><span class="p">)</span>
+        <span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">sim_graphics</span><span class="o">.</span><span class="n">result_lines</span><span class="p">[</span><span class="s1">&#39;_p&#39;</span><span class="p">,</span> <span class="s1">&#39;k_p_L&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="n">mhe_graphics</span><span class="o">.</span><span class="n">result_lines</span><span class="p">[</span><span class="s1">&#39;_p&#39;</span><span class="p">,</span> <span class="s1">&#39;k_p_L&#39;</span><span class="p">],</span> <span class="p">[</span><span class="s1">&#39;True&#39;</span><span class="p">,</span> <span class="s1">&#39;Estimation&#39;</span><span class="p">],</span> <span class="n">loc</span><span class="o">=</span><span class="s1">&#39;upper right&#39;</span><span class="p">)</span>
+        <span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">sim_graphics</span><span class="o">.</span><span class="n">result_lines</span><span class="p">[</span><span class="s1">&#39;_p&#39;</span><span class="p">,</span> <span class="s1">&#39;k_p_T&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="n">mhe_graphics</span><span class="o">.</span><span class="n">result_lines</span><span class="p">[</span><span class="s1">&#39;_p&#39;</span><span class="p">,</span> <span class="s1">&#39;k_p_T&#39;</span><span class="p">],</span> <span class="p">[</span><span class="s1">&#39;True&#39;</span><span class="p">,</span> <span class="s1">&#39;Estimation&#39;</span><span class="p">],</span> <span class="n">loc</span><span class="o">=</span><span class="s1">&#39;upper right&#39;</span><span class="p">)</span>
+
+        <span class="n">figure</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">sharex</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="n">fig_x</span><span class="p">,</span> <span class="n">fig_y</span><span class="p">))</span>
+        <span class="n">mhe_graphics</span><span class="o">.</span><span class="n">add_line</span><span class="p">(</span><span class="n">var_type</span><span class="o">=</span><span class="s1">&#39;_p&#39;</span><span class="p">,</span> <span class="n">var_name</span><span class="o">=</span><span class="s1">&#39;g_m_L&#39;</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="n">mhe_graphics</span><span class="o">.</span><span class="n">add_line</span><span class="p">(</span><span class="n">var_type</span><span class="o">=</span><span class="s1">&#39;_p&#39;</span><span class="p">,</span> <span class="n">var_name</span><span class="o">=</span><span class="s1">&#39;g_m_T&#39;</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+        <span class="n">sim_graphics</span><span class="o">.</span><span class="n">add_line</span><span class="p">(</span><span class="n">var_type</span><span class="o">=</span><span class="s1">&#39;_p&#39;</span><span class="p">,</span> <span class="n">var_name</span><span class="o">=</span><span class="s1">&#39;g_m_L&#39;</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="n">sim_graphics</span><span class="o">.</span><span class="n">add_line</span><span class="p">(</span><span class="n">var_type</span><span class="o">=</span><span class="s1">&#39;_p&#39;</span><span class="p">,</span> <span class="n">var_name</span><span class="o">=</span><span class="s1">&#39;g_m_T&#39;</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+        <span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;g_m_L&#39;</span><span class="p">)</span>
+        <span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;g_m_T&#39;</span><span class="p">)</span>
+        <span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">sim_graphics</span><span class="o">.</span><span class="n">result_lines</span><span class="p">[</span><span class="s1">&#39;_p&#39;</span><span class="p">,</span> <span class="s1">&#39;g_m_L&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="n">mhe_graphics</span><span class="o">.</span><span class="n">result_lines</span><span class="p">[</span><span class="s1">&#39;_p&#39;</span><span class="p">,</span> <span class="s1">&#39;g_m_L&#39;</span><span class="p">],</span> <span class="p">[</span><span class="s1">&#39;True&#39;</span><span class="p">,</span> <span class="s1">&#39;Estimation&#39;</span><span class="p">],</span> <span class="n">loc</span><span class="o">=</span><span class="s1">&#39;upper right&#39;</span><span class="p">)</span>
+        <span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">sim_graphics</span><span class="o">.</span><span class="n">result_lines</span><span class="p">[</span><span class="s1">&#39;_p&#39;</span><span class="p">,</span> <span class="s1">&#39;g_m_T&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="n">mhe_graphics</span><span class="o">.</span><span class="n">result_lines</span><span class="p">[</span><span class="s1">&#39;_p&#39;</span><span class="p">,</span> <span class="s1">&#39;g_m_T&#39;</span><span class="p">],</span> <span class="p">[</span><span class="s1">&#39;True&#39;</span><span class="p">,</span> <span class="s1">&#39;Estimation&#39;</span><span class="p">],</span> <span class="n">loc</span><span class="o">=</span><span class="s1">&#39;upper right&#39;</span><span class="p">)</span>
+
+        <span class="n">figure</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">sharex</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="n">fig_x</span><span class="p">,</span> <span class="n">fig_y</span><span class="p">))</span>
+        <span class="n">mhe_graphics</span><span class="o">.</span><span class="n">add_line</span><span class="p">(</span><span class="n">var_type</span><span class="o">=</span><span class="s1">&#39;_p&#39;</span><span class="p">,</span> <span class="n">var_name</span><span class="o">=</span><span class="s1">&#39;g_p_L&#39;</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="n">mhe_graphics</span><span class="o">.</span><span class="n">add_line</span><span class="p">(</span><span class="n">var_type</span><span class="o">=</span><span class="s1">&#39;_p&#39;</span><span class="p">,</span> <span class="n">var_name</span><span class="o">=</span><span class="s1">&#39;g_p_T&#39;</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+        <span class="n">sim_graphics</span><span class="o">.</span><span class="n">add_line</span><span class="p">(</span><span class="n">var_type</span><span class="o">=</span><span class="s1">&#39;_p&#39;</span><span class="p">,</span> <span class="n">var_name</span><span class="o">=</span><span class="s1">&#39;g_p_L&#39;</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="n">sim_graphics</span><span class="o">.</span><span class="n">add_line</span><span class="p">(</span><span class="n">var_type</span><span class="o">=</span><span class="s1">&#39;_p&#39;</span><span class="p">,</span> <span class="n">var_name</span><span class="o">=</span><span class="s1">&#39;g_p_T&#39;</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+        <span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;g_p_L&#39;</span><span class="p">)</span>
+        <span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;g_p_T&#39;</span><span class="p">)</span>
+        <span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">sim_graphics</span><span class="o">.</span><span class="n">result_lines</span><span class="p">[</span><span class="s1">&#39;_p&#39;</span><span class="p">,</span> <span class="s1">&#39;g_p_L&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="n">mhe_graphics</span><span class="o">.</span><span class="n">result_lines</span><span class="p">[</span><span class="s1">&#39;_p&#39;</span><span class="p">,</span> <span class="s1">&#39;g_p_L&#39;</span><span class="p">],</span> <span class="p">[</span><span class="s1">&#39;True&#39;</span><span class="p">,</span> <span class="s1">&#39;Estimation&#39;</span><span class="p">],</span> <span class="n">loc</span><span class="o">=</span><span class="s1">&#39;upper right&#39;</span><span class="p">)</span>
+        <span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">sim_graphics</span><span class="o">.</span><span class="n">result_lines</span><span class="p">[</span><span class="s1">&#39;_p&#39;</span><span class="p">,</span> <span class="s1">&#39;g_p_T&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="n">mhe_graphics</span><span class="o">.</span><span class="n">result_lines</span><span class="p">[</span><span class="s1">&#39;_p&#39;</span><span class="p">,</span> <span class="s1">&#39;g_p_T&#39;</span><span class="p">],</span> <span class="p">[</span><span class="s1">&#39;True&#39;</span><span class="p">,</span> <span class="s1">&#39;Estimation&#39;</span><span class="p">],</span> <span class="n">loc</span><span class="o">=</span><span class="s1">&#39;upper right&#39;</span><span class="p">)</span>
+
+        <span class="n">figure</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">sharex</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="n">fig_x</span><span class="p">,</span> <span class="n">fig_y</span><span class="p">))</span>
+        <span class="n">mhe_graphics</span><span class="o">.</span><span class="n">add_line</span><span class="p">(</span><span class="n">var_type</span><span class="o">=</span><span class="s1">&#39;_p&#39;</span><span class="p">,</span> <span class="n">var_name</span><span class="o">=</span><span class="s1">&#39;theta_LacI&#39;</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="n">mhe_graphics</span><span class="o">.</span><span class="n">add_line</span><span class="p">(</span><span class="n">var_type</span><span class="o">=</span><span class="s1">&#39;_p&#39;</span><span class="p">,</span> <span class="n">var_name</span><span class="o">=</span><span class="s1">&#39;theta_TetR&#39;</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+        <span class="n">sim_graphics</span><span class="o">.</span><span class="n">add_line</span><span class="p">(</span><span class="n">var_type</span><span class="o">=</span><span class="s1">&#39;_p&#39;</span><span class="p">,</span> <span class="n">var_name</span><span class="o">=</span><span class="s1">&#39;theta_LacI&#39;</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="n">sim_graphics</span><span class="o">.</span><span class="n">add_line</span><span class="p">(</span><span class="n">var_type</span><span class="o">=</span><span class="s1">&#39;_p&#39;</span><span class="p">,</span> <span class="n">var_name</span><span class="o">=</span><span class="s1">&#39;theta_TetR&#39;</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+        <span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;theta_LacI&#39;</span><span class="p">)</span>
+        <span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;theta_TetR&#39;</span><span class="p">)</span>
+        <span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">sim_graphics</span><span class="o">.</span><span class="n">result_lines</span><span class="p">[</span><span class="s1">&#39;_p&#39;</span><span class="p">,</span> <span class="s1">&#39;theta_LacI&#39;</span><span class="p">]</span> <span class="o">+</span>
+                       <span class="n">mhe_graphics</span><span class="o">.</span><span class="n">result_lines</span><span class="p">[</span><span class="s1">&#39;_p&#39;</span><span class="p">,</span> <span class="s1">&#39;theta_LacI&#39;</span><span class="p">],</span> <span class="p">[</span><span class="s1">&#39;True&#39;</span><span class="p">,</span> <span class="s1">&#39;Estimation&#39;</span><span class="p">],</span> <span class="n">loc</span><span class="o">=</span><span class="s1">&#39;upper right&#39;</span><span class="p">)</span>
+        <span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">sim_graphics</span><span class="o">.</span><span class="n">result_lines</span><span class="p">[</span><span class="s1">&#39;_p&#39;</span><span class="p">,</span> <span class="s1">&#39;theta_TetR&#39;</span><span class="p">]</span> <span class="o">+</span>
+                       <span class="n">mhe_graphics</span><span class="o">.</span><span class="n">result_lines</span><span class="p">[</span><span class="s1">&#39;_p&#39;</span><span class="p">,</span> <span class="s1">&#39;theta_TetR&#39;</span><span class="p">],</span> <span class="p">[</span><span class="s1">&#39;True&#39;</span><span class="p">,</span> <span class="s1">&#39;Estimation&#39;</span><span class="p">],</span> <span class="n">loc</span><span class="o">=</span><span class="s1">&#39;upper right&#39;</span><span class="p">)</span>
+
+        <span class="n">figure</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">sharex</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="n">fig_x</span><span class="p">,</span> <span class="n">fig_y</span><span class="p">))</span>
+        <span class="n">mhe_graphics</span><span class="o">.</span><span class="n">add_line</span><span class="p">(</span><span class="n">var_type</span><span class="o">=</span><span class="s1">&#39;_p&#39;</span><span class="p">,</span> <span class="n">var_name</span><span class="o">=</span><span class="s1">&#39;theta_IPTG&#39;</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="n">mhe_graphics</span><span class="o">.</span><span class="n">add_line</span><span class="p">(</span><span class="n">var_type</span><span class="o">=</span><span class="s1">&#39;_p&#39;</span><span class="p">,</span> <span class="n">var_name</span><span class="o">=</span><span class="s1">&#39;theta_aTc&#39;</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+        <span class="n">sim_graphics</span><span class="o">.</span><span class="n">add_line</span><span class="p">(</span><span class="n">var_type</span><span class="o">=</span><span class="s1">&#39;_p&#39;</span><span class="p">,</span> <span class="n">var_name</span><span class="o">=</span><span class="s1">&#39;theta_IPTG&#39;</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="n">sim_graphics</span><span class="o">.</span><span class="n">add_line</span><span class="p">(</span><span class="n">var_type</span><span class="o">=</span><span class="s1">&#39;_p&#39;</span><span class="p">,</span> <span class="n">var_name</span><span class="o">=</span><span class="s1">&#39;theta_aTc&#39;</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+        <span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;theta_IPTG&#39;</span><span class="p">)</span>
+        <span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;theta_aTc&#39;</span><span class="p">)</span>
+        <span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">sim_graphics</span><span class="o">.</span><span class="n">result_lines</span><span class="p">[</span><span class="s1">&#39;_p&#39;</span><span class="p">,</span> <span class="s1">&#39;theta_IPTG&#39;</span><span class="p">]</span> <span class="o">+</span>
+                       <span class="n">mhe_graphics</span><span class="o">.</span><span class="n">result_lines</span><span class="p">[</span><span class="s1">&#39;_p&#39;</span><span class="p">,</span> <span class="s1">&#39;theta_IPTG&#39;</span><span class="p">],</span> <span class="p">[</span><span class="s1">&#39;True&#39;</span><span class="p">,</span> <span class="s1">&#39;Estimation&#39;</span><span class="p">],</span> <span class="n">loc</span><span class="o">=</span><span class="s1">&#39;upper right&#39;</span><span class="p">)</span>
+        <span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">sim_graphics</span><span class="o">.</span><span class="n">result_lines</span><span class="p">[</span><span class="s1">&#39;_p&#39;</span><span class="p">,</span> <span class="s1">&#39;theta_aTc&#39;</span><span class="p">]</span> <span class="o">+</span>
+                       <span class="n">mhe_graphics</span><span class="o">.</span><span class="n">result_lines</span><span class="p">[</span><span class="s1">&#39;_p&#39;</span><span class="p">,</span> <span class="s1">&#39;theta_aTc&#39;</span><span class="p">],</span> <span class="p">[</span><span class="s1">&#39;True&#39;</span><span class="p">,</span> <span class="s1">&#39;Estimation&#39;</span><span class="p">],</span> <span class="n">loc</span><span class="o">=</span><span class="s1">&#39;upper right&#39;</span><span class="p">)</span>
+
+        <span class="n">mhe_graphics</span><span class="o">.</span><span class="n">plot_results</span><span class="p">()</span>
+        <span class="n">mhe_graphics</span><span class="o">.</span><span class="n">reset_axes</span><span class="p">()</span></div></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Lorenzo Pagliara.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

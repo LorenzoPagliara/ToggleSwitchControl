@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>fpd.ControllerFPD &mdash; Genetic Toggle Switch Libraries 1.0.0 documentation</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../index.html" class="icon icon-home"> Genetic Toggle Switch Libraries
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../fpd.html">fpd package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../mpc.html">mpc package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../mhe.html">mhe package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../databinning.html">databinning package</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Genetic Toggle Switch Libraries</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../index.html">Module code</a> &raquo;</li>
+      <li>fpd.ControllerFPD</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for fpd.ControllerFPD</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">numpy.linalg</span> <span class="kn">import</span> <span class="n">inv</span>
+<span class="kn">from</span> <span class="nn">scipy.stats</span> <span class="kn">import</span> <span class="n">multivariate_normal</span>
+<span class="kn">import</span> <span class="nn">math</span>
+
+
+<div class="viewcode-block" id="ControllerFPD"><a class="viewcode-back" href="../../fpd.html#fpd.ControllerFPD.ControllerFPD">[docs]</a><span class="k">class</span> <span class="nc">ControllerFPD</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Class implementing the control from demonstartion algorithm&quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">f_x</span><span class="p">,</span> <span class="n">g_x</span><span class="p">,</span> <span class="n">sys</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Initialize probabilistic descriptions of the system to be controlled and of the target system and the instance of the deterministic model.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            f_x (numpy.ndarray[float64]): Probabilistic description of the system to be controlled.</span>
+<span class="sd">            g_x (numpy.ndarray[float64]): Probabilistic description of the target system.</span>
+<span class="sd">            sys (ToggleSwitchSimplified): Instance of the deterministic model.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">f_x</span> <span class="o">=</span> <span class="n">f_x</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">g_x</span> <span class="o">=</span> <span class="n">g_x</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sys</span> <span class="o">=</span> <span class="n">sys</span>
+
+<div class="viewcode-block" id="ControllerFPD.dkl"><a class="viewcode-back" href="../../fpd.html#fpd.ControllerFPD.ControllerFPD.dkl">[docs]</a>    <span class="k">def</span> <span class="nf">dkl</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">f_x</span><span class="p">,</span> <span class="n">g_x</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Compute analytically the Kullback-Leibler divergence.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            f_x (numpy.ndarray[float64]): Probabilistic description of the system to be controlled.</span>
+<span class="sd">            g_x (numpy.ndarray[float64]): Probabilistic description of the target system.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            float64: Value of the Kullback-Leibler divergence.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">arr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">f_x</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">f_x</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">f_x</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
+            <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">f_x</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]):</span>
+                <span class="k">if</span> <span class="n">f_x</span><span class="p">[(</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">)]</span> <span class="o">!=</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">g_x</span><span class="p">[(</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">)]</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+                    <span class="n">arr</span><span class="p">[(</span><span class="n">i</span><span class="o">*</span><span class="n">f_x</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">+</span> <span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">f_x</span><span class="p">[(</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">)]</span> <span class="o">*</span> \
+                        <span class="n">math</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">f_x</span><span class="p">[(</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">)]</span><span class="o">/</span><span class="n">g_x</span><span class="p">[(</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">)])</span>
+
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">arr</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="ControllerFPD.gaussianDKL"><a class="viewcode-back" href="../../fpd.html#fpd.ControllerFPD.ControllerFPD.gaussianDKL">[docs]</a>    <span class="k">def</span> <span class="nf">gaussianDKL</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mu1</span><span class="p">,</span> <span class="n">mu2</span><span class="p">,</span> <span class="n">cov1</span><span class="p">,</span> <span class="n">cov2</span><span class="p">,</span> <span class="n">dim</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Compute numerically the Kullback-Leibler divergence.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            mu1 (float64): Mean of the next state of the system to be controlled.</span>
+<span class="sd">            mu2 (float64): Mean of the next state of the target system.</span>
+<span class="sd">            cov1 (numpy.ndarray[float64]): Covariance of the next state of the system to be controlled.</span>
+<span class="sd">            cov2 (numpy.ndarray[float64]): Covariance of the next state of the target system.</span>
+<span class="sd">            dim (int): Number of states.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            float64: Value of the Kullback-Leibler divergence.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">el1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">trace</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">inv</span><span class="p">(</span><span class="n">cov2</span><span class="p">),</span> <span class="n">cov1</span><span class="p">))</span>
+        <span class="n">el2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">subtract</span><span class="p">(</span><span class="n">mu2</span><span class="p">,</span> <span class="n">mu1</span><span class="p">)),</span> <span class="n">inv</span><span class="p">(</span><span class="n">cov2</span><span class="p">)),</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">subtract</span><span class="p">(</span><span class="n">mu2</span><span class="p">,</span> <span class="n">mu1</span><span class="p">)))</span>
+        <span class="n">el3</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(((</span><span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">det</span><span class="p">(</span><span class="n">cov2</span><span class="p">))</span><span class="o">/</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">det</span><span class="p">(</span><span class="n">cov1</span><span class="p">))))</span> <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">det</span><span class="p">(</span><span class="n">cov1</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">0</span> <span class="k">else</span> <span class="mi">0</span>
+
+        <span class="k">return</span> <span class="mf">0.5</span><span class="o">*</span><span class="p">(</span><span class="n">el1</span> <span class="o">+</span> <span class="n">el2</span> <span class="o">-</span> <span class="n">dim</span> <span class="o">+</span> <span class="n">el3</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="ControllerFPD.discretize"><a class="viewcode-back" href="../../fpd.html#fpd.ControllerFPD.ControllerFPD.discretize">[docs]</a>    <span class="k">def</span> <span class="nf">discretize</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">elm</span><span class="p">,</span> <span class="n">dim</span><span class="p">,</span> <span class="nb">min</span><span class="p">,</span> <span class="n">step</span><span class="p">,</span> <span class="nb">max</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Returns the discrete index associated with a continuous state or input value.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            elm (numpy.ndarray[float64]): Array containing the continuous values of the states/inputs.</span>
+<span class="sd">            dim (int): Number of states/inputs.</span>
+<span class="sd">            min (numpy.ndarray[float64]): Array containing the minimum values of the states/inputs.</span>
+<span class="sd">            step (numpy.ndarray[float64]): Array containing the discretization step of the states/inputs.</span>
+<span class="sd">            max (numpy.ndarray[float64]): Array containing the maximum values of the states/inputs.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            tuple: Tuple of indices associated with states/inputs.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">indices</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="n">dim</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">dim</span><span class="p">):</span>
+            <span class="n">value</span> <span class="o">=</span> <span class="nb">max</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">-</span> <span class="n">step</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">if</span> <span class="n">elm</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="nb">max</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">else</span> <span class="n">elm</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+            <span class="n">indices</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">((</span><span class="n">value</span> <span class="o">-</span> <span class="nb">min</span><span class="p">[</span><span class="n">i</span><span class="p">])</span><span class="o">//</span><span class="n">step</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+
+        <span class="k">return</span><span class="p">(</span><span class="nb">tuple</span><span class="p">(</span><span class="n">indices</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="ControllerFPD.makeFPDStep"><a class="viewcode-back" href="../../fpd.html#fpd.ControllerFPD.ControllerFPD.makeFPDStep">[docs]</a>    <span class="k">def</span> <span class="nf">makeFPDStep</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">uk</span><span class="p">,</span> <span class="n">u_step</span><span class="p">,</span> <span class="n">u_discr</span><span class="p">,</span> <span class="n">u_axis</span><span class="p">,</span> <span class="n">x_dim</span><span class="p">,</span> <span class="n">x_min</span><span class="p">,</span> <span class="n">x_step</span><span class="p">,</span> <span class="n">x_max</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;It calculates the optimal policy and samples the control input to be applied to the system.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            uk (numpy.ndarray[float64]): Current target input</span>
+<span class="sd">            u_step (numpy.ndarray[float64]): Array containing the discretization step of the inputs.</span>
+<span class="sd">            u_discr (numpy.ndarray[float64]): Array containing the number of bins for each input.</span>
+<span class="sd">            u_axis (numpy.ndarray[float64]): X-axis of possible state values. </span>
+<span class="sd">            x_dim (int): Number of states.</span>
+<span class="sd">            x_min (numpy.ndarray[float64]): Array containing the minimum values of the states.</span>
+<span class="sd">            x_step (numpy.ndarray[float64]): Array containing the discretization step of the states.</span>
+<span class="sd">            x_max (numpy.ndarray[float64]): Array containing the maximum values of the states.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            numpy.ndarray[float64]: Input sampled by the optimal policy.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">g_pf</span> <span class="o">=</span> <span class="n">multivariate_normal</span><span class="p">(</span><span class="n">uk</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="n">u_step</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mf">0.1</span><span class="o">*</span><span class="n">u_step</span><span class="p">[</span><span class="mi">1</span><span class="p">]]]))</span><span class="o">.</span><span class="n">pdf</span><span class="p">(</span><span class="n">u_axis</span><span class="p">)</span>
+        <span class="n">s</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">g_pf</span><span class="p">)</span>
+        <span class="n">g_u</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">x</span><span class="o">/</span><span class="n">s</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">g_pf</span><span class="p">])</span>
+
+        <span class="n">f_u</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">g_u</span><span class="o">.</span><span class="n">shape</span><span class="p">))</span>
+
+        <span class="n">x_km1</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">discretize</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sys</span><span class="o">.</span><span class="n">getState</span><span class="p">(),</span> <span class="n">x_dim</span><span class="p">,</span> <span class="n">x_min</span><span class="p">,</span> <span class="n">x_step</span><span class="p">,</span> <span class="n">x_max</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">u_discr</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
+            <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">u_discr</span><span class="p">[</span><span class="mi">1</span><span class="p">]):</span>
+
+                <span class="n">f_x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">f_x</span><span class="p">[(</span><span class="n">x_km1</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">x_km1</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">)]</span>
+                <span class="n">g_x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">g_x</span><span class="p">[(</span><span class="n">x_km1</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">x_km1</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">)]</span>
+
+                <span class="n">f_x_cov</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="n">f_x</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="n">f_x</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">1</span><span class="p">]]])</span>
+                <span class="n">g_x_cov</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="n">g_x</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="n">g_x</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">1</span><span class="p">]]])</span>
+
+                <span class="n">f_u</span><span class="p">[(</span><span class="n">j</span><span class="p">,</span> <span class="n">i</span><span class="p">)]</span> <span class="o">=</span> <span class="n">g_u</span><span class="p">[(</span><span class="n">j</span><span class="p">,</span> <span class="n">i</span><span class="p">)]</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">gaussianDKL</span><span class="p">(</span><span class="n">f_x</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">g_x</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">f_x_cov</span><span class="p">,</span> <span class="n">g_x_cov</span><span class="p">,</span> <span class="n">x_dim</span><span class="p">))</span>
+
+        <span class="n">s</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">f_u</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">s</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">f_u</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">x</span><span class="o">/</span><span class="n">s</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">f_u</span><span class="p">])</span>
+
+        <span class="n">ind</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">u_discr</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="n">u_discr</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span> <span class="n">p</span><span class="o">=</span><span class="n">f_u</span><span class="o">.</span><span class="n">T</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)[</span><span class="mi">0</span><span class="p">])</span>
+
+        <span class="n">u2_ind</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">ind</span><span class="o">//</span><span class="n">u_discr</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+        <span class="n">u1_ind</span> <span class="o">=</span> <span class="n">ind</span> <span class="o">%</span> <span class="n">u_discr</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+
+        <span class="n">u</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="n">u_axis</span><span class="p">[</span><span class="n">u1_ind</span><span class="p">,</span> <span class="n">u2_ind</span><span class="p">][</span><span class="mi">0</span><span class="p">]],</span> <span class="p">[</span><span class="n">u_axis</span><span class="p">[</span><span class="n">u1_ind</span><span class="p">,</span> <span class="n">u2_ind</span><span class="p">][</span><span class="mi">1</span><span class="p">]]])</span>
+
+        <span class="k">return</span> <span class="n">u</span></div></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Lorenzo Pagliara.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

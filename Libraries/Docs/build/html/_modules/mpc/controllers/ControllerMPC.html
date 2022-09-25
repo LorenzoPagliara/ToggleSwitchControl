@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>mpc.controllers.ControllerMPC &mdash; Genetic Toggle Switch Libraries 1.0.0 documentation</title>
+      <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../../index.html" class="icon icon-home"> Genetic Toggle Switch Libraries
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../fpd.html">fpd package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../mpc.html">mpc package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../mhe.html">mhe package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../databinning.html">databinning package</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">Genetic Toggle Switch Libraries</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+      <li>mpc.controllers.ControllerMPC</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for mpc.controllers.ControllerMPC</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">do_mpc</span>
+<span class="kn">from</span> <span class="nn">casadi</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">..models</span> <span class="kn">import</span> <span class="n">ToggleSwitchUncertainModel</span>
+
+
+<div class="viewcode-block" id="ControllerMPC"><a class="viewcode-back" href="../../../mpc.controllers.html#mpc.controllers.ControllerMPC.ControllerMPC">[docs]</a><span class="k">class</span> <span class="nc">ControllerMPC</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Class representing the MPC controller. </span>
+<span class="sd">    It contains an instance of the model to be controlled, which it uses to define the cost function and the constraints to be applied. </span>
+
+<span class="sd">    This class defines the parameters of the controller and simulator and is capable of executing a control loop, </span>
+<span class="sd">    or making the model execute an input trajectory taken as input. </span>
+<span class="sd">    It allows deterministic simulations or in the presence of process disturbances and measurement noise.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">modelObj</span><span class="p">,</span> <span class="n">t_step</span><span class="p">,</span> <span class="n">setup_mpc</span><span class="p">,</span> <span class="n">stochastic</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Constructor of the class, sets the parameters of the controller, simulator and estimator, which will be used in the control loop.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            modelObj (ToggleSwitchModel): Instance of the model class to be controlled.</span>
+<span class="sd">            t_step (float64): Controller sampling time.</span>
+<span class="sd">            setup_mpc (dict): Dictionary containing controller parameters such as sampling time, time horizon, etc.</span>
+<span class="sd">            stochastic (bool, optional): Boolean parameter determining whether the control algorithm will be executed deterministically or in the presence of noise and disturbances. Defaults to False.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">stochastic</span> <span class="o">=</span> <span class="n">stochastic</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">t_step</span> <span class="o">=</span> <span class="n">t_step</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">modelObj</span> <span class="o">=</span> <span class="n">modelObj</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">controller</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">controller_mpc</span><span class="p">(</span><span class="n">setup_mpc</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">simulator</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">simulator_mpc</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">estimator</span> <span class="o">=</span> <span class="n">do_mpc</span><span class="o">.</span><span class="n">estimator</span><span class="o">.</span><span class="n">StateFeedback</span><span class="p">(</span><span class="n">modelObj</span><span class="o">.</span><span class="n">get_model</span><span class="p">())</span>
+
+<div class="viewcode-block" id="ControllerMPC.controller_mpc"><a class="viewcode-back" href="../../../mpc.controllers.html#mpc.controllers.ControllerMPC.ControllerMPC.controller_mpc">[docs]</a>    <span class="k">def</span> <span class="nf">controller_mpc</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">setup_mpc</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;It defines the controller parameters, sets the cost function and constraints according to the model to be controlled and returns an instance of the controller.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            setup_mpc (dict): Dictionary containing controller parameters such as sampling time, time horizon, etc.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            do_mpc.controller.MPC: Instance of the controller.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">model</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">modelObj</span><span class="o">.</span><span class="n">get_model</span><span class="p">()</span>
+
+        <span class="n">mpc</span> <span class="o">=</span> <span class="n">do_mpc</span><span class="o">.</span><span class="n">controller</span><span class="o">.</span><span class="n">MPC</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
+
+        <span class="n">mpc</span><span class="o">.</span><span class="n">set_param</span><span class="p">(</span><span class="o">**</span><span class="n">setup_mpc</span><span class="p">)</span>
+
+        <span class="c1"># Cost function</span>
+        <span class="n">mpc</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">modelObj</span><span class="o">.</span><span class="n">set_cost</span><span class="p">(</span><span class="n">mpc</span><span class="p">)</span>
+
+        <span class="c1"># Constraints</span>
+        <span class="n">mpc</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">modelObj</span><span class="o">.</span><span class="n">set_constraints</span><span class="p">(</span><span class="n">mpc</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">modelObj</span><span class="p">,</span> <span class="n">ToggleSwitchUncertainModel</span><span class="p">):</span>
+            <span class="n">mpc</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">modelObj</span><span class="o">.</span><span class="n">set_uncertain_parameters</span><span class="p">(</span><span class="n">mpc</span><span class="p">)</span>
+
+        <span class="n">mpc</span><span class="o">.</span><span class="n">setup</span><span class="p">()</span>
+
+        <span class="k">return</span> <span class="n">mpc</span></div>
+
+<div class="viewcode-block" id="ControllerMPC.simulator_mpc"><a class="viewcode-back" href="../../../mpc.controllers.html#mpc.controllers.ControllerMPC.ControllerMPC.simulator_mpc">[docs]</a>    <span class="k">def</span> <span class="nf">simulator_mpc</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Defines the parameters of the simulator and, in the case of a model to be controlled with uncertain parameters, defines the function for updating these parameters at runtime.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            do_mpc.simulator.Simulator: Instance of the simulator.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">simulator</span> <span class="o">=</span> <span class="n">do_mpc</span><span class="o">.</span><span class="n">simulator</span><span class="o">.</span><span class="n">Simulator</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">modelObj</span><span class="o">.</span><span class="n">get_model</span><span class="p">())</span>
+        <span class="n">simulator</span><span class="o">.</span><span class="n">set_param</span><span class="p">(</span><span class="n">t_step</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">t_step</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">modelObj</span><span class="p">,</span> <span class="n">ToggleSwitchUncertainModel</span><span class="p">):</span>
+            <span class="n">simulator</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">modelObj</span><span class="o">.</span><span class="n">uncertain_parameters_function</span><span class="p">(</span><span class="n">simulator</span><span class="p">)</span>
+
+        <span class="n">simulator</span><span class="o">.</span><span class="n">setup</span><span class="p">()</span>
+
+        <span class="k">return</span> <span class="n">simulator</span></div>
+
+<div class="viewcode-block" id="ControllerMPC.control_loop"><a class="viewcode-back" href="../../../mpc.controllers.html#mpc.controllers.ControllerMPC.ControllerMPC.control_loop">[docs]</a>    <span class="k">def</span> <span class="nf">control_loop</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x_0</span><span class="p">,</span> <span class="n">steps</span><span class="p">,</span> <span class="nb">type</span><span class="p">,</span> <span class="n">episodes</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;It defines the control loop, allowing it to run for a certain number of episodes and guaranteeing the possibility of adding noise and disturbances. </span>
+<span class="sd">        At the end of each episode, it formats and stores the results obtained, using the methods defined by the model class, and exports them to files.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            x_0 (numpy.ndarray[float64]): Initial conditions.</span>
+<span class="sd">            steps (int): Number of control loop steps.</span>
+<span class="sd">            type (str): Defines the type of model controlled between: deterministic, stochastic, randomic and uncertain.</span>
+<span class="sd">            episodes (int, optional): Defines the number of repetitions of the control loop. Defaults to 1.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">model</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">modelObj</span><span class="o">.</span><span class="n">get_model</span><span class="p">()</span>
+
+        <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">episodes</span><span class="p">):</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">estimator</span><span class="o">.</span><span class="n">reset_history</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">controller</span><span class="o">.</span><span class="n">reset_history</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">simulator</span><span class="o">.</span><span class="n">reset_history</span><span class="p">()</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">controller</span><span class="o">.</span><span class="n">x0</span> <span class="o">=</span> <span class="n">x_0</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">simulator</span><span class="o">.</span><span class="n">x0</span> <span class="o">=</span> <span class="n">x_0</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">estimator</span><span class="o">.</span><span class="n">x0</span> <span class="o">=</span> <span class="n">x_0</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">controller</span><span class="o">.</span><span class="n">set_initial_guess</span><span class="p">()</span>
+
+            <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">steps</span><span class="p">):</span>
+
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">stochastic</span><span class="p">:</span>
+                    <span class="n">v0</span> <span class="o">=</span> <span class="mf">0.5</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">n_v</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+                    <span class="n">w0</span> <span class="o">=</span> <span class="mf">0.15</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">n_w</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">v0</span> <span class="o">=</span> <span class="mi">0</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">n_v</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+                    <span class="n">w0</span> <span class="o">=</span> <span class="mi">0</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">n_w</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+
+                <span class="n">u</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">controller</span><span class="o">.</span><span class="n">make_step</span><span class="p">(</span><span class="n">x_0</span><span class="p">)</span>
+
+                <span class="k">if</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">controller</span><span class="o">.</span><span class="n">t0</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">t_step</span><span class="p">)</span> <span class="o">%</span> <span class="mi">15</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                    <span class="n">ukm1</span> <span class="o">=</span> <span class="n">u</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">u</span> <span class="o">=</span> <span class="n">ukm1</span>
+
+                <span class="n">y_next</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">simulator</span><span class="o">.</span><span class="n">make_step</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v0</span><span class="p">,</span> <span class="n">w0</span><span class="p">)</span>
+                <span class="n">x_0</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">estimator</span><span class="o">.</span><span class="n">make_step</span><span class="p">(</span><span class="n">y_next</span><span class="p">)</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">modelObj</span><span class="o">.</span><span class="n">set_trajectories</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">controller</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">modelObj</span><span class="o">.</span><span class="n">export_results</span><span class="p">(</span><span class="nb">type</span><span class="p">,</span> <span class="s1">&#39;results&#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">),</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="ControllerMPC.execute_trajectory"><a class="viewcode-back" href="../../../mpc.controllers.html#mpc.controllers.ControllerMPC.ControllerMPC.execute_trajectory">[docs]</a>    <span class="k">def</span> <span class="nf">execute_trajectory</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x_0</span><span class="p">,</span> <span class="n">steps</span><span class="p">,</span> <span class="nb">type</span><span class="p">,</span> <span class="n">u</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Allows the model to execute an input trajectory taken as input. Finally, it formats, stores and exports the results to files.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            x_0 (numpy.ndarray[float64]): Initial conditions.</span>
+<span class="sd">            steps (int): Number of control loop steps.</span>
+<span class="sd">            type (str): Defines the type of model controlled between: deterministic, stochastic, randomic and uncertain.</span>
+<span class="sd">            u (numpy.ndarray[float64]): Input trajecory.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">simulator</span><span class="o">.</span><span class="n">reset_history</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">controller</span><span class="o">.</span><span class="n">x0</span> <span class="o">=</span> <span class="n">x_0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">simulator</span><span class="o">.</span><span class="n">x0</span> <span class="o">=</span> <span class="n">x_0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">estimator</span><span class="o">.</span><span class="n">x0</span> <span class="o">=</span> <span class="n">x_0</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">controller</span><span class="o">.</span><span class="n">set_initial_guess</span><span class="p">()</span>
+
+        <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">steps</span><span class="p">):</span>
+
+            <span class="n">uk</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">controller</span><span class="o">.</span><span class="n">make_step</span><span class="p">(</span><span class="n">x_0</span><span class="p">)</span>
+            <span class="n">uk</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="n">u</span><span class="p">[</span><span class="n">k</span><span class="p">,</span> <span class="mi">0</span><span class="p">]],</span> <span class="p">[</span><span class="n">u</span><span class="p">[</span><span class="n">k</span><span class="p">,</span> <span class="mi">1</span><span class="p">]]])</span>
+            <span class="n">y_next</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">simulator</span><span class="o">.</span><span class="n">make_step</span><span class="p">(</span><span class="n">uk</span><span class="p">)</span>
+            <span class="n">x_0</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">estimator</span><span class="o">.</span><span class="n">make_step</span><span class="p">(</span><span class="n">y_next</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">modelObj</span><span class="o">.</span><span class="n">set_trajectories</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">controller</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">modelObj</span><span class="o">.</span><span class="n">trajectories</span><span class="p">[</span><span class="s1">&#39;inputs&#39;</span><span class="p">][</span><span class="s1">&#39;aTc&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">u</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">steps</span><span class="p">)]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">modelObj</span><span class="o">.</span><span class="n">trajectories</span><span class="p">[</span><span class="s1">&#39;inputs&#39;</span><span class="p">][</span><span class="s1">&#39;IPTG&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">u</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">steps</span><span class="p">)]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">modelObj</span><span class="o">.</span><span class="n">export_results</span><span class="p">(</span><span class="nb">type</span><span class="p">,</span> <span class="s1">&#39;results0&#39;</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span></div></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Lorenzo Pagliara.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

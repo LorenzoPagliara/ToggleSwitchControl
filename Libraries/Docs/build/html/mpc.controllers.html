@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>mpc.controllers package &mdash; Genetic Toggle Switch Libraries 1.0.0 documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="mpc.models package" href="mpc.models.html" />
+    <link rel="prev" title="mpc package" href="mpc.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="index.html" class="icon icon-home"> Genetic Toggle Switch Libraries
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="fpd.html">fpd package</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="mpc.html">mpc package</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="mpc.html#subpackages">Subpackages</a><ul class="current">
+<li class="toctree-l3 current"><a class="current reference internal" href="#">mpc.controllers package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-mpc.controllers.ControllerMPC">mpc.controllers.ControllerMPC module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-mpc.controllers">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="mpc.models.html">mpc.models package</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="mpc.html#module-mpc">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="mhe.html">mhe package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="databinning.html">databinning package</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Genetic Toggle Switch Libraries</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="mpc.html">mpc package</a> &raquo;</li>
+      <li>mpc.controllers package</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/mpc.controllers.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="mpc-controllers-package">
+<h1>mpc.controllers package<a class="headerlink" href="#mpc-controllers-package" title="Permalink to this headline"></a></h1>
+<section id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline"></a></h2>
+</section>
+<section id="module-mpc.controllers.ControllerMPC">
+<span id="mpc-controllers-controllermpc-module"></span><h2>mpc.controllers.ControllerMPC module<a class="headerlink" href="#module-mpc.controllers.ControllerMPC" title="Permalink to this headline"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="mpc.controllers.ControllerMPC.ControllerMPC">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">mpc.controllers.ControllerMPC.</span></span><span class="sig-name descname"><span class="pre">ControllerMPC</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">modelObj</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">t_step</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">setup_mpc</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stochastic</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mpc/controllers/ControllerMPC.html#ControllerMPC"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mpc.controllers.ControllerMPC.ControllerMPC" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Class representing the MPC controller.
+It contains an instance of the model to be controlled, which it uses to define the cost function and the constraints to be applied.</p>
+<p>This class defines the parameters of the controller and simulator and is capable of executing a control loop,
+or making the model execute an input trajectory taken as input.
+It allows deterministic simulations or in the presence of process disturbances and measurement noise.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="mpc.controllers.ControllerMPC.ControllerMPC.control_loop">
+<span class="sig-name descname"><span class="pre">control_loop</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x_0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">steps</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">type</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">episodes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mpc/controllers/ControllerMPC.html#ControllerMPC.control_loop"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mpc.controllers.ControllerMPC.ControllerMPC.control_loop" title="Permalink to this definition"></a></dt>
+<dd><p>It defines the control loop, allowing it to run for a certain number of episodes and guaranteeing the possibility of adding noise and disturbances.
+At the end of each episode, it formats and stores the results obtained, using the methods defined by the model class, and exports them to files.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>x_0</strong> (<em>numpy.ndarray</em><em>[</em><em>float64</em><em>]</em>) – Initial conditions.</p></li>
+<li><p><strong>steps</strong> (<em>int</em>) – Number of control loop steps.</p></li>
+<li><p><strong>type</strong> (<em>str</em>) – Defines the type of model controlled between: deterministic, stochastic, randomic and uncertain.</p></li>
+<li><p><strong>episodes</strong> (<em>int</em><em>, </em><em>optional</em>) – Defines the number of repetitions of the control loop. Defaults to 1.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="mpc.controllers.ControllerMPC.ControllerMPC.controller_mpc">
+<span class="sig-name descname"><span class="pre">controller_mpc</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">setup_mpc</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mpc/controllers/ControllerMPC.html#ControllerMPC.controller_mpc"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mpc.controllers.ControllerMPC.ControllerMPC.controller_mpc" title="Permalink to this definition"></a></dt>
+<dd><p>It defines the controller parameters, sets the cost function and constraints according to the model to be controlled and returns an instance of the controller.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>setup_mpc</strong> (<em>dict</em>) – Dictionary containing controller parameters such as sampling time, time horizon, etc.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Instance of the controller.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>do_mpc.controller.MPC</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="mpc.controllers.ControllerMPC.ControllerMPC.execute_trajectory">
+<span class="sig-name descname"><span class="pre">execute_trajectory</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x_0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">steps</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">type</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">u</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mpc/controllers/ControllerMPC.html#ControllerMPC.execute_trajectory"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mpc.controllers.ControllerMPC.ControllerMPC.execute_trajectory" title="Permalink to this definition"></a></dt>
+<dd><p>Allows the model to execute an input trajectory taken as input. Finally, it formats, stores and exports the results to files.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>x_0</strong> (<em>numpy.ndarray</em><em>[</em><em>float64</em><em>]</em>) – Initial conditions.</p></li>
+<li><p><strong>steps</strong> (<em>int</em>) – Number of control loop steps.</p></li>
+<li><p><strong>type</strong> (<em>str</em>) – Defines the type of model controlled between: deterministic, stochastic, randomic and uncertain.</p></li>
+<li><p><strong>u</strong> (<em>numpy.ndarray</em><em>[</em><em>float64</em><em>]</em>) – Input trajecory.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="mpc.controllers.ControllerMPC.ControllerMPC.simulator_mpc">
+<span class="sig-name descname"><span class="pre">simulator_mpc</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/mpc/controllers/ControllerMPC.html#ControllerMPC.simulator_mpc"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mpc.controllers.ControllerMPC.ControllerMPC.simulator_mpc" title="Permalink to this definition"></a></dt>
+<dd><p>Defines the parameters of the simulator and, in the case of a model to be controlled with uncertain parameters, defines the function for updating these parameters at runtime.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Instance of the simulator.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>do_mpc.simulator.Simulator</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-mpc.controllers">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-mpc.controllers" title="Permalink to this headline"></a></h2>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="mpc.html" class="btn btn-neutral float-left" title="mpc package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="mpc.models.html" class="btn btn-neutral float-right" title="mpc.models package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Lorenzo Pagliara.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
