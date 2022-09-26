@@ -103,8 +103,8 @@ class ControllerMPC:
             for k in range(steps):
 
                 if self.stochastic:
-                    v0 = 0.5*np.random.randn(model.n_v, 1)
-                    w0 = 0.15*np.random.randn(model.n_w, 1)
+                    v0 = np.random.randn(model.n_v, 1)
+                    w0 = 0.2*np.random.randn(model.n_w, 1)
                 else:
                     v0 = 0*np.random.randn(model.n_v, 1)
                     w0 = 0*np.random.randn(model.n_w, 1)

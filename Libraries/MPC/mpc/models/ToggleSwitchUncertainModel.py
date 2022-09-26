@@ -19,7 +19,7 @@ class ToggleSwitchUncertainModel(ToggleSwitchModel):
         """
         super().__init__(stochasticity, LacI_ref, TetR_ref, t_step, total_time, avg_period, *args)
 
-    def set_model(stochasticity=False, LacI_ref=750, TetR_ref=300, *args):
+    def set_model(self, stochasticity=False, *args):
         """Defines the model equations and the cost function. It sets some parameters as uncertain.
 
         Args:
@@ -89,7 +89,7 @@ class ToggleSwitchUncertainModel(ToggleSwitchModel):
             model.n_v = np.random.randn(6, 1)
 
         # Cost function
-        model.set_expression(expr_name='cost', expr=((lacI - LacI_ref)**2 + (tetR - TetR_ref)**2))
+        model.set_expression(expr_name='cost', expr=((lacI - self.LacI_ref)**2 + (tetR - self.TetR_ref)**2))
 
         model.setup()
 
@@ -104,7 +104,7 @@ class ToggleSwitchUncertainModel(ToggleSwitchModel):
         Returns:
             do_mpc.controller.MPC: Instance of the controller.
         """
-        theta_LacI_values = np.array([31.94, 32, 31])
+        theta_LacI_values = np.array([31.94, 32.94, 30.94])
         theta_TetR_values = np.array([30, 31, 29])
 
         controller.set_uncertainty_values(
@@ -127,8 +127,8 @@ class ToggleSwitchUncertainModel(ToggleSwitchModel):
 
         def p_fun(t_now):
 
-            p_template['theta_LacI'] = np.random.uniform(low=30, high=32)
-            p_template['theta_TetR'] = np.random.uniform(low=29, high=31)
+            p_template['theta_LacI'] = 31.94
+            p_template['theta_TetR'] = 30.00
 
             return p_template
 

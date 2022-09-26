@@ -41,7 +41,7 @@ class ToggleSwitchLinearModel(ToggleSwitchModel):
         x_next = A@_x+B@_u
 
         model.set_rhs('x', x_next)
-        model.set_expression(expr_name='cost', expr=(model.x['x', 2] - self.LacI_ref)**2 + (model.x['x', 3] - self.TetR_ref)**2)
+        model.set_expression(expr_name='cost', expr=((model.x['x', 2] - self.LacI_ref)**2 + (model.x['x', 3] - self.TetR_ref)**2))
 
         model.setup()
 
@@ -60,6 +60,7 @@ class ToggleSwitchLinearModel(ToggleSwitchModel):
         lterm = self.model.aux['cost']
 
         controller.set_objective(mterm=mterm, lterm=lterm)
+        controller.set_rterm(u=10)
 
         return controller
 
@@ -160,7 +161,7 @@ class ToggleSwitchLinearModel(ToggleSwitchModel):
         # --- LacI --- #
         figure_proteins, axes = plt.subplots(2, sharex=True, figsize=(fig_x, fig_y))
 
-        axes[0].set_ylabel('')
+        axes[0].set_ylabel(r'$a.u.$')
         axes[0].set_title('LacI')
         line_LacI, = axes[0].plot(time, self.trajectories['states']['LacI'], color='b')
         line_avg_LacI, = axes[0].plot(avg_time, self.trajectories['avg_traj']['LacI'], color='b', linestyle='--')
@@ -168,55 +169,55 @@ class ToggleSwitchLinearModel(ToggleSwitchModel):
         axes[0].legend(['LacI', 'Avg LacI traj', 'LacI target'], loc='upper right')
 
         # --- TetR --- #
-        axes[1].set_ylabel('')
+        axes[1].set_ylabel(r'$a.u.$')
         axes[1].set_title('TetR')
         line_TetR, = axes[1].plot(time, self.trajectories['states']['TetR'], color='m')
         line_avg_TetR, = axes[1].plot(avg_time, self.trajectories['avg_traj']['TetR'], color='m', linestyle='--')
         line_ref_TetR, = axes[1].plot(time, self.TetR_ref*np.ones(len(time)), color='k', linestyle='--')
         axes[1].legend(['TetR', 'Avg TetR traj', 'TetR target'], loc='upper right')
-        axes[1].set_xlabel('time [min]')
+        axes[1].set_xlabel('Time [min]')
 
         figure_proteins.set_facecolor("white")
 
         # -------------------- mRNAs -------------------- #
         # --- mRNA LacI --- #
         figure_mRNAs, axes1 = plt.subplots(2, sharex=True, figsize=(fig_x, fig_y))
-        axes1[0].set_ylabel('')
-        axes1[0].set_title('mRNA_LacI')
+        axes1[0].set_ylabel(r'$mRNA$')
+        axes1[0].set_title('mRNA LacI')
         line_mRNA_LacI, = axes1[0].plot(time, self.trajectories['states']['mRNA_LacI'], color='b')
         axes1[0].legend(['mRNA LacI'], loc='upper right')
 
         # --- mRNA TetR --- #
-        axes1[1].set_ylabel('')
-        axes1[1].set_title('mRNA_TetR')
+        axes1[1].set_ylabel(r'$mRNA$')
+        axes1[1].set_title('mRNA TetR')
         line_mRNA_TetR, = axes1[1].plot(time, self.trajectories['states']['mRNA_TetR'], color='m')
         axes1[1].legend(['mRNA TetR'], loc='upper right')
-        axes1[1].set_xlabel('time [min]')
+        axes1[1].set_xlabel('Time [min]')
 
         figure_mRNAs.set_facecolor("white")
 
         # -------------------- External inductors concentrations -------------------- #
         # --- aTc --- #
         figure_inductors, axes2 = plt.subplots(2, sharex=True, figsize=(fig_x, fig_y))
-        axes2[0].set_ylabel('')
+        axes2[0].set_ylabel(r'$ng/mL$')
         axes2[0].set_title('aTc')
         line_aTc, = axes2[0].plot(time, self.trajectories['inputs']['aTc'], color='y')
         axes2[0].legend(['aTc'], loc='upper right')
 
         # --- IPTG --- #
-        axes2[1].set_ylabel('')
+        axes2[1].set_ylabel(r'$mM$')
         axes2[1].set_title('IPTG')
         line_IPTG, = axes2[1].plot(time, self.trajectories['inputs']['IPTG'], color='r')
         axes2[1].legend(['IPTG'], loc='upper right')
+        axes2[1].set_xlabel('Time [min]')
 
         figure_inductors.set_facecolor("white")
         # -------------------- Cost -------------------- #
-        figure_cost, axes4 = plt.subplots(1, figsize=(fig_x, fig_y/2))
-        axes4.set_ylabel('')
-        axes4.set_title('Cost')
-        line_cost, = axes4.plot(time, self.trajectories['cost'], color='g')
-        axes4.legend(['Cost'], loc='upper right')
-        axes4.set_xlabel('time [min]')
+        figure_cost, axes3 = plt.subplots(1, figsize=(fig_x, fig_y/2))
+        axes3.set_title('Cost')
+        line_cost, = axes3.plot(time, self.trajectories['cost'], color='g')
+        axes3.legend(['Cost'], loc='upper right')
+        axes3.set_xlabel('Time [min]')
 
         figure_cost.set_facecolor("white")
 
