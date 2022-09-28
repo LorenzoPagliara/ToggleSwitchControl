@@ -1,2 +1,2 @@
-from .controllers.ControllerMPC import *
+from .controllers import *
 from .models import *
