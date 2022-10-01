@@ -79,3 +79,70 @@ class ToggleSwitchSimplifiedModel(ToggleSwitchModel):
         mpc.bounds['upper', '_u', 'IPTG'] = 0.35
 
         return mpc
+
+    def set_trajectories(self, x, u):
+        """It updates the dictionary of state trajectories based on closed-loop results obtained by the controller.
+
+        Args:
+            data (dict): Closed-loop simulation results.
+        """
+
+        states = {
+            'LacI': x[:, 0],
+            'TetR': x[:, 1],
+        }
+
+        inputs = {
+            'aTc': u[:, 0],
+            'IPTG': u[:, 1]
+        }
+
+        avg_samples_range = int(self.avg_period/self.t_step)
+        avg_stop_time = self.total_time - ((self.total_time-1) % self.avg_period) - 1
+
+        avg_LacI = [np.mean(states['LacI'][x:x + avg_samples_range]) for x in range(0, len(states['LacI']), avg_samples_range)]
+        avg_TetR = [np.mean(states['TetR'][x:x + avg_samples_range]) for x in range(0, len(states['TetR']), avg_samples_range)]
+
+        avg_x = np.arange(0, self.total_time, self.avg_period)
+        favg_LacI = CubicSpline(avg_x, avg_LacI)
+        avg_LacI = favg_LacI(np.arange(0, avg_stop_time, self.t_step))
+        favg_TetR = CubicSpline(avg_x, avg_TetR)
+        avg_TetR = favg_TetR(np.arange(0, avg_stop_time, self.t_step))
+
+        avg_trajectories = {
+            'LacI': [x for x in avg_LacI.tolist()],
+            'TetR': [x for x in avg_TetR.tolist()]
+        }
+
+        ISE, ITAE = self.compute_performance_metrics(avg_trajectories)
+
+        self.trajectories = {
+            'states': states,
+            'inputs': inputs,
+            'avg_traj': avg_trajectories,
+            'ISE': ISE,
+            'ITAE': ITAE
+        }
+
+    def export_results(self, type, name, mode):
+        """Exports closed-loop simulation results.
+
+        Args:
+            type (str): Defines the type of simulation performed: deterministic, stochastic, randomic, uncertain.
+            name (str): Defines the name of the file on which the results will be stored.
+            mode (str): Defines the mode of opening the file.
+        """
+
+        f = open('./results/' + type + '/' + name + '.json', mode)
+        data_json = json.dumps(self.trajectories)
+        f.write(data_json)
+        f.close()
+
+    def update_protein(self, i, time, avg_time, LacI, TetR, avg_LacI, avg_TetR, LacI_ref, TetR_ref, lines):
+        lines[0].set_data(time[:i], LacI[:i])
+        lines[1].set_data(avg_time[:i], avg_LacI[:i])
+        lines[2].set_data(time[:i], LacI_ref*np.ones(len(time))[:i])
+        lines[3].set_data(time[:i], TetR[:i])
+        lines[4].set_data(avg_time[:i], avg_TetR[:i])
+        lines[5].set_data(time[:i], TetR_ref*np.ones(len(time))[:i])
+        return lines
