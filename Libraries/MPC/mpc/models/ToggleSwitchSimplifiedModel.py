@@ -3,14 +3,14 @@ from .ToggleSwitchModel import *
 
 class ToggleSwitchSimplifiedModel(ToggleSwitchModel):
 
-    def __init__(self, stochasticity, LacI_ref, TetR_ref, t_step, total_time, avg_period, *args) -> None:
-        super().__init__(stochasticity, LacI_ref, TetR_ref, t_step, total_time, avg_period, *args)
+    def __init__(self, constraints, LacI_ref, TetR_ref, t_step, total_time, avg_period, *args) -> None:
+        super().__init__(constraints, LacI_ref, TetR_ref, t_step, total_time, avg_period, *args)
 
-    def set_model(self, stochasticity=False, *args):
+    def set_model(self, constraints=False, *args):
         """Defines the mathematical model for the toggle switch in the form of differential equations (ODE).
 
         Args:
-            stochasticity (bool): Determines the presence or absence of stochasticity in the model.
+            constraints (bool): Determines whether the model takes into account the constraints or not..
 
         Returns:
             do_mpc.model.Model: The do-mpc model instance.
@@ -54,14 +54,14 @@ class ToggleSwitchSimplifiedModel(ToggleSwitchModel):
         dx1 = k_1_0 + (k_1/(1 + (x2**2) * (1/((1 + (atc/theta_aTc)**eta_aTc)**eta_TetR)))) - x1
         dx2 = k_2_0 + (k_2/(1 + (x1**2) * (1/((1 + (iptg/theta_IPTG)**eta_IPTG)**eta_LacI)))) - x2
 
-        model.set_rhs('x1', dx1, process_noise=stochasticity)
-        model.set_rhs('x2', dx2, process_noise=stochasticity)
+        model.set_rhs('x1', dx1)
+        model.set_rhs('x2', dx2)
 
         # Cost function
-        model.set_expression(expr_name='cost', expr=(((x1 - self.LacI_ref)/self.LacI_ref)**2 + ((x2 - self.TetR_ref)/self.TetR_ref)**2))
-
-        if stochasticity:
-            model.n_v = np.random.randn(2, 1)
+        if constraints:
+            model.set_expression(expr_name='cost', expr=((x1 - self.LacI_ref)**2 + (x2 - self.TetR_ref)**2))
+        else:
+            model.set_expression(expr_name='cost', expr=(((x1 - self.LacI_ref)/self.LacI_ref)**2 + ((x2 - self.TetR_ref)/self.TetR_ref)**2))
 
         model.setup()
 
@@ -88,13 +88,13 @@ class ToggleSwitchSimplifiedModel(ToggleSwitchModel):
         """
 
         states = {
-            'LacI': x[:, 0],
-            'TetR': x[:, 1],
+            'LacI': [e for e in x[:, 0].tolist()],
+            'TetR': [e for e in x[:, 1].tolist()],
         }
 
         inputs = {
-            'aTc': u[:, 0],
-            'IPTG': u[:, 1]
+            'aTc': [e for e in u[:, 0].tolist()],
+            'IPTG': [e for e in u[:, 1].tolist()]
         }
 
         avg_samples_range = int(self.avg_period/self.t_step)
@@ -133,16 +133,21 @@ class ToggleSwitchSimplifiedModel(ToggleSwitchModel):
             mode (str): Defines the mode of opening the file.
         """
 
-        f = open('./results/' + type + '/' + name + '.json', mode)
+        f = open('./data/' + type + '/' + name + '.json', mode)
         data_json = json.dumps(self.trajectories)
         f.write(data_json)
         f.close()
 
-    def update_protein(self, i, time, avg_time, LacI, TetR, avg_LacI, avg_TetR, LacI_ref, TetR_ref, lines):
-        lines[0].set_data(time[:i], LacI[:i])
-        lines[1].set_data(avg_time[:i], avg_LacI[:i])
+    def update_protein(self, i, time, avg_time, LacI_ref, TetR_ref, lines):
+        lines[0].set_data(time[:i], self.trajectories['states']['LacI'][:i])
+        lines[1].set_data(avg_time[:i], self.trajectories['avg_traj']['LacI'][:i])
         lines[2].set_data(time[:i], LacI_ref*np.ones(len(time))[:i])
-        lines[3].set_data(time[:i], TetR[:i])
-        lines[4].set_data(avg_time[:i], avg_TetR[:i])
+        lines[3].set_data(time[:i], self.trajectories['states']['TetR'][:i])
+        lines[4].set_data(avg_time[:i], self.trajectories['avg_traj']['TetR'][:i])
         lines[5].set_data(time[:i], TetR_ref*np.ones(len(time))[:i])
+        return lines
+
+    def update_inputs(self, i, time, lines):
+        lines[0].set_data(time[:i], self.trajectories['inputs']['aTc'][:i])
+        lines[1].set_data(time[:i], self.trajectories['inputs']['IPTG'][:i])
         return lines
