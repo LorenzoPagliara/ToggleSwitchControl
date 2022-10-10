@@ -122,6 +122,37 @@ class ControllerMPC:
             self.modelObj.set_trajectories(self.controller.data)
             self.modelObj.export_results(type, 'results' + str(e), 'w')
 
+    def control_loop_no_constraints(self, x_0, steps, episodes=1):
+        """It defines the control loop with no constraints.
+
+        Args:
+            x_0 (numpy.ndarray[float64]): Initial conditions.
+            steps (int): Number of control loop steps.
+            episodes (int, optional): Defines the number of repetitions of the control loop. Defaults to 1.
+        """
+
+        model = self.modelObj.get_model()
+
+        for e in range(episodes):
+
+            self.estimator.reset_history()
+            self.controller.reset_history()
+            self.simulator.reset_history()
+
+            self.controller.x0 = x_0
+            self.simulator.x0 = x_0
+            self.estimator.x0 = x_0
+
+            self.controller.set_initial_guess()
+
+            for k in range(steps):
+
+                u = self.controller.make_step(x_0)
+                y_next = self.simulator.make_step(u)
+                x_0 = self.estimator.make_step(y_next)
+
+            self.modelObj.set_trajectories(self.controller.data)
+
     def execute_trajectory(self, x_0, steps, type, u):
         """Allows the model to execute an input trajectory taken as input. Finally, it formats, stores and exports the results to files.
 

@@ -69,7 +69,7 @@ class GaussianPlant:
         return self.conditional
 
     def getConditionalFromTraj(self, data, x_dim, u_dim, x_step, u_step, x_max, u_max, x_min, u_min, sigma):
-        """Compute the full joint and the reduced joint PDFs of the system using states and inputs trajectories.
+        """Compute the Gaussian conditional PDFs of the system using states and inputs trajectories.
 
         Args:
             data (numpy.ndarray[float64]): Array containing the continuous trajectories of the states/inputs.
