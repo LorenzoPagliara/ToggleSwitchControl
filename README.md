@@ -20,5 +20,5 @@ The `FPD/analysis.py` file is the script for running the interactive phase diagr
 
 ### Notes
 
-1. Matlab version used: R2021b;
+1. Matlab version used: R2022a;
 2. Python version used: 3.10.6
