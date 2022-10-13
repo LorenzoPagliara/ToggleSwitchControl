@@ -48,7 +48,7 @@
 <li class="toctree-l4"><a class="reference internal" href="#module-mpc.models.ToggleSwitchIdentifiedModel">mpc.models.ToggleSwitchIdentifiedModel module</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#module-mpc.models.ToggleSwitchLinearModel">mpc.models.ToggleSwitchLinearModel module</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#module-mpc.models.ToggleSwitchModel">mpc.models.ToggleSwitchModel module</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#module-mpc.models.ToggleSwitchRandomicModel">mpc.models.ToggleSwitchRandomicModel module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#mpc-models-toggleswitchrandomicmodel-module">mpc.models.ToggleSwitchRandomicModel module</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#module-mpc.models.ToggleSwitchSimplifiedModel">mpc.models.ToggleSwitchSimplifiedModel module</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#module-mpc.models.ToggleSwitchUncertainModel">mpc.models.ToggleSwitchUncertainModel module</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#module-mpc.models">Module contents</a></li>
@@ -383,32 +383,8 @@ and a set of methods for formatting, storing, exporting and plotting closed-loop
 </dd></dl>
 
 </section>
-<section id="module-mpc.models.ToggleSwitchRandomicModel">
-<span id="mpc-models-toggleswitchrandomicmodel-module"></span><h2>mpc.models.ToggleSwitchRandomicModel module<a class="headerlink" href="#module-mpc.models.ToggleSwitchRandomicModel" title="Permalink to this headline"></a></h2>
-<dl class="py class">
-<dt class="sig sig-object py" id="mpc.models.ToggleSwitchRandomicModel.ToggleSwitchRandomicModel">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">mpc.models.ToggleSwitchRandomicModel.</span></span><span class="sig-name descname"><span class="pre">ToggleSwitchRandomicModel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">stochasticity</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">LacI_ref</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">TetR_ref</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">t_step</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">total_time</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">avg_period</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mpc/models/ToggleSwitchRandomicModel.html#ToggleSwitchRandomicModel"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mpc.models.ToggleSwitchRandomicModel.ToggleSwitchRandomicModel" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <a class="reference internal" href="#mpc.models.ToggleSwitchModel.ToggleSwitchModel" title="mpc.models.ToggleSwitchModel.ToggleSwitchModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">mpc.models.ToggleSwitchModel.ToggleSwitchModel</span></code></a></p>
-<p>Class extending the model used by the MPC and representing a model with randomic parameters.</p>
-<dl class="py method">
-<dt class="sig sig-object py" id="mpc.models.ToggleSwitchRandomicModel.ToggleSwitchRandomicModel.set_model">
-<span class="sig-name descname"><span class="pre">set_model</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">stochasticity</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mpc/models/ToggleSwitchRandomicModel.html#ToggleSwitchRandomicModel.set_model"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mpc.models.ToggleSwitchRandomicModel.ToggleSwitchRandomicModel.set_model" title="Permalink to this definition"></a></dt>
-<dd><p>Defines the model equations and the cost function. Set parameters to random values.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>stochasticity</strong> (<em>bool</em><em>, </em><em>optional</em>) – Boolean parameter that adds or subtracts stochasticity to the model. Defaults to False.</p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>Instance of the model used by the controller.</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>do_mpc.model.Model</p>
-</dd>
-</dl>
-</dd></dl>
-
-</dd></dl>
-
+<section id="mpc-models-toggleswitchrandomicmodel-module">
+<h2>mpc.models.ToggleSwitchRandomicModel module<a class="headerlink" href="#mpc-models-toggleswitchrandomicmodel-module" title="Permalink to this headline"></a></h2>
 </section>
 <section id="module-mpc.models.ToggleSwitchSimplifiedModel">
 <span id="mpc-models-toggleswitchsimplifiedmodel-module"></span><h2>mpc.models.ToggleSwitchSimplifiedModel module<a class="headerlink" href="#module-mpc.models.ToggleSwitchSimplifiedModel" title="Permalink to this headline"></a></h2>

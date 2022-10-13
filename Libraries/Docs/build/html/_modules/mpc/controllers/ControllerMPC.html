@@ -173,7 +173,7 @@
 
                 <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">stochastic</span><span class="p">:</span>
                     <span class="n">v0</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">n_v</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
-                    <span class="n">w0</span> <span class="o">=</span> <span class="mf">0.2</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">n_w</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+                    <span class="n">w0</span> <span class="o">=</span> <span class="mf">0.2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">n_w</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
                 <span class="k">else</span><span class="p">:</span>
                     <span class="n">v0</span> <span class="o">=</span> <span class="mi">0</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">n_v</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
                     <span class="n">w0</span> <span class="o">=</span> <span class="mi">0</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">n_w</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
@@ -190,6 +190,37 @@
 
             <span class="bp">self</span><span class="o">.</span><span class="n">modelObj</span><span class="o">.</span><span class="n">set_trajectories</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">controller</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">modelObj</span><span class="o">.</span><span class="n">export_results</span><span class="p">(</span><span class="nb">type</span><span class="p">,</span> <span class="s1">&#39;results&#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">),</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="ControllerMPC.control_loop_no_constraints"><a class="viewcode-back" href="../../../mpc.controllers.html#mpc.controllers.ControllerMPC.ControllerMPC.control_loop_no_constraints">[docs]</a>    <span class="k">def</span> <span class="nf">control_loop_no_constraints</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x_0</span><span class="p">,</span> <span class="n">steps</span><span class="p">,</span> <span class="n">episodes</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;It defines the control loop with no constraints.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            x_0 (numpy.ndarray[float64]): Initial conditions.</span>
+<span class="sd">            steps (int): Number of control loop steps.</span>
+<span class="sd">            episodes (int, optional): Defines the number of repetitions of the control loop. Defaults to 1.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">model</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">modelObj</span><span class="o">.</span><span class="n">get_model</span><span class="p">()</span>
+
+        <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">episodes</span><span class="p">):</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">estimator</span><span class="o">.</span><span class="n">reset_history</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">controller</span><span class="o">.</span><span class="n">reset_history</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">simulator</span><span class="o">.</span><span class="n">reset_history</span><span class="p">()</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">controller</span><span class="o">.</span><span class="n">x0</span> <span class="o">=</span> <span class="n">x_0</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">simulator</span><span class="o">.</span><span class="n">x0</span> <span class="o">=</span> <span class="n">x_0</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">estimator</span><span class="o">.</span><span class="n">x0</span> <span class="o">=</span> <span class="n">x_0</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">controller</span><span class="o">.</span><span class="n">set_initial_guess</span><span class="p">()</span>
+
+            <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">steps</span><span class="p">):</span>
+
+                <span class="n">u</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">controller</span><span class="o">.</span><span class="n">make_step</span><span class="p">(</span><span class="n">x_0</span><span class="p">)</span>
+                <span class="n">y_next</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">simulator</span><span class="o">.</span><span class="n">make_step</span><span class="p">(</span><span class="n">u</span><span class="p">)</span>
+                <span class="n">x_0</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">estimator</span><span class="o">.</span><span class="n">make_step</span><span class="p">(</span><span class="n">y_next</span><span class="p">)</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">modelObj</span><span class="o">.</span><span class="n">set_trajectories</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">controller</span><span class="o">.</span><span class="n">data</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="ControllerMPC.execute_trajectory"><a class="viewcode-back" href="../../../mpc.controllers.html#mpc.controllers.ControllerMPC.ControllerMPC.execute_trajectory">[docs]</a>    <span class="k">def</span> <span class="nf">execute_trajectory</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x_0</span><span class="p">,</span> <span class="n">steps</span><span class="p">,</span> <span class="nb">type</span><span class="p">,</span> <span class="n">u</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Allows the model to execute an input trajectory taken as input. Finally, it formats, stores and exports the results to files.</span>

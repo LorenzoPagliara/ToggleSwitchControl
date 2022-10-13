@@ -47,20 +47,20 @@ class ToggleSwitchIdentifiedModel(ToggleSwitchModel):
         data = args[0]
 
         # Model parameters
-        k_m0_L = np.mean(data['_p', 'k_m0_L'])
-        k_m0_T = np.mean(data['_p', 'k_m0_T'])
-        k_m_L = np.mean(data['_p', 'k_m_L'])
-        k_m_T = np.mean(data['_p', 'k_m_T'])
-        k_p_L = np.mean(data['_p', 'k_p_L'])
-        k_p_T = np.mean(data['_p', 'k_p_T'])
-        g_m_L = np.mean(data['_p', 'g_m_L'])
-        g_m_T = np.mean(data['_p', 'g_m_T'])
-        g_p_L = np.mean(data['_p', 'g_p_L'])
-        g_p_T = np.mean(data['_p', 'g_p_T'])
-        theta_LacI = np.mean(data['_p', 'theta_LacI'])
-        theta_TetR = np.mean(data['_p', 'theta_TetR'])
-        theta_IPTG = np.mean(data['_p', 'theta_IPTG'])
-        theta_aTc = np.mean(data['_p', 'theta_aTc'])
+        k_m0_L = data['_p', 'k_m0_L'][-1][0]
+        k_m0_T = data['_p', 'k_m0_T'][-1][0]
+        k_m_L = data['_p', 'k_m_L'][-1][0]
+        k_m_T = data['_p', 'k_m_T'][-1][0]
+        k_p_L = data['_p', 'k_p_L'][-1][0]
+        k_p_T = data['_p', 'k_p_T'][-1][0]
+        g_m_L = data['_p', 'g_m_L'][-1][0]
+        g_m_T = data['_p', 'g_m_T'][-1][0]
+        g_p_L = data['_p', 'g_p_L'][-1][0]
+        g_p_T = data['_p', 'g_p_T'][-1][0]
+        theta_LacI = data['_p', 'theta_LacI'][-1][0]
+        theta_TetR = data['_p', 'theta_TetR'][-1][0]
+        theta_IPTG = data['_p', 'theta_IPTG'][-1][0]
+        theta_aTc = data['_p', 'theta_aTc'][-1][0]
         eta_LacI = 2.00
         eta_TetR = 2.00
         eta_IPTG = 2.00

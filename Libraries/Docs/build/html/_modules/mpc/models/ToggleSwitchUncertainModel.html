@@ -173,8 +173,8 @@
 <span class="sd">        Returns:</span>
 <span class="sd">            do_mpc.controller.MPC: Instance of the controller.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">theta_LacI_values</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">31.94</span><span class="p">,</span> <span class="mf">32.94</span><span class="p">,</span> <span class="mf">30.94</span><span class="p">])</span>
-        <span class="n">theta_TetR_values</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">30</span><span class="p">,</span> <span class="mi">31</span><span class="p">,</span> <span class="mi">29</span><span class="p">])</span>
+        <span class="n">theta_LacI_values</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">28.746</span><span class="p">,</span> <span class="mf">32.94</span><span class="p">,</span> <span class="mf">35.194</span><span class="p">])</span>
+        <span class="n">theta_TetR_values</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">27</span><span class="p">,</span> <span class="mi">31</span><span class="p">,</span> <span class="mi">33</span><span class="p">])</span>
 
         <span class="n">controller</span><span class="o">.</span><span class="n">set_uncertainty_values</span><span class="p">(</span>
             <span class="n">theta_LacI</span><span class="o">=</span><span class="n">theta_LacI_values</span><span class="p">,</span>
@@ -196,8 +196,8 @@
 
         <span class="k">def</span> <span class="nf">p_fun</span><span class="p">(</span><span class="n">t_now</span><span class="p">):</span>
 
-            <span class="n">p_template</span><span class="p">[</span><span class="s1">&#39;theta_LacI&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mf">31.94</span>
-            <span class="n">p_template</span><span class="p">[</span><span class="s1">&#39;theta_TetR&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mf">30.00</span>
+            <span class="n">p_template</span><span class="p">[</span><span class="s1">&#39;theta_LacI&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="n">low</span><span class="o">=</span><span class="mf">28.746</span><span class="p">,</span> <span class="n">high</span><span class="o">=</span><span class="mf">35.194</span><span class="p">)</span>
+            <span class="n">p_template</span><span class="p">[</span><span class="s1">&#39;theta_TetR&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="n">low</span><span class="o">=</span><span class="mi">27</span><span class="p">,</span> <span class="n">high</span><span class="o">=</span><span class="mi">33</span><span class="p">)</span>
 
             <span class="k">return</span> <span class="n">p_template</span>
 

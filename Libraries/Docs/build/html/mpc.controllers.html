@@ -117,6 +117,21 @@ At the end of each episode, it formats and stores the results obtained, using th
 </dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="mpc.controllers.ControllerMPC.ControllerMPC.control_loop_no_constraints">
+<span class="sig-name descname"><span class="pre">control_loop_no_constraints</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x_0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">steps</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">episodes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mpc/controllers/ControllerMPC.html#ControllerMPC.control_loop_no_constraints"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mpc.controllers.ControllerMPC.ControllerMPC.control_loop_no_constraints" title="Permalink to this definition"></a></dt>
+<dd><p>It defines the control loop with no constraints.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>x_0</strong> (<em>numpy.ndarray</em><em>[</em><em>float64</em><em>]</em>) – Initial conditions.</p></li>
+<li><p><strong>steps</strong> (<em>int</em>) – Number of control loop steps.</p></li>
+<li><p><strong>episodes</strong> (<em>int</em><em>, </em><em>optional</em>) – Defines the number of repetitions of the control loop. Defaults to 1.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="mpc.controllers.ControllerMPC.ControllerMPC.controller_mpc">
 <span class="sig-name descname"><span class="pre">controller_mpc</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">setup_mpc</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mpc/controllers/ControllerMPC.html#ControllerMPC.controller_mpc"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mpc.controllers.ControllerMPC.ControllerMPC.controller_mpc" title="Permalink to this definition"></a></dt>
 <dd><p>It defines the controller parameters, sets the cost function and constraints according to the model to be controlled and returns an instance of the controller.</p>

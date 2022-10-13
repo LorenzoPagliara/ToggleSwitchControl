@@ -104,8 +104,8 @@ class ToggleSwitchUncertainModel(ToggleSwitchModel):
         Returns:
             do_mpc.controller.MPC: Instance of the controller.
         """
-        theta_LacI_values = np.array([31.94, 32.94, 30.94])
-        theta_TetR_values = np.array([30, 31, 29])
+        theta_LacI_values = np.array([28.746, 32.94, 35.194])
+        theta_TetR_values = np.array([27, 31, 33])
 
         controller.set_uncertainty_values(
             theta_LacI=theta_LacI_values,
@@ -127,8 +127,8 @@ class ToggleSwitchUncertainModel(ToggleSwitchModel):
 
         def p_fun(t_now):
 
-            p_template['theta_LacI'] = 31.94
-            p_template['theta_TetR'] = 30.00
+            p_template['theta_LacI'] = np.random.uniform(low=28.746, high=35.194)
+            p_template['theta_TetR'] = np.random.uniform(low=27, high=33)
 
             return p_template
 

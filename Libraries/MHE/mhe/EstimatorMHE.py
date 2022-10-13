@@ -96,9 +96,9 @@ class EstimatorMHE:
 
         mhe.set_param(**setup_mhe)
 
-        Px = 50*np.eye(8)
-        Pv = 10*np.diag(np.array([1, 1, 1, 1]))
-        Pp = 1000*np.eye(14)
+        Px = 15*np.eye(8)
+        Pv = np.diag(np.array([1, 1, 1, 1]))
+        Pp = np.eye(14)
         mhe.set_default_objective(Px, Pv, Pp)
 
         mhe.bounds['lower', '_p_est', 'k_m0_L'] = 0
@@ -180,8 +180,7 @@ class EstimatorMHE:
         for k in range(steps):
 
             u = np.random.randn(2, 1)
-            v0 = 0.001*np.random.randn(self.model.n_v, 1)
-            y_next = self.simulator.make_step(u, v0=v0)
+            y_next = self.simulator.make_step(u)
             x_0 = self.estimator.make_step(y_next)
 
         self.plot_estimates(self.estimator.data, self.simulator.data)

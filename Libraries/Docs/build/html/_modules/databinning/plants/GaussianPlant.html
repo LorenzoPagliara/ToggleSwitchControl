@@ -138,7 +138,7 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">conditional</span></div>
 
 <div class="viewcode-block" id="GaussianPlant.getConditionalFromTraj"><a class="viewcode-back" href="../../../databinning.plants.html#databinning.plants.GaussianPlant.GaussianPlant.getConditionalFromTraj">[docs]</a>    <span class="k">def</span> <span class="nf">getConditionalFromTraj</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">x_dim</span><span class="p">,</span> <span class="n">u_dim</span><span class="p">,</span> <span class="n">x_step</span><span class="p">,</span> <span class="n">u_step</span><span class="p">,</span> <span class="n">x_max</span><span class="p">,</span> <span class="n">u_max</span><span class="p">,</span> <span class="n">x_min</span><span class="p">,</span> <span class="n">u_min</span><span class="p">,</span> <span class="n">sigma</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Compute the full joint and the reduced joint PDFs of the system using states and inputs trajectories.</span>
+        <span class="sd">&quot;&quot;&quot;Compute the Gaussian conditional PDFs of the system using states and inputs trajectories.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            data (numpy.ndarray[float64]): Array containing the continuous trajectories of the states/inputs.</span>

@@ -104,7 +104,7 @@ class ControllerMPC:
 
                 if self.stochastic:
                     v0 = np.random.randn(model.n_v, 1)
-                    w0 = 0.2*np.random.randn(model.n_w, 1)
+                    w0 = 0.2 * np.random.randn(model.n_w, 1)
                 else:
                     v0 = 0*np.random.randn(model.n_v, 1)
                     w0 = 0*np.random.randn(model.n_w, 1)
